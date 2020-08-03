@@ -1,0 +1,108 @@
+<script id="tpl_setting_access" type="text/html">
+<div id="ajaxwaitid"></div>
+<div class="container" id="cpcontainer"><div class="floattop"><div class="itemtitle"><h3>注册与访问控制</h3><ul class="tab1" id="submenu"><li id="nav_register" onclick="showanchor(this)" class="current"><a href="javascrpit:void(0);"><span>注册</span></a></li><li id="nav_access" onclick="showanchor(this)" class=""><a href="javascrpit:void(0);"><span>访问控制</span></a></li></ul></div></div><div class="floattopempty"><form name="cpform" method="post" autocomplete="off" action="admin.php?action=setting&amp;edit=yes" id="cpform" enctype="multipart/form-data"><input type="hidden" name="formhash" value="768764f9"><input type="hidden" id="formscrolltop" name="scrolltop" value=""><input type="hidden" name="anchor" value="register">
+<input type="hidden" name="operation" value="access">
+<table class="tb tb2 nobdb" id="register" style="">
+<tbody><tr><td colspan="2" class="td27" s="1">允许新用户注册:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqb269')"><td class="vtop rowform">
+<ul class="nofloat" onmouseover="altStyle(this);"><li {{if (data.Setting.Regstatus&1)==1}}class="checked" {{/if}}title="开放普通注册"><input class="checkbox" type="checkbox" name="settingnew[regstatus][]" value="open" {{if (data.Setting.Regstatus&1)==1}}checked{{/if}}>&nbsp;开放普通注册</li>
+	<li title="开放邀请注册" style="display: none"><input class="checkbox" type="checkbox" name="settingnew[regstatus][]" value="invite" onclick="$('showinvite').style.display = $('showinvite').style.display == 'none' ? '' : 'none';">&nbsp;开放邀请注册</li>
+</ul></td><td class="vtop tips2" s="1">设置是否允许游客注册成为站点会员，您可以根据站点需求选择注册方式</td></tr></tbody><tbody class="sub" id="showinvite" style="display: none">
+<tr><td colspan="2" class="td27" s="1">邀请注册说明:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq231a')"><td class="vtop rowform">
+<textarea rows="6" ondblclick="textareasize(this, 1)" onkeyup="textareasize(this, 0)" onkeydown="textareakey(this, event)" name="settingnew[inviteconfig][invitecodeprompt]" id="settingnew[inviteconfig][invitecodeprompt]" cols="50" class="tarea"></textarea></td><td class="vtop tips2" s="1"><br>双击输入框可扩大/缩小</td></tr>
+<tr><td colspan="2" class="td27" s="1">允许充值购买邀请码:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqe0b6')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li><input class="radio" type="radio" name="settingnew[inviteconfig][buyinvitecode]" value="1">&nbsp;是</li><li class="checked"><input class="radio" type="radio" name="settingnew[inviteconfig][buyinvitecode]" value="0" checked="">&nbsp;否</li></ul></td><td class="vtop tips2" s="1">允许游客通过在线充值购买注册邀请码。仅限于关闭普通注册时有效。开启前请确认您的<a href="admin.php?frames=yes&amp;action=setting&amp;operation=ec" target="_blank"><strong>电子商务</strong></a>及<a href="admin.php?frames=yes&amp;action=setting&amp;operation=mail" target="_blank"><strong>发送邮件</strong></a>功能可正常使用</td></tr>
+<tr><td colspan="2" class="td27" s="1">邀请码单价(元):</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqe7ae')"><td class="vtop rowform">
+<input name="settingnew[inviteconfig][invitecodeprice]" value="" type="text" class="txt"></td><td class="vtop tips2" s="1"></td></tr>
+<tr><td colspan="2" class="td27" s="1">邀请新注册会员奖励所用扩展积分:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq74b9')"><td class="vtop rowform">
+<select name="settingnew[inviteconfig][inviterewardcredit]"><option value="1">extcredits1 (威望)</option><option value="2">extcredits2 (金钱)</option><option value="3">extcredits3 (贡献)</option></select></td><td class="vtop tips2" s="1">邀请新注册会员奖励所用的扩展积分，包括奖励邀请人和被邀请人的奖励积分</td></tr>
+<tr><td colspan="2" class="td27" s="1">被邀请人奖励积分数量:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqd20f')"><td class="vtop rowform">
+<input name="settingnew[inviteconfig][inviteaddcredit]" value="" type="text" class="txt"></td><td class="vtop tips2" s="1">通过邀请码注册成功后，奖励被邀请人的扩展积分数量</td></tr>
+<tr><td colspan="2" class="td27" s="1">邀请人奖励积分数量:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqd85b')"><td class="vtop rowform">
+<input name="settingnew[inviteconfig][invitedaddcredit]" value="" type="text" class="txt"></td><td class="vtop tips2" s="1">通过邀请码注册成功后，奖励邀请人的扩展积分数量</td></tr>
+<tr><td colspan="2" class="td27" s="1">邀请注册用户初始用户组:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq6cb6')"><td class="vtop rowform">
+<select name="settingnew[inviteconfig][invitegroupid]"><option value="0">普通用户</option><option value="16">实习版主</option>
+<option value="17">网站编辑</option>
+<option value="18">信息监察员</option>
+<option value="19">审核员</option>
+</select></td><td class="vtop tips2" s="1">被邀请人的初始用户组</td></tr>
+<tr><td colspan="2" class="td27" s="1">不受邀请码限制的地区列表:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq8d0e')"><td class="vtop rowform">
+<textarea rows="6" ondblclick="textareasize(this, 1)" onkeyup="textareasize(this, 0)" onkeydown="textareakey(this, event)" name="settingnew[inviteconfig][inviteareawhite]" id="settingnew[inviteconfig][inviteareawhite]" cols="50" class="tarea"></textarea></td><td class="vtop tips2" s="1">当用户处于本列表中的地址时，注册时不受邀请码限制。每个地区一行，例如 "北京"(不含引号)，留空为不设置。<br>注意：如要正确无误的判断您 IP 地址所在的地区，请到网上下载 qqwry.dat IP 地址库文件上传到 "data/ipdata/" 目录下更名为 wry.dat，同时删除 tinyipdata.dat 文件<br>双击输入框可扩大/缩小</td></tr>
+<tr><td colspan="2" class="td27" s="1">不受邀请码限制的 IP 列表:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqde06')"><td class="vtop rowform">
+<textarea rows="6" ondblclick="textareasize(this, 1)" onkeyup="textareasize(this, 0)" onkeydown="textareakey(this, event)" name="settingnew[inviteconfig][inviteipwhite]" id="settingnew[inviteconfig][inviteipwhite]" cols="50" class="tarea"></textarea></td><td class="vtop tips2" s="1">当用户处于本列表中的 IP 地址时，注册时不受邀请码限制。每个 IP 一行，既可输入完整地址，也可只输入 IP 开头，例如 "192.168."(不含引号) 可匹配 192.168.0.0～192.168.255.255 范围内的所有地址，留空为不设置<br>双击输入框可扩大/缩小</td></tr></tbody>
+
+<tbody><tr><td colspan="2" class="td27" s="1">关闭注册提示信息:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqd8a0')">{{@showsetting('settingnew[regclosemessage]',data.Setting.Regclosemessage, 'textarea')}}<td class="vtop tips2" s="1">当站点关闭注册时的提示信息<br>双击输入框可扩大/缩小</td></tr>
+<tr><td colspan="2" class="td27" s="1">注册地址:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqa9b1')"><td class="vtop rowform">
+<input name="settingnew[regname]" value="{{data.Setting.Regname}}" type="text" class="txt"></td><td class="vtop tips2" s="1">设置站点注册地址 mod 值，默认为“register”，修改名称有利于防止灌水软件，有别于 Discuz! X 之前的版本更改了此设置，不需要修改任何文件名称，只在此修改即可</td></tr>
+<tr><td colspan="2" class="td27" s="1">通过邮件发送注册链接:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq6369')">{{@showsetting('settingnew[sendregisterurl]',data.Setting.Sendregisterurl, 'radio')}}<td class="vtop tips2" s="1">开启后系统会发一条注册的地址到用户的邮箱，从该地址链接过来的允许注册，同时建议UCenter中开启一个邮箱只允许注册一个帐户<br>注意：只有在<a href="?action=setting&amp;operation=mail">站长 - 邮件设置</a>中完成邮件设置，确保邮件能发送成功下可以开启该功能 </td></tr>
+<tr><td colspan="2" class="td27" s="1">注册链接文字:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq1238')"><td class="vtop rowform">
+<input name="settingnew[reglinkname]" value="{{data.Setting.Reglinkname}}" type="text" class="txt"></td><td class="vtop tips2" s="1">设置站点注册页的链接文字，默认为“立即注册”</td></tr>
+<tr><td colspan="2" class="td27" s="1">用户信息保留关键字:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq0367')">{{@showsetting('settingnew[censoruser]',data.Setting.Censoruser, 'textarea')}}<td class="vtop tips2" s="1">用户在其用户信息中无法使用这些关键字。每个关键字一行，可使用通配符 "*" 如 "*版主*"(不含引号)<br>双击输入框可扩大/缩小</td></tr>
+<tr><td colspan="2" class="td27" s="1">密码最小长度:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq8c5c')">{{@showsetting('settingnew[pwlength]',data.Setting.Pwlength, 'number')}}<td class="vtop tips2" s="1">新用户注册时密码最小长度，0或不填为不限制</td></tr>
+<tr><td colspan="2" class="td27" s="1">强制密码复杂度:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqa3b4')">{{@showsetting('settingnew[strongpw]',data.Setting.Strongpw, 'checkbox',["数字","小写字母","大写字母","符号"])}}<td class="vtop tips2" s="1">新用户注册时密码中必须存在所选字符类型，不选则为无限制</td></tr>
+<tr><td colspan="2" class="td27" s="1">新用户注册验证:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq2a5a')">{{@showsetting('settingnew[regverify]',data.Setting.Regverify, 'radio',["无","Email 验证","人工审核"],["$('#regverifyext').hide();","$('#regverifyext').show();","$('#regverifyext').show();"])}}<td class="vtop tips2" s="1">选择“无”用户可直接注册成功；选择“Email 验证”将向用户注册 Email 发送一封验证邮件以确认邮箱的有效性（<strong>开启“通过邮件发送注册链接”该设置自动通过验证</strong>）；选择“人工审核”将由管理员人工逐个确定是否允许新用户注册</td></tr></tbody><tbody class="sub" id="regverifyext" <li {{if data.Setting.Regverify==0}}style="display: none"{{/if}}>
+<tr><td colspan="2" class="td27" s="1">不受新用户注册验证限制的地区列表:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq25e1')">{{@showsetting('settingnew[areaverifywhite]',data.Setting.Areaverifywhite, 'textarea')}}<td class="vtop tips2" s="1">当用户处于本列表中的地址时，直接注册成功，无需新用户注册验证。每个地区一行，例如 "北京"(不含引号)，留空为不设置<br>双击输入框可扩大/缩小</td></tr>
+<tr><td colspan="2" class="td27" s="1">不受新用户注册验证限制的 IP 列表:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq41f2')">{{@showsetting('settingnew[ipverifywhite]',data.Setting.Ipverifywhite, 'textarea')}}<td class="vtop tips2" s="1">当用户处于本列表中的 IP 地址时，直接注册成功，无需新用户注册验证。每个 IP 一行，既可输入完整地址，也可只输入 IP 开头，例如 "192.168."(不含引号) 可匹配 192.168.0.0～192.168.255.255 范围内的所有地址，留空为不设置<br>双击输入框可扩大/缩小</td></tr></tbody>
+<tbody><tr><td colspan="2" class="td27" s="1">注册邮箱域名限制:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqad0c')">{{@showsetting('settingnew[regmaildomain]',data.Setting.Regmaildomain, 'radio',["无","白名单模式","黑名单模式"],["$('#regmaildomainext').hide();","$('#regmaildomainext').show();","$('#regmaildomainext').show();"])}}<td class="vtop tips2" s="1">选择“无”直接关闭本功能；选择“白名单模式”，只有限制名单中的邮箱域名可以注册；选择“黑名单模式”，限制名单中的邮箱域名不能注册。</td></tr></tbody><tbody class="sub" id="regmaildomainext" {{if data.Setting.Regmaildomain==0}}style="display: none"{{/if}}>
+<tr><td colspan="2" class="td27" s="1">限制名单:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqe46c')">{{@showsetting('settingnew[maildomainlist]',data.Setting.Maildomainlist, 'textarea')}}<td class="vtop tips2" s="1">当邮箱的域名处于本列表中的地址时，将根据上述选项进行相应限制操作。输入要限制的邮箱域名即可，例如屏蔽 xxx@xxx.com 的域，只需输入 xxx.com。每行一个域名。<br>双击输入框可扩大/缩小</td></tr></tbody>
+<tbody><tr><td colspan="2" class="td27" s="1">同一 IP 注册间隔限制(小时):</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq2755')">{{@showsetting('settingnew[regctrl]',data.Setting.Regctrl, 'number')}}<td class="vtop tips2" s="1">同一 IP 在本时间间隔内将只能注册一个帐号，0 为不限制</td></tr>
+<tr><td colspan="2" class="td27" s="1">同一 IP 在 24 小时允许注册的最大次数:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq02db')">{{@showsetting('settingnew[regfloodctrl]',data.Setting.Regfloodctrl, 'number')}}<td class="vtop tips2" s="1">同一 IP 地址在 24 小时内尝试注册的次数限制，建议在 30 - 100 范围内取值，0 为不限制</td></tr>
+<tr><td colspan="2" class="td27" s="1">限时注册IP注册间隔限制(小时):</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq4669')">{{@showsetting('settingnew[ipregctrltime]',data.Setting.Ipregctrltime, 'number')}}<td class="vtop tips2" s="1">用户处于限时注册的 IP 列表中的 IP 地址时，同一 IP 在本时间间隔内将只能注册一个帐号</td></tr>
+<tr><td colspan="2" class="td27" s="1">限时注册的 IP 列表:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq4d07')">{{@showsetting('settingnew[ipregctrl]',data.Setting.Ipregctrl, 'textarea')}}<td class="vtop tips2" s="1">当用户处于本列表中的 IP 地址时，在限时注册IP注册间隔限制内将至多只允许注册一个帐号。每个 IP 一行，既可输入完整地址，也可只输入 IP 开头，例如 "192.168."(不含引号) 可匹配 192.168.0.0～192.168.255.255 范围内的所有地址，留空为不设置<br>双击输入框可扩大/缩小</td></tr>
+<tr><td colspan="2" class="td27" s="1">发送欢迎信息:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq26c3')">{{@showsetting('settingnew[welcomemsg]',data.Setting.Welcomemsg, 'checkbox',["发送欢迎信息","发送欢迎 Email"])}}<td class="vtop tips2" s="1">可选择是否自动向新注册用户发送一条欢迎信息</td></tr>
+<tr><td colspan="2" class="td27" s="1">欢迎信息标题:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqcc86')"><td class="vtop rowform">
+<input name="settingnew[welcomemsgtitle]" value="{{data.Setting.Welcomemsgtitle}}" type="text" class="txt"></td><td class="vtop tips2" s="1">系统发送的欢迎信息的标题，不支持 HTML，不超过 75 字节。 </td></tr>
+<tr><td colspan="2" class="td27" s="1">欢迎信息内容:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq9be0')">{{@showsetting('settingnew[welcomemsgtxt]',data.Setting.Welcomemsgtxt, 'textarea')}}<td class="vtop tips2" s="1">系统发送的欢迎信息的内容。标题内容均支持变量替换，可以使用如下变量:<br>{username} : 用户名<br>{time} : 发送时间<br>{sitename} : 网站名称（显示在页面底部的联系方式处的名称）<br>{bbname} : 站点名称（显示在浏览器窗口标题等位置的名称）<br>{adminemail} : 管理员 Email<br>双击输入框可扩大/缩小</td></tr>
+<tr><td colspan="2" class="td27" s="1">显示网站服务条款:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq314f')">{{@showsetting('settingnew[bbrules]',data.Setting.Bbrules, 'radio')}}<td class="vtop tips2" s="1">新用户注册时显示网站服务条款</td></tr></tbody><tbody class="sub" id="hidden_setting_access_register_bbrules" {{if data.Setting.Bbrules==0}}style="display: none"{{/if}}>
+<tr><td colspan="2" class="td27" s="1">是否强制显示网站服务条款:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqa82e')">{{@showsetting('settingnew[bbrulesforce]',data.Setting.Bbrulesforce, 'radio')}}<td class="vtop tips2" s="1">选择是则在用户注册时，首先将看到网站服务条款全文，必须同意才可以继续注册</td></tr>
+<tr><td colspan="2" class="td27" s="1">服务条款内容:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq2000')">{{@showsetting('settingnew[bbrulestxt]',data.Setting.Bbrulestxt, 'textarea')}}<td class="vtop tips2" s="1">网站服务条款的详细内容<br>双击输入框可扩大/缩小</td></tr></tbody></table>
+
+<table class="tb tb2 nobdb" id="access" style="display: none;">
+<tbody><tr><td colspan="2" class="td27" s="1">新手见习期限(分钟):</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq25d8')">{{@showsetting('settingnew[newbiespan]',data.Setting.Newbiespan, 'number')}}<td class="vtop tips2" s="1">新注册用户在本期限内将无法发帖和短消息，不影响版主和管理员，0 为不限制</td></tr>
+<tr><td colspan="2" class="td27" s="1">允许访问站点的 IP 列表:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq768d')">{{@showsetting('settingnew[ipaccess]',data.Setting.Ipaccess, 'textarea')}}<td class="vtop tips2" s="1">只有当用户处于本列表中的 IP 地址时才可以访问本站点，列表以外的地址访问将视为 IP 被禁止，仅适用于诸如企业、学校内部站点等极个别场合。本功能对管理员没有特例，如果管理员不在此列表范围内将同样不能登录，请务必慎重使用本功能。每个 IP 一行，既可输入完整地址，也可只输入 IP 开头，例如 "192.168."(不含引号) 可匹配 192.168.0.0～192.168.255.255 范围内的所有地址，留空为所有 IP 除明确禁止的以外均可访问<br>双击输入框可扩大/缩小</td></tr>
+<tr><td colspan="2" class="td27" s="1">允许访问管理中心的 IP 列表:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqea4a')">{{@showsetting('settingnew[adminipaccess]',data.Setting.Adminipaccess, 'textarea')}}<td class="vtop tips2" s="1">只有当用户处于本列表中的 IP 地址时才可以访问站点管理中心，列表以外的地址访问将无法访问，但仍可访问站点前端用户界面，请务必慎重使用本功能。每个 IP 一行，既可输入完整地址，也可只输入 IP 开头，例如 "192.168."(不含引号) 可匹配 192.168.0.0～192.168.255.255 范围内的所有地址，留空为所有 IP 除明确禁止的以外均可访问管理中心<br>双击输入框可扩大/缩小</td></tr>
+<tr><td colspan="2" class="td27" s="1">允许发表的域名列表:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqb149')"><td class="vtop rowform">
+<textarea class="tarea" cols="50" id="settingnew[domainwhitelist]" name="settingnew[domainwhitelist]" onkeydown="textareakey(this, event)" onkeyup="textareasize(this, 0)" ondblclick="textareasize(this, 1)" rows="6">{{data.Setting.Domainwhitelist}}</textarea><br><input class="checkbox" type="checkbox" value="1" name="settingnew[domainwhitelist_affectimg]" {{if data.Setting.Domainwhitelist_affectimg==1}}checked{{/if}}>不解析此名单外的远程图片</td><td class="vtop tips2" s="1">当用户组禁止发表 URL ，或者 URL 不解析时，处于本列表中的域名下的 URL 仍然可以正常发表，正常解析，每行一个域名，默认为本站域名可以正常发表</td></tr></tbody></table>
+
+<table class="tb tb2 nobdt"><tbody><tr><td colspan="15"><div class="fixsel"><input type="submit" class="btn" id="submit_settingsubmit" name="settingsubmit" title="按 Enter 键可随时提交您的修改" value="提交"></div></td></tr><script type="text/JavaScript">_attachEvent(document.documentElement, 'keydown', function (e) { entersubmit(e, 'settingsubmit'); });</script></tbody></table>
+</form>
+
+</div>
+
+</body></html>
+</script>

@@ -1,0 +1,808 @@
+<script id="tpl_forum_newthread" type="text/html">
+	<div id="wp" class="wp time_wp cl">
+
+<%var subjectcut='',actionsubject='',actiontitle='';if(GET('Type')!=0){ subjectcut = cutstr(data.Subject, 15);%><%}%><%if(GET('Type')==2) { 
+actionsubject = '<em>&rsaquo;</em><a href="javascript:tpl_load(\'forum_viewthread\',WRITE_MSG_U2WS_forum_viewthread,{Tid:'+data.Tid+'});">'+subjectcut+'</a>';
+ } else if(GET('Type')==1) { 
+actionsubject = '<em>&rsaquo;</em><a href="javascript:tpl_load(\'forum_viewthread\',WRITE_MSG_U2WS_forum_viewthread,{Tid:'+data.Tid+'});">'+subjectcut+'</a>';
+}%>
+<%if(GET('Type')==0){%><%if(GET('Special')==1){actiontitle='发起投票';}else if(GET('Special')==2){actiontitle='出售商品';}else if(GET('Special')==3){actiontitle='发布悬赏';}else if(GET('Special')==4){actiontitle='发起活动';}else if(GET('Special')==5){actiontitle='发起辩论';}else{actiontitle='发表帖子';}%><%}else if(GET('Type')==1)%><%if(GET('Special')==2){actiontitle='编辑商品';}else{actiontitle='编辑帖子';}%>
+<div id="pt" class="bm cl">
+<div class="z"><a href="/index.html" class="nvhm" title="首页"><svg class="svg" style="width: 17px;height: 17px;margin-top:6px;" aria-hidden="true"><use xlink:href="#icon-zhuye"></use></svg></a><em>›</em><a href="javascript:tpl_load('forum_index',WRITE_MSG_U2WS_forum_index,{})">论坛</a><em>›</em><a href="javascript:tpl_load('forum_index',WRITE_MSG_U2WS_forum_index,{Gid:{{data.Parent.Fid}}})">{{data.Parent.Name}}</a><em>›</em> <a href="javascript:tpl_load('forum',WRITE_MSG_U2WS_forum,{Fid:{{data.Fid}}})">{{data.Name}}</a><%-actionsubject%> <em>&rsaquo;</em><%=actiontitle%></div>
+
+</div><form method="post" autocomplete="off" id="postform" onsubmit="return validate(this);">
+<div id="ct" class="ct2_a_r wp cl">
+<%if(GET('Type')==1){%>
+<input type="hidden" name="delattachop" id="delattachop" value="0" />
+<%}%>
+<input type="hidden" name="wysiwyg" id="e_mode" value="1" />
+
+
+<div class="bm  bto cl" id="editorbox">
+<%if(GET('Type')==0){%>
+<ul class="tb cl mbn">
+<%if(data.Savethreads){%>
+<li class="y"><a id="draftlist" href="javascript:;" class="xi2" onmouseover="showMenu({'ctrlid':'draftlist','ctrlclass':'a','duration':2,'pos':'34'})">草稿箱(<strong><%=data.Savethreads.length%></strong>)</a></li>
+<%}%><li <%if(GET('Special')==0){%>class="a"<%}%>><a href="javascript:tpl_load('forum_newthread',WRITE_MSG_U2WS_forum_newthread,{Fid:<%=data.Fid%>,Type:0,Special:0});" >发表帖子</a></li><%if((data.Allow>>0&1)==1){%><li <%if(GET('Special')==1){%>class="a"<%}%>><a href="javascript:tpl_load('forum_newthread',WRITE_MSG_U2WS_forum_newthread,{Fid:<%=data.Fid%>,Type:0,Special:1});" >发起投票</a></li><%}if((data.Allow>>2&1)==1){%><li <%if(GET('Special')==3){%>class="a"<%}%>><a href="javascript:tpl_load('forum_newthread',WRITE_MSG_U2WS_forum_newthread,{Fid:<%=data.Fid%>,Type:0,Special:3});">发布悬赏</a></li><%}if((data.Allow>>4&1)==1){%><li <%if(GET('Special')==5){%>class="a"<%}%>><a href="javascript:tpl_load('forum_newthread',WRITE_MSG_U2WS_forum_newthread,{Fid:<%=data.Fid%>,Type:0,Special:5});">发起辩论</a></li><%}if((data.Allow>>3&1)==1){%><li <%if(GET('Special')==4){%>class="a"<%}%>><a href="javascript:tpl_load('forum_newthread',WRITE_MSG_U2WS_forum_newthread,{Fid:<%=data.Fid%>,Type:0,Special:4});">发起活动</a></li><%}if((data.Allow>>1&1)==1){%><li <%if(GET('Special')==2){%>class="a"<%}%>><a href="javascript:tpl_load('forum_newthread',WRITE_MSG_U2WS_forum_newthread,{Fid:<%=data.Fid%>,Type:0,Special:2});">出售商品</a></li><%}%>
+</ul>
+
+<div id="draftlist_menu" style="display:none">
+<ul class="xl xl1">
+<%for(var i in data.Savethreads) { var savethread=data.Savethreads[i];%><li>
+<label>[<a href="javascript:;" title="引用" onclick="insertsave(<%=savethread.Pid%>)">引用</a>]</label>
+<a href="javascript:tpl_load('forum_newthread',WRITE_MSG_U2WS_forum_newthread,{Fid:<%=savethread.Fid%>,Type:1,Special:0,Tid:<%=savethread.Tid%>,Pid:<%=savethread.Pid%>});" class="xi2" target="_blank"><%=savethread.Subject%></a>
+<span class="xg1"><%=thread_time(savethread.Dateline)%></span>
+</li>
+<%}%>
+<li class="xi2"><a href="forum.php?mod=guide&amp;view=my&amp;type=thread&amp;filter=save&amp;fid=0" target="_blank">查看所有草稿</a></li>
+</ul>
+</div>
+
+<%}else if(GET('Type')==1){%>
+<ul class="tb cl mbw">
+<li class="a"><a href="javascript:;"><%=actiontitle%></a></li>
+</ul>
+<%}%>
+
+<div id="postbox">
+<%if((GET('Type')==0 && cache.sitemessage.newthread.length>0) || (GET('Type')==2 && cache.sitemessage.reply.length>0)){%>
+<span id="custominfo" class="y cur1<%if(GET('Type')==2){%> mtn<%}%>">&nbsp;<img src="<%=cache.imgdir%>/info_small.gif" alt="帮助" /></span>
+<%}%>
+
+<div class="pbt cl ptn">
+<%if((data.Allow>>6&1)==1 && data.Threadtypes && (data.Threadtypes.Status>>0&1)==1 && data.Threadtypes.Types){%>
+<div class="ftid">
+
+<select name="typeid" id="typeid" width="90">
+<option value="0">选择主题分类</option><%for(var i in data.Threadtypes.Types){if(data.Threadtypes.Types[i].Ismoderator==0 || data.Ismoderator==1){%>
+<option value="<%=data.Threadtypes.Types[i].Id%>"<%if(data.Typeid == data.Threadtypes.Types[i].Id){%> selected="selected"<%}%>><%=data.Threadtypes.Types[i].Name%></option>
+<%}}%>
+</select>
+</div>
+<%}%>
+
+<div class="z">
+
+<%if(GET('Type')==0 || (GET('Type')==1 && GET('Position')==1)){%>
+<span><input type="text" name="subject" id="subject" class="px" value="<%=data.Subject%>" onkeyup="strLenCalc(this, 'checklen', 80);" style="width: 25em" tabindex="1" /></span>
+<span id="subjectchk"<%if(GET('Type')== 2){%> style="display:none"<%}%>>还可输入 <strong id="checklen">80</strong> 个字符</span>
+<%}else{%>
+<span id="subjecthide" class="z">RE: <%=data.Subject%></span><span id="subjectchk" style="display:none">还可输入 <strong id="checklen">80</strong> 个字符</span>
+<span id="subjectbox" style="display:none"><input type="text" name="subject" id="subject" class="px" value="" onkeyup="strLenCalc(this, 'checklen', 80);" style="width: 25em" /></span>
+<%}%>	
+
+
+<% if(GET('Type')==0 && (data.Allow>>5&1)==1){%> <span class="xg1 xw0">(需审核)</span><%}if(GET('Type')== 2 && (data.Allow>>5&1)==1){%> <span class="xg1 xw0">(需审核)</span><%}if(GET('Type')==1 && (data.Allow>>6&1)==1 && data.Displayorder == -4){%> <span class="xg1 xw0">(草稿)</span><%}%>
+</div>
+</div>
+
+<%if(GET('Type')==2 && data.Special == 5 && (data.Allow>>6&1)==0 && (data.Allow>>30&1)==0){%>
+<div class="pbt cl">
+<div class="ftid">
+<select name="stand" id="stand">
+<option value="">选择观点</option>
+<option value="0">中立</option>
+<option value="1"<%if(data.Stand == 1){%> selected="selected"<%}%>>正方</option>
+<option value="2"<%if(data.Stand == 2){%> selected="selected"<%}%>>反方</option>
+</select>
+</div>
+</div>
+<%}%>
+<div id="attachnotice_attach" class="tbms mbm xl" style="display:none">
+您有 <span id="unusednum_attach"></span> 个未使用的附件 &nbsp; <a href="javascript:;" class="xi2" onclick="attachoption('attach', 2);" >查看</a><span class="pipe">|</span><a href="javascript:;" class="xi2" onclick="attachoption('attach', 1)">使用</a><span class="pipe">|</span><a href="javascript:;" class="xi2" onclick="attachoption('attach', 0)">删除</a>
+<div id="unusedlist_attach" style="display:none"></div>
+</div>
+<div id="attachnotice_img" class="tbms mbm xl" style="display:none">
+您有 <span id="unusednum_img"></span> 个未使用的图片 &nbsp; <a href="javascript:;" class="xi2" onclick="attachoption('img', 2);" >查看</a><span class="pipe">|</span><a href="javascript:;" class="xi2" onclick="attachoption('img', 1)">使用</a><span class="pipe">|</span><a href="javascript:;" class="xi2" onclick="attachoption('img', 0)">删除</a>
+<div id="unusedlist_img" style="display:none"></div>
+</div>
+<%if(GET('Special')==1){%>
+<div class="exfm cl">
+<div class="sinf sppoll z">
+
+<%if(GET('Type')==0){%>
+<input type="hidden" name="tpolloption" value="1" />
+<div class="cl">
+<h4 class="z">
+<em>选项: </em>
+最多可填写 <%=cache.maxpolloptions%> 个选项 &nbsp;
+<span class="xw0"><input id="pollchecked" type="checkbox" class="pc" onclick="switchpollm(1)" /><label for="pollchecked">单框模式</label></span>
+</h4>
+</div>
+<div id="pollm_c_1" class="mbm">
+<span id="polloption_new"></span>
+<p id="polloption_hidden" style="display: none">
+<a href="javascript:;" class="d" onclick="delpolloption(this)">del</a>
+<input type="text" name="polloption[]" class="px vm" autocomplete="off" style="width:290px;" tabindex="1" />
+<span id="pollUploadProgress" class="vm" style="display: none;"></span>
+<span id="newpoll" class="vm"></span>
+</p>
+<p><a href="javascript:;" onclick="addpolloption()">+增加一项</a></p>
+</div>
+<div id="pollm_c_2" class="mbm" style="display:none">
+<textarea name="polloptions" class="pt" style="width:340px;" tabindex="1" rows="6" onchange="switchpollm(0)" /></textarea>
+<p class="cl">每行填写 1 个选项</p>
+</div>
+<%}else if(GET('Type')==1){%>
+<div id="pollm_c_1" class="mbm">
+<%for(var i in data.Poll.Polloption) { var poll = data.Poll.Polloption[i]%><p>
+<input type="text" name="polloption[<%=poll.Id%>]" class="px vm" autocomplete="off" style="width:230px;" tabindex="1" value="<%=poll.Name%>"<%if(!(data.Group_status>>23&1)){%> readonly="readonly" />
+<%}else{%>
+/><span id="newpoll_<%=poll.Id%>" class="vm"></span>
+<%}%>
+<span id="pollUploadProgress_<%=poll.Id%>" class="vm">
+<%if(poll.Imginfo){%>
+<img src="<%=cache.imgdir%>/attachimg_2.png" class="cur1" onmouseover="showMenu({'menuid':'poll_img_preview_<%=poll.Aid%>_menu','ctrlclass':'a','duration':2,'timeout':0,'pos':'34'});" onmouseout="hideMenu('poll_img_preview_<%=poll.Aid%>_menu');" />
+<span id="poll_img_preview_10_menu" style="position: absolute; z-index: 301; display: none;" initialized="true">
+<img src="data/attachment/forum/201912/31/153748c6ujwn2h63nbigb6.png">
+</span>
+<%}%>
+<input type="hidden" name="pollimage" value="<%=poll.Aid%>" />
+<span id="poll_img_preview_<%=poll.Aid%>_menu" style="display: none">
+<%if(poll.Imginfo){%><img src="<%=webp(poll.Imginfo.Src,240)%>" /><%}%>
+
+</span>
+</span>
+</p>
+<%}%>
+<span id="polloption_new"></span>
+<p id="polloption_hidden" style="display: none">
+<a href="javascript:;" class="d" onclick="delpolloption(this)">del</a>
+<!--<input type="text" name="displayorder[]" class="px pxs vm" autocomplete="off" tabindex="1" />-->
+<input type="text" name="polloption[]" class="px vm" autocomplete="off" style="width:230px;" tabindex="1" />
+<span id="newpoll" class="vm"></span>
+<span id="pollUploadProgress" class="vm" style="display: none;"></span>
+</p>
+<%if(!(data.Group_status>>23&1)){%>
+<p>当前用户组没有权限操作</p>
+<%}else{%>
+<p><a href="javascript:;" onclick="addpolloption()">+增加一项</a></p>
+<%}%>
+</div>
+<%}%>
+</div>
+<div class="sadd z">
+<p class="mbn">
+<label for="maxchoices">最多可选</label>
+<input type="text" name="maxchoices" id="maxchoices" class="px pxs" value="<%if(GET('Type')==1 && data.Poll.Maxchoices){%><%=data.Poll.Maxchoices%><%}else{%>1<%}%>" tabindex="1" /> 项
+</p>
+<p class="mbn">
+<label for="polldatas">记票天数</label>
+<input type="text" name="expiration" id="polldatas" class="px pxs" value="<%if(GET('Type')==1) { if(!data.Poll.Expiration){%>0<%}else if(data.Poll.Expiration < 0){%>关闭投票<%}else if(data.Poll.Expiration < now()){%>已结束<%}else{%> <%=ceil((data.Poll.Expiration - now()) / 86400)%> <%}}%>" tabindex="1" /> 天
+</p>
+<p class="mbn">
+<input type="checkbox" name="visibilitypoll" id="visibilitypoll" class="pc" value="1"<%if(GET('Type')==1 && !data.Poll.Visible){%> checked<%}%> tabindex="1" /><label for="visibilitypoll">投票后结果可见</label>
+</p>
+<p class="mbn">
+<input type="checkbox" name="overt" id="overt" class="pc" value="1"<%if(GET('Type')==1 && data.Poll.Overt){%> checked<%}%> tabindex="1" /><label for="overt">公开投票参与人</label>
+</p>
+
+</div>
+</div>
+<%}%>
+
+
+
+<%if(GET('Type') == 2 && data.Message!=""){%>
+<div class="pbt cl"><div class="quote"><%-data.Message%></div></div>
+<%}%>
+<div class="edt" id="e_body" style="display: none">
+<div id="e_controls" class="bar">
+<div class="y">
+<div class="b2r nbl nbr" id="e_adv_5">
+<p>
+<a id="e_undo" title="撤销">Undo</a>
+</p>
+<p>
+<a id="e_redo" title="重做">Redo</a>
+</p>
+</div>
+<div class="z">
+<span class="mbn"><a id="e_fullswitcher"></a><a id="e_simple"></a></span>
+<label id="e_switcher" class="bar_swch ptn"><input id="e_switchercheck" type="checkbox" class="pc" name="checkbox" value="0" <%if((cache.editoroptions>>0&1)==0){%>checked="checked"<%}%> onclick="switchEditor(this.checked?0:1)" />纯文本</label>
+</div>
+</div>
+
+
+<div id="e_button" class="btn cl">
+<div class="b2r nbr nbl" id="e_adv_s2">
+<a id="e_fontname" class="dp" title="设置字体" menupos="43!"><span id="e_font">字体</span></a>
+<a id="e_fontsize" class="dp" title="设置文字大小" menupos="43!" menuwidth="25"><span id="e_size">大小</span></a>
+<span id="e_adv_1">
+<a id="e_inserthorizontalrule" title="分隔线">Hr</a>
+<br />
+</span>
+<a id="e_bold" title="文字加粗">B</a>
+<a id="e_italic" title="文字斜体">I</a>
+<a id="e_underline" title="文字加下划线">U</a>
+<a id="e_forecolor" title="设置文字颜色">Color</a>
+<a id="e_backcolor" title="设置文字背景色">BgColor</a>
+<a id="e_url" title="添加链接">Url</a>
+<span id="e_adv_8">
+<a id="e_unlink" title="移除链接">Unlink</a>
+</span>
+</div>
+<div class="b2r nbl" id="e_adv_2">
+<p id="e_adv_3">
+<a id="e_tbl" title="添加表格">Table</a>
+</p>
+<p>
+<a id="e_removeformat" title="清除文本格式">Removeformat</a>
+</p>
+</div>
+<div class="b2r">
+<p>
+<a id="e_autotypeset" title="自动排版">Autotypeset</a>
+<a id="e_justifyleft" title="居左">Left</a>
+<a id="e_justifycenter" title="居中">Center</a>
+<a id="e_justifyright" title="居右">Right</a>
+</p>
+<p id="e_adv_4">
+<a id="e_floatleft" title="左浮动">FloatLeft</a>
+<a id="e_floatright" title="右浮动">FloatRight</a>
+<a id="e_insertorderedlist" title="排序的列表">Orderedlist</a>
+<a id="e_insertunorderedlist" title="未排序列表">Unorderedlist</a>
+</p>
+</div>
+<div class="b1r" id="e_adv_s1">
+<%if((data.Allow>>26&1)==1){%><a id="e_sml" title="添加表情">表情</a><%}%>
+<div id="e_imagen" style="display:none">!</div>
+<a id="e_image" title="添加图片" menupos="00" menuwidth="600">图片</a>
+<%if(data.Group_status>>1&1){%>
+<div id="e_attachn" style="display:none">!</div>
+<a id="e_attach" title="添加附件" menupos="00" menuwidth="600">附件</a>
+<%}if((data.Allow>>14&1)){%>
+<a id="e_aud" title="添加音乐">音乐</a>
+<a id="e_vid" title="添加视频">视频</a>
+<a id="e_fls" title="添加 Flash">Flash</a>
+<%}if((GET('Type')==0 || GET('Type')==2 || GET('Type')==1) && (data.Group_status>>8&1)==1){%>
+<a id="e_at" title="@好友和关注的人" menupos="43" menuwidth="600">@朋友</a>
+<%}%>
+
+</div>
+<div class="b2r esb" id="e_adv_s3">
+<a id="e_quote" title="添加引用文字">引用</a>
+<a id="e_code" title="添加代码文字">代码</a>
+<%if((data.Allow>>6&1)==1){%>
+<a id="e_free" adv="1" title="添加免费信息">Free</a>
+<%if((data.Group_status>>9&1)==1){%><a id="e_hide" adv="1" title="添加隐藏内容">Hide</a><%}}%>
+
+<a id="e_pasteword" adv="1" title="从 Word 粘贴内容">Word 粘贴</a>
+<%if((data.Group_status>>10&1)==1){%><a id="e_downremoteimg" adv="1" title="下载远程图片">下载图片</a><%}if((data.Allow>>6&1)==1){%>
+<a id="e_page" adv="1" title="分页">Page</a>
+<a id="e_index" adv="1" title="目录">Index</a>
+<%}if(cache.magicstatus==1 && cache.magics.doodle!=""){%>
+<a id="a_magic_doodle" adv="1" href="home.php?mod=magic&amp;mid=doodle&amp;showid=comment_doodle&amp;target=e_textarea&amp;from=forumeditor" class="cst" onclick="showWindow(this.id, this.href, 'get', 0)"><img src="/static/image/magic/doodle.small.gif" alt="doodle" title="<%=cache.magics.doodle%>" style="margin-top:2px" /></a>
+<%}%>
+
+<a id="e_password" adv="1" title="帖子密码">Password</a>
+<a id="e_postbg" adv="1" title="帖子背景">Background</a>
+<%if((data.Group_status>>11&1)==1 && (data.Allow>>6&1)==1){%>
+<a id="e_beginning" adv="1" title="添加起始动画" menupos="43" menuwidth="600">动画</a>
+<%}%>
+
+</div>
+</div>
+</div>
+
+<div id="rstnotice" class="ntc_l bbs" style="display:none">
+<a href="javascript:;" title="清除内容" class="d y" onclick="userdataoption(0)">close</a>您有上次未提交成功的数据 <a class="xi2" href="javascript:;" onclick="userdataoption(1)"><strong>恢复数据</strong></a>
+</div>
+
+<div class="area">
+<textarea name="message" id="e_textarea" class="pt" rows="15" tabindex="2"><%if(GET("Type")==1){%><%-html2bbcode(data.Message)%><%}%></textarea>
+</div>
+<div id="e_bbar" class="bbar">
+<em id="e_tip"></em>
+<span id="e_svdsecond"></span>
+<a href="javascript:;" onclick="discuzcode('svd');return false;" id="e_svd">保存数据</a> |
+<a href="javascript:;" onclick="discuzcode('rst');return false;" id="e_rst">恢复数据</a> &nbsp;&nbsp;
+<a href="javascript:;" onclick="discuzcode('chck');return false;" id="e_chck">字数检查</a> |
+<a href="javascript:;" onclick="discuzcode('tpr');return false;" id="e_tpr">清除内容</a> &nbsp;&nbsp;
+<span id="e_resize"><a href="javascript:;" onclick="editorsize('+');return false;">加大编辑框</a> | <a href="javascript:;" onclick="editorsize('-');return false;">缩小编辑框</a><img src="/static/image/editor/resize.gif" onmousedown="editorresize(event)" /></span>
+</div></div>
+<div id="post_extra" class="plrm ptw cl blrc">
+<div id="post_extra_tb" class="cl" onselectstart="return false">
+<label id="extra_additional_b" onclick="showExtra('extra_additional')" class="a"><span id="extra_additional_chk">附加选项</span></label>
+
+<%if(GET('Type')==0 || GET('Type')==1 && (data.Allow>>6&1)==1) { if((data.Group_status>>12&1)==1){%>
+<label id="extra_readperm_b" onclick="showExtra('extra_readperm')"><span id="extra_readperm_chk">阅读权限</span></label>
+<%}if((data.Group_status>>13&1)==1 && !in_array(GET('Special'), [2, 3])){%><%if((GET('Type')==0 && data.Userextcredit > 0) || (GET('Type')==1 && (data.Allow>>21&1)==1 && (data.Allow>>6&1)==1)){%>
+<label id="extra_replycredit_b" onclick="showExtra('extra_replycredit')"><span id="extra_replycredit_chk">回帖奖励</span></label>
+<%}} if((GET('Type')==0 && data.Group_status>>14&1 && GET('Special') != 2) || (GET('Type')==1 && (data.Status>>3&1)==1)){%>
+<!--<label id="extra_rushreplyset_b" onclick="showExtra('extra_rushreplyset')"><span id="extra_rushreplyset_chk">抢楼主题</span></label>-->
+<%}if(data.Maxprice>0 && !GET('Special')){%>
+<!--<label id="extra_price_b" onclick="showExtra('extra_price')"><span id="extra_price_chk">主题售价</span></label>-->
+<%}if((data.Group_status>>15&1)==1){%>
+<label id="extra_tag_b" onclick="showExtra('extra_tag')"><span id="extra_tag_chk">主题标签</span></label>
+<%}if((data.Group_status>>16&1)==1 && (GET('Type')==0 || (GET('Type')==1 && (data.Allow>>6&1)==1 && data.Displayorder == -4))){%>
+<!--<label id="extra_pubdate_b" onclick="showExtra('extra_pubdate')"><span id="extra_pubdate_chk">定时发布</span></label>-->
+<%}}%>
+
+</div>
+
+<div id="post_extra_c">
+<%if(GET('Type')==0 || GET('Type')==1 && (data.Allow>>6&1)==1) { if((GET('Type')==0 && data.Userextcredit>0) || GET('Type')==1){%>
+<div id="extra_replycredit_c" class="exfm cl" style="display: none;">
+
+<div><label>每次回帖奖励: <input type="text" name="replycredit_extcredits" id="replycredit_extcredits" class="px pxs vm" value="<%if(data.Replycredit_rule && data.Replycredit_rule.Extcredits && data.Replycredit > 0){%><%=data.Replycredit_rule.Extcredits%><%}else{%>0<%}%>" onkeyup="javascript:getreplycredit();" onblur="extraCheck(0)" /> <%=cache.extcredits[data.Extcreditstype]['unit']%><%=cache.extcredits[data.Extcreditstype]['title']%></label><span class="xg1">(留空或填 0 为不奖励)</span> , <label>奖励 <input type="text" name="replycredit_times" id="replycredit_times" class="px pxs vm" value="<%if(data.Replycredit_rule && data.Replycredit_rule.Lasttimes>0){%><%=data.Replycredit_rule.Lasttimes%><%}else{%>1<%}%>" onkeyup="javascript:getreplycredit();"  onblur="extraCheck(0)" /> 次</label>, <label>每人最多可获得 <select id="replycredit_membertimes" name="replycredit_membertimes" class="ps vm"><%for(var i=1;i<11;i++) {;%><option value="<%=i%>"<%if(data.Replycredit_rule && data.Replycredit_rule.Membertimes == i){%> selected="selected"<%}%>><%=i%></option><%};%></select> 次</label>, <label>中奖率 <select id="replycredit_random" name="replycredit_random" class="ps vm">
+ <%for(var i=100;i>9;i=i-10) {;%><option value="<%=i%>"<%if(data.Replycredit_rule && data.Replycredit_rule.Random == i){%> selected="selected"<%}%>><%=i%></option><%};%></select> %</label></div>
+<div class="xg1">回帖奖励总额: <span id="replycredit_sum"><%if(data.Replycredit>0){%><%=data.Replycredit%><%}else{%>0<%}%></span> <%=cache.extcredits[data.Extcreditstype]['unit']%><%=cache.extcredits[data.Extcreditstype]['title']%><%if(data.Replycredit>0){%><span class="xg1">(本帖尚有 <%=data.Replycredit%> <%=cache.extcredits[data.Extcreditstype]['unit']%><%=cache.extcredits[data.Extcreditstype]['title']%>)</span><%}%>, <span id="replycredit">税后支付 <%=cache.extcredits[data.Extcreditstype]['title']%> 0</span> <%=cache.extcredits[data.Extcreditstype]['unit']%>, 您有 <%=cache.extcredits[data.Extcreditstype]['title']%> <%=data.Userextcredit%> <%=cache.extcredits[data.Extcreditstype]['unit']%></div>
+</div>
+<%}if((data.Group_status>>12&1)==1){%>
+<div id="extra_readperm_c" class="exfm cl" style="display:none">
+<table cellspacing="0" cellpadding="0">
+<tr>
+<td class="xw1">阅读权限</td>
+<td>
+<select name="readperm" id="readperm" class="ps" style="width:90px" onchange="extraCheck(1)">
+<option value="">不限</option><%if(cache.groupreadaccess.length>0) for(var i in cache.groupreadaccess) {var val=cache.groupreadaccess[i];%><option value="<%=val['readaccess']%>" title="阅读权限: <%=val['readaccess']%>"<%if(data.Readperm == val.readaccess){%> selected="selected"<%}%>><%=val['grouptitle']%></option>
+<%}%>
+<option value="255"<%if(data.Readperm == 255){%> selected="selected"<%}%>>最高权限</option>
+</select>
+<span class="xg1">阅读权限按由高到低排列，高于或等于选中组的用户才可以阅读</span>
+</td>
+</tr>
+</table>
+</div>
+<%}if(data.Maxprice>0 && GET('Special')==0) {var freechargehours=data.Dateline>0?cache.maxchargespan-floor((cache.Head.Timestamp - data.Dateline)/3600):0;%>
+<div id="extra_price_c" class="exfm cl" style="display:none">
+售价:
+<input type="text" id="price" name="price" class="px pxs" value="<%=(price==-1?0:price)%>" onblur="extraCheck(2)" /> <%=cache.extcredits[cache.creditstransextra['1']]['unit']%><%=cache.extcredits[cache.creditstransextra['1']]['title']%>
+<span class="xg1">(最高 <%=data.Maxprice%> <%=cache.extcredits[cache.creditstransextra['1']]['unit']%>)</span>
+<%if(data.Maxprice>0 && (GET('Type')==0 || GET('Type')==1 && (data.Allow>>6&1)==1)) { if(cache.maxincperthread!=0){%><p class="xg1">主题出售最高收入上限为 <%=cache.maxincperthread%> <%=cache.extcredits[cache.creditstransextra['1']]['unit']%>&nbsp;&nbsp;&nbsp;&nbsp;</p><%}if(cache.maxchargespan>0){%><p class="xg1">主题最多能销售 <%=cache.maxchargespan%> 个小时<%if(GET('Type')==1 && freechargehours>0){%>，本主题还能销售 <%=freechargehours%> 个小时<%}%></p><%}}%>
+</div>
+<%}if((data.Group_status>>15&1)==1){%>
+<div id="extra_tag_c" class="exfm cl" style="display: none;">
+<table cellspacing="0" cellpadding="0">
+<tr>
+<td class="xw1">标签</td>
+<td>
+<input type="text" class="px vm" size="60" id="tags" name="tags" value="<%=data.Tag%>" onblur="extraCheck(4)" />
+<a href="javascript:;" id="choosetag" class="xi2" onclick="showWindow(this.id, 'forum.php?mod=tag', 'get', 0)">选择标签</a>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<p class="xg1">用逗号或空格隔开多个标签，最多可填写 5 个</p><%if(data.Recent_use_tag){%>
+<p class="mtn">最近使用标签:&nbsp;<%for(var tagi in data.Recent_use_tag) {var val=data.Recent_use_tag[tagi]; if(tagi>0){%>, <%}%><a href="javascript:;" class="xi2" onclick="$('tags').value == '' ? $('tags').value += '<%=val%>' : $('tags').value += ',<%=val%>';extraCheck(4);doane();"><%=val%></a><%}%>
+</p>
+<%}%>
+</td>
+</tr>
+</table>
+</div>
+<%}if((GET('Type')==0 && (data.Allow>>21&1)==1 && GET('Special') != 2) || (GET('Type')==1 && (data.Status>>3&1)==1)){%>
+<div class="exfm cl" id="extra_rushreplyset_c" style="display: none;">
+<div class="sinf sppoll z">
+<dl>
+<dt><span style="width: 4em">&nbsp;</span></dt>
+<dd><label for="rushreply"><input type="checkbox" name="rushreply" id="rushreply" class="pc vm" value="1" <%if(GET('Type')==1 && (data.Status>>3&1)==1){%>disabled="disabled" checked="checked"<%}%> onclick="extraCheck(3)" /> 设为抢楼主题</label></dd>
+<dt><label>抢楼时间:</label></dt>
+<dd>
+<div>
+<input type="text" name="rushreplyfrom" id="rushreplyfrom" class="px" onclick="showcalendar(event, this, true)" autocomplete="off" value="<%if(data.Rush){%><%=date('Y-m-d H:i',data.Rush.Starttimefrom)%><%}%>" onkeyup="$('rushreply').checked = true;" /><span> ~ </span><input type="text" onclick="showcalendar(event, this, true)" autocomplete="off" id="rushreplyto" name="rushreplyto" class="px" value="<%if(data.Rush){%><%=date('Y-m-d H:i',data.Rush.Starttimeto)%><%}%>" onkeyup="$('rushreply').checked = true;" />
+</div>
+</dd>
+<dt><label>奖励楼层:</label></dt>
+<dd>
+<input type="text" name="rewardfloor" id="rewardfloor" class="px oinf" value="<%if(data.Rush){%><%=data.Rush.Rewardfloor%><%}%>" onkeyup="$('rushreply').checked = true;" />
+<p class="xg1">多楼层用英文逗号隔开,*号可匹配任意数或空值,如:8,88,*88</p>
+</dd>
+</dl>
+</div>
+<div class="sadd z">
+<dl>
+<dt>&nbsp;</dt>
+<dd>&nbsp;</dd>
+<dt><label for="stopfloor">回帖限制: </label></dt>
+<dd>
+<input type="text" name="replylimit" id="replylimit" class="px" autocomplete="off" value="<%if(data.Rush){%><%=data.Rush.Replylimit%><%}%>" onkeyup="$('rushreply').checked = true;" /> <span class="xg1">每个用户回帖次数上限</span>
+</dd>
+<dt><label for="stopfloor">截止楼层:</label></dt>
+<dd>
+<input type="text" name="stopfloor" id="stopfloor" class="px" autocomplete="off" value="<%if(data.Rush && data.Rush.Stopfloor>0){%><%==data.Rush.Stopfloor%><%}%>" onkeyup="$('rushreply').checked = true;" />
+</dd>
+<dt><label for="creditlimit"><%if(cache.creditstransextra['11']){%><%=cache.extcredits[cache.creditstransextra['11']]['title']%><%}else{%>积分<%}%>下限:</label></dt>
+<dd>
+<input type="text" name="creditlimit" id="creditlimit" class="px" autocomplete="off" value="<%if(data.Rush && data.Rush.Creditlimit==-996){%><%==data.Rush.Creditlimit%><%}%>" onkeyup="$('rushreply').checked = true;" />
+<p class="xg1"><%if(cache.creditstransextra['11']){%>(<%=cache.extcredits[cache.creditstransextra['11']]['title']%>)<%}else{%>总积分<%}%>大于此设置才能参与抢楼，可不填</p>
+</dd>
+</dl>
+</div>
+</div>
+<%}if((data.Group_status>>16&1)==1 && (GET('Type')==0 || (GET('Type')==1 && (data.Allow>>6&1)==1 && data.Displayorder == -4))){%>
+<div class="exfm cl" id="extra_pubdate_c" style="display: none;">
+<label><input type="checkbox" name="cronpublish" onclick="if(this.checked) {$('cronpublishdate').click();doane(event,false);};extraCheck(5);hidenFollowBtn(this.checked);" id="cronpublish" value="true" class="pc"<%if($cronpublish){%> checked="checked"<%}%> />定时发布</label>
+<input type="text" name="cronpublishdate" id="cronpublishdate" class="px" onclick="showcalendar(event, this, true, false, false, true);" autocomplete="off" value="<%=date("Y-m-d H:i",data.Dateline)%>" onchange="if(this.value) $('cronpublish').checked = true;">
+</div>
+<%}}%>
+
+<div class="exfm cl" id="extra_additional_c" >
+<table cellspacing="0" cellpadding="0">
+<tr>
+<td class="xw1" valign="top">基本属性</td>
+<td>
+	
+<%if(GET('Type')!=1) { if((data.Allow>>25&1)==1){%><label for="isanonymous"><input type="checkbox" name="isanonymous" id="isanonymous" class="pc" value="1" />使用匿名发帖</label><%}} else { if((data.Allow>>25&1)==1 || (!(data.Allow>>25&1)==1 && (data.Allow>>27&1)==1)){%><label for="isanonymous"><input type="checkbox" name="isanonymous" id="isanonymous" class="pc" value="1" <%if((data.Allow>>27&1)==1){%>checked="checked"<%}%> />使用匿名发帖</label><%}} if(GET('Type')==0 || GET('Type')==1 && (data.Allow>>6&1)==1){%>
+<label for="hiddenreplies"><input type="checkbox" name="hiddenreplies" id="hiddenreplies" class="pc"<%if((data.Status>>2&1)==1){%> checked="checked"<%}%> value="1">回帖仅作者可见</label>
+<%}if((GET('Type')==0 || GET('Type')==1 && (data.Allow>>6&1)==1) && GET('Special') != 3){%>
+<label for="ordertype"><input type="checkbox" name="ordertype" id="ordertype" class="pc" value="1" <%if((data.Status>>4&1)==1){%>checked="checked"<%}%> />回帖倒序排列</label>
+<%}if((GET('Type')==0 || GET('Type')==1 && (data.Allow>>6&1)==1)){%>
+<label for="allownoticeauthor"><input type="checkbox" name="allownoticeauthor" id="allownoticeauthor" class="pc" value="1"<%if(GET('Type')==0 || (data.Status>>6&1)==1){%> checked="checked"<%}%> />接收回复通知</label>
+<%}if(GET('Type')!=1 && (data.Allow>>28&1)==1){%>
+<label for="addfeed"><input type="checkbox" name="addfeed" id="addfeed" class="pc" value="1" <%if((GET('Type')==0 && cache.privacy.feed.newthread==1) || (GET('Type')==2 && cache.privacy.feed.newreply==1)){%>checked="checked"<%}%>>发送动态</label>
+<%}%>
+<label for="usesig"><input type="checkbox" name="usesig" id="usesig" class="pc" value="1" <%if((data.Group_status>>22&1)==1){%>disabled <%}else{if((data.Allow>>29&1)==1)%>checked="checked"<%}%>/>使用个人签名</label>
+</td>
+</tr>
+<tr>
+<td class="xw1" valign="top">文本特性</td>
+<td>
+<%if(((data.Allow>>24&1)==1 || (GET('Type')==1 && ((data.Htmlon>>1&1)==1))) && (data.Group_status>>4&1)==1){%>
+<label for="htmlon"><input type="checkbox" name="htmlon" id="htmlon" class="pc" value="1" <%if((data.Htmlon>>1&1)==1){%>checked="checked"<%}%> />HTML 代码</label>
+<%}else{%>
+<label for="htmlon"><input type="checkbox" name="htmlon" id="htmlon" class="pc" value="0" <%if((data.Htmlon>>1&1)==1){%>checked="checked"<%}%> disabled="disabled" />HTML 代码</label>
+<%}%>
+<label for="allowimgcode"><input type="checkbox" id="allowimgcode" class="pc" disabled="disabled"<%if((data.Group_status>>7&1)==1){%> checked="checked"<%}%> />[img] 代码</label>
+<%if((data.Group_status>>7&1)==1){%>
+<label for="allowimgurl"><input type="checkbox" id="allowimgurl" class="pc" checked="checked" />解析图片链接</label>
+<%}%>
+
+<label for="parseurloff"><input type="checkbox" name="parseurloff" id="parseurloff" class="pc" value="1" <%if((data.Allow>>7&1)==1){%> checked="checked"<%}%> />禁用链接识别</label>
+<label for="smileyoff"><input type="checkbox" name="smileyoff" id="smileyoff" class="pc" value="1"  <%if((data.Allow>>26&1)==0){%> disabled="disabled" checked="checked"<%}else if((data.Allow>>8&1)==1){%> checked="checked"<%}%> />禁用表情</label>
+<label for="bbcodeoff"><input type="checkbox" name="bbcodeoff" id="bbcodeoff" class="pc" value="1" <%if((data.Allow>>22&1)==0){%> disabled="disabled" checked="checked"<%}else if((data.Allow>>9&1)==1){%> checked="checked"<%}%> />禁用编辑器代码</label>
+
+
+</td>
+</tr>
+
+<%if(GET('Type')==0 && data.Ismoderator==1 && (data.Group_status>>17&1 || (data.Allow>>15&1)==1)) { if(GET('Type')==0 && data.Ismoderator==1 && ((data.Group_status>>17&1)==1 || (data.Allow>>15&1)==1) && ((data.Group_status>>18&1)==1 || (data.Group_status>>19&1)==1)){%>
+<tr>
+<td class="xw1" valign="top">管理操作</td>
+<td>
+<%if((data.Group_status>>18&1)==1){%>
+<label for="sticktopic"><input type="checkbox" name="sticktopic" id="sticktopic" class="pc" value="1" <%=$stickcheck%> />主题置顶</label>
+<%}if((data.Group_status>>19&1)==1){%>
+<label for="addtodigest"><input type="checkbox" name="addtodigest" id="addtodigest" class="pc" value="1" <%=$digestcheck%> />精华帖子</label>
+<%}%>
+</td>
+</tr>
+<%}}else if(GET('Type')==1 && GET('Position')==1 && data.Allow>>21&1 && (data.Allow>>6&1 && data.Replies < 1 || !(data.Allow>>6&1)==1) && (data.Status>>3&1)==0 && cache.editperdel==1){%>
+<tr>
+<td class="xw1" valign="top">删除本帖</td>
+<td>
+<button type="button" class="pn xi1" onclick="deleteThread();"><span>删除本帖</span></button>
+<input type="hidden" name="delete" id="delete" value="0" />
+删除后无法撤销<%if(data.Special == 3){%>, ，返还悬赏费用，不退还手续费<%}%>
+</td>
+</tr>
+<%}%>
+
+</table>
+</div>
+
+</div>
+</div>
+<%if(GET('Type')!=1){%>
+<div id="seccheck" class="plrm ptw blrc">
+<%if((cache.secqaa.status>>1&1)==1){%>
+<div style="margin: 5px 0 0 0;">
+
+
+
+</div>
+<%}%>
+</div>
+<%}%>
+
+<div class="pnpost plrm ptm blrc bbo pbw">
+
+<button type="submit" id="postsubmit" class="pn pns" value="true" name="<%if(GET('Type')==0){%>topicsubmit<%}else if(GET('Type')==2){%>replysubmit<%}else if(GET('Type')==1){%>editsubmit<%}%>">
+<%if(GET('Type')==0) { if(GET('Special') == 0){%><span>发表帖子</span>
+<%}else if(GET('Special') == 1){%><span>发起投票</span>
+<%}else if(GET('Special') == 2){%><span>出售商品</span>
+<%}else if(GET('Special') == 3){%><span>发布悬赏</span>
+<%}else if(GET('Special') == 4){%><span>发起活动</span>
+<%}else if(GET('Special') == 5){%><span>发起辩论</span>
+<%}else if(GET('Special') == 127){%>
+<span>发表帖子</span>
+<%}} else if(GET('Type')==2 && GET('addtrade')!=""){%><span>添加商品</span>
+<%}else if(GET('Type')==2){%><span>回复主题</span>
+<%}else if(GET('Type')==1 && (data.Allow>>6&1)==1 && data.Displayorder == -4){%>
+<span>发表帖子</span>
+<%}else if(GET('Type')==1){%><span>保存</span>
+<%}%>
+</button>
+<input type="hidden" id="postsave" name="save" value="" />
+<%if(GET('Type')==0 && !modnewthreads || GET('Type')==1 && (data.Allow>>6&1)==1 && !modnewreplies && data.Displayorder == -4){%>
+<!--<button type="button" id="postsubmit" class="pn" value="true" onclick="$('postsave').value = 1;$('postsubmit').click();"><em>保存草稿</em></button>-->
+<%}%>
+
+
+<%if((data.Allow>>16&1)==1 && GET('Type')!=1){%>
+<span id="adddynamicspan"><label><input type="checkbox" name="adddynamic" id="adddynamic" value="true" class="pc" <%if((data.Allow>>18&1)==1){%>checked="checked"<%}%> />转播给听众</label></span>
+<%}if(GET('Special') == 2){%>
+<label><input type="checkbox" name="continueadd" value="yes" class="pc" />继续添加商品</label>
+<%}if((data.Allow>>17&1)==1 && data.Mygroups && data.Status != 3){%>
+<span id="adddynamicspan"><label>&nbsp;&nbsp;来自群组:<select name="mygroupid"><option value="">选择我的群组</option><%for(var i in data.Mygroups) {var v=data.Mygroups[i];%><option value="<%=v.Fid%>__<%=v.Name%>" ><%=v.name%></option><%}%></select></label></span>
+<%}%>
+</div>
+
+</div>
+</div>
+</div>
+</form>
+
+<iframe name="ajaxpostframe" id="ajaxpostframe" style="display: none;"></iframe>
+
+<div id="e_menus" class="editorrow" style="overflow: hidden; margin-top: -5px; height: 0; border: none; background: transparent;"><div id="e_editortoolbar" class="editortoolbar"><%var fontoptions =["宋体", "新宋体", "黑体", "微软雅黑", "Arial", "Verdana", "simsun", "Helvetica", "Trebuchet MS", "Tahoma", "Impact", "Times New Roman", "仿宋,仿宋_GB2312", "楷体,楷体_GB2312"];%><div class="p_pop fnm" id="e_fontname_menu" style="display: none">
+<ul unselectable="on"><%for(var i in fontoptions){var fontname=fontoptions[i];%><li onclick="discuzcode('fontname', '<%=fontname%>')" style="font-family: <%=fontname%>" unselectable="on"><a href="javascript:;" title="<%=fontname%>"><%=fontname%></a></li>
+<%}%>
+</ul>
+</div><%var sizeoptions=[1, 2, 3, 4, 5, 6, 7];%><div class="p_pop fszm" id="e_fontsize_menu" style="display: none">
+<ul unselectable="on"><%for(var i in sizeoptions){var size=sizeoptions[i];%><li onclick="discuzcode('fontsize', <%=size%>)" unselectable="on"><a href="javascript:;" title="<%=size%>"><font size="<%=size%>" unselectable="on"><%=size%></font></a></li>
+<%}%>
+</ul>
+</div>
+
+</div>
+
+
+<div class="p_pof" id="e_image_menu" style="display: none" unselectable="on">
+<table width="100%" cellpadding="0" cellspacing="0" class="fwin"><tr><td class="t_l"></td><td class="t_c"></td><td class="t_r"></td></tr><tr><td class="m_l">&nbsp;&nbsp;</td><td class="m_c"><div class="mtm">
+<ul class="tb tb_s cl" id="e_image_ctrl" style="margin-top:0;margin-bottom:0;">
+<li class="y"><span class="flbc" onclick="hideAttachMenu('image')">关闭</span></li>
+<%if((data.Group_status>>2&1)==1){%>
+<li class="current" id="e_btn_imgattachlist"><a href="javascript:;" hidefocus="true" onclick="switchImagebutton('imgattachlist');">上传图片</a></li>
+<%if((data.Group_status>>20&1)==1){%>
+<li id="e_btn_local" style="display:none;" did="e_btn_imgattachlist|local"><a href="javascript:;" hidefocus="true" onclick="switchImagebutton('local');">普通上传</a></li>
+<%}} if((data.Allow>>19&1)==1){%><li <%if((data.Group_status>>2&1)==0){%>class="current"<%}%> id="e_btn_albumlist"><a href="javascript:;" hidefocus="true" onclick="switchImagebutton('albumlist');">相册图片</a></li><%}%>
+<li <%if((data.Group_status>>2&1)==0 && !(data.Allow>>19&1)==1){%>class="current"<%}%> id="e_btn_www"><a href="javascript:;" hidefocus="true" onclick="switchImagebutton('www');">网络图片</a></li>
+</ul>
+<div unselectable="on" id="e_www" <%if((data.Group_status>>2&1)==1 || (data.Allow>>19&1)==1){%>style="display: none;"<%}%>>
+<div class="p_opt popupfix">
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr class="xg1">
+<th width="74%" class="pbn">请输入图片地址</th>
+<th width="13%" class="pbn">宽(可选)</th>
+<th width="13%" class="pbn">高(可选)</th>
+</tr>
+<tr>
+<td><input type="text" id="e_image_param_1" onchange="loadimgsize(this.value)" style="width: 95%;" value="" class="px" autocomplete="off" /></td>
+<td><input id="e_image_param_2" size="3" value="" class="px p_fre" autocomplete="off" /></td>
+<td><input id="e_image_param_3" size="3" value="" class="px p_fre" autocomplete="off" /></td>
+</tr>
+</table>
+</div>
+<div class="o">
+<button type="button" class="pn pnc" id="e_image_submit"><strong>提交</strong></button>
+</div>
+</div>
+
+<%if((data.Group_status>>2&1)==1){%>
+
+<div unselectable="on" id="e_local" style="display: none;">
+<div class="p_opt">
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+<tbody id="imgattachbodyhidden" style="display:none"><tr>
+<td class="atnu"><span id="imglocalno[]"><img src="/static/image/filetype/common_new.gif" /></span></td>
+<td class="atna">
+<span id="imgdeschidden[]" style="display:none">
+<span id="imglocalfile[]"></span>
+</span>
+<input type="hidden" name="imglocalid[]" />
+</td>
+<td class="attc"><span id="imgcpdel[]"></span></td>
+</tr></tbody>
+</table>
+<div class="p_tbl"><table cellpadding="0" cellspacing="0" summary="post_attachbody" border="0" width="100%"><tbody id="imgattachbody"></tbody></table></div>
+<div class="upbk pbm bbda">
+<div id="imgattachbtnhidden" style="display:none"><span><form name="imgattachform" id="imgattachform" method="post" autocomplete="off" action="misc.php?mod=swfupload&amp;operation=upload&amp;simple=1&amp;type=image" target="attachframe" <%if((data.Group_status>>1&1)==1 || (data.Group_status>>1&1)==2){%>enctype="multipart/form-data"<%}%>><input type="hidden" name="uid" value="<%=cache.Head.Uid%>"><input type="file" name="Filedata" size="45" class="filedata" /></form></span></div>
+<div id="imgattachbtn" class="ptm pbn"></div>
+<p id="imguploadbtn">
+<button class="pn pnc vm" type="button" onclick="uploadAttach(0, 0, 'img')"><span>上传</span></button>
+<span class="xg1">&larr;选择完文件后请点击“上传”按钮</span>
+</p>
+<p id="imguploading" style="display: none;"><img src="<%=cache.imgdir%>/uploading.gif" style="vertical-align: middle;" /> 上传中，请稍候，您可以<a href="javascript:;" onclick="hideMenu()">暂时关闭这个小窗口</a>，上传完成后您会收到通知</p>
+</div>
+<div class="notice upnf">
+文件尺寸: <span class="xi1"><%if(data.Maxattachsize>0){%>小于 <%=size_kb2mb(data.Maxattachsize)%> <%}else{%>大小不限制<%}%></span>
+, 可用扩展名: <span class="xi1">jpg, jpeg, gif, png, bmp</span>&nbsp;
+<%if(data.Allowuploadnum>0 || data.Allowuploadsize>0){%><br /><%if((data.Group_status>>20&1)==1){%>
+您今日还能上传 <%if(data.Allowuploadnum>0){%><strong><%=data.Allowuploadnum%></strong> 个文件<%}if(data.Allowuploadsize>0) { if(data.Allowuploadnum>0){%> 或者 <%}%>总大小 <strong><%=data.Allowuploadsize>0%></strong> 以内的文件<%}} else{%>
+<span class="xi1 xw1">今日您已无法上传更多的附件</span>
+<%}}%>
+</div>
+</div>
+<div class="o">
+<button onclick="hideAttachMenu('image')" class="pn pnc">
+<strong>确定</strong>
+</button>
+</div>
+</div>
+
+<div unselectable="on" id="e_imgattachlist">
+<div class="p_opt">
+<%if((data.Group_status>>20&1)==1){%>
+<div class="pbm bbda cl">
+<div id="imgattach_notice" class="y" <%if(!data.Attachs.Used || data.Attachs.Used.length==0){%> style="display: none"<%}%>>
+<%if(data.Allow>>19&1 && data.Group_status>>21&1){%>
+<div id="uploadPanel">
+<label style="margin-right:10px;"><input type="checkbox" name="selectallimg" class="pc" value="1" onchange="selectAllSaveImg(this.checked);" onpropertychange="selectAllSaveImg(this.checked);" />全选</label>
+将选中的图片保存到相册:
+<select name="uploadalbum" id="uploadalbum" class="ps vm" onchange="if(this.value == '-1') {selectCreateTab(0);}">
+<%if(data.Albumlist){for(var i in data.Albumlist){%><option value="<%=data.Albumlist[i].Albumid%>"><%=data.Albumlist[i].Albumname%></option>
+<%}} else{%>
+<option value="-2">-------</option>
+<%}%>
+<option value="-1" style="color:red;">+创建新相册</option>
+</select>
+</div>
+<div id="createalbum" style="display:none">
+<input type="text" name="newalbum" id="newalbum" class="px vm" size="15" value="请输入相册名称"  onfocus="if(this.value == '请输入相册名称') {this.value = '';}" onblur="if(this.value == '') {this.value = '请输入相册名称';}" />&nbsp;<button type="button" class="pn pnc" onclick="createNewAlbum();"><span>创建新相册</span></button><button type="button" class="pn" onclick="selectCreateTab(1);"><span>取消</span></button>
+</div>
+<%}%>
+</div>
+<span id="imgSpanButtonPlaceholder"></span>
+</div>
+<%}else{%>
+您当前无法上传，没有上传权限
+<%}%>
+<div class="upfilelist upfl bbda">
+<!--% if(!empty($imgattachs['used'])) { $imagelist = $imgattachs['used'];% >< % include template('forum/ajax_imagelist'); } %-->
+<div id="imgattachlist"></div>
+<div id="unusedimgattachlist"></div>
+
+<%if((data.Group_status>>20&1)==1){%>
+<div class="fieldset flash easy-uploader" id="imgUploadProgress">
+<ul class="list">
+</ul>
+</div>
+<%}%>
+</div>
+
+<div class="notice upnf">
+点击图片添加到帖子内容中，不添加不显示，未使用照片保存1天
+<br />文件尺寸: <span class="xi1"><%if(data.Maxattachsize>0){%>小于 <%=size_kb2mb(data.Maxattachsize)%> <%}else{%>大小不限制<%}%></span>
+, 可用扩展名: <span class="xi1">jpg, jpeg, gif, png, bmp</span>&nbsp;
+<%if(data.Allowuploadnum>0 || data.Allowuploadsize>0){%><br /><%if((data.Group_status>>20&1)==1){%>
+您今日还能上传 <%if(data.Allowuploadnum>0){%><strong><%=data.Allowuploadnum%></strong> 个文件<%}if(data.Allowuploadsize>0) { if(data.Allowuploadnum>0){%> 或者 <%}%>总大小 <strong><%=data.Allowuploadsize>0%></strong> 以内的文件<%}} else{%>
+<span class="xi1 xw1">今日您已无法上传更多的附件</span>
+<%}}%>
+
+</div>
+</div>
+<div class="o">
+<button onclick="hideAttachMenu('image')" class="pn pnc">
+<strong>确定</strong>
+</button>
+</div>
+</div>
+<%}if((data.Allow>>19&1)==1){%>
+<div unselectable="on" id="e_albumlist" <%if((data.Group_status>>2&1)==1){%>style="display: none;"<%}%>>
+<div class="p_opt">
+<div class="upfilelist pbm bbda">
+从我的相册中选择图片:
+<select onchange="if(this.value) {ajaxget('forum.php?mod=post&action=albumphoto&aid='+this.value, 'albumphoto');}">
+<option value="">选择相册</option><%if(data.Albumlist){for(var i in data.Albumlist){%><option value="<%=data.Albumlist[i].Albumid%>"><%=data.Albumlist[i].Albumname%></option>
+<%}}%>
+</select>
+<div id="albumphoto"></div>
+</div>
+<p class="notice">点击图片添加到帖子内容中</p>
+</div>
+<div class="o">
+<button onclick="hideAttachMenu('image')" class="pn pnc">
+<strong>确定</strong>
+</button>
+</div>
+</div>
+<%}%>
+</div></td><td class="m_r"></td></tr><tr><td class="b_l"></td><td class="b_c"></td><td class="b_r"></td></tr></table>
+</div>
+<%if((data.Group_status>>1&1)==1){%>
+<div class="p_pof upf" id="e_attach_menu" style="display: none" unselectable="on">
+<table width="100%" cellpadding="0" cellspacing="0" class="fwin"><tr><td class="t_l"></td><td class="t_c"></td><td class="t_r"></td></tr><tr><td class="m_l">&nbsp;&nbsp;</td><td class="m_c"><div class="mtm">
+<ul class="tb tb_s cl" id="e_attach_ctrl" style="margin-top:0;margin-bottom:0;">
+<li class="y"><span class="flbc" onclick="hideAttachMenu('attach')">关闭</span></li>
+<li class="current" id="e_btn_attachlist"><a href="javascript:;" hidefocus="true" onclick="switchAttachbutton('attachlist');">上传附件</a></li>
+<%if((data.Group_status>>20&1)==1){%>
+<li id="e_btn_upload" style="display: none;" did="e_btn_attachlist|upload"><a href="javascript:;" hidefocus="true" onclick="switchAttachbutton('upload');">普通上传</a></li>
+<%}%>
+
+</ul>
+
+<div class="p_opt" unselectable="on" id="e_upload" style="display: none;">
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+<tbody id="attachbodyhidden" style="display:none"><tr>
+<td class="atnu"><span id="localno[]"><img src="/static/image/filetype/common_new.gif" /></span></td>
+<td class="atna">
+<span id="deschidden[]" style="display:none">
+<span id="localfile[]"></span>
+</span>
+<input type="hidden" name="localid[]" />
+</td>
+<td class="attc"><span id="cpdel[]"></span></td>
+</tr></tbody>
+</table>
+<div class="p_tbl"><table cellpadding="0" cellspacing="0" summary="post_attachbody" border="0" width="100%"><tbody id="attachbody"></tbody></table></div>
+<div class="upbk pbm bbda">
+<div id="attachbtnhidden" style="display:none"><span><form name="attachform" id="attachform" method="post" autocomplete="off" action="misc.php?mod=swfupload&amp;operation=upload&amp;simple=1" target="attachframe" <%if((data.Group_status>>1&1)==1 || (data.Group_status>>1&1)==2){%>enctype="multipart/form-data"<%}%>><input type="hidden" name="uid" value="<%=cache.Head.Uid%>"><input type="file" name="Filedata" size="45" class="fldt" /></form></span></div>
+<div id="attachbtn" class="ptm pbn"></div>
+<p id="uploadbtn">
+<button type="button" class="pn pnc vm" onclick="uploadAttach(0, 0)"><span>上传</span></button>
+<span class="xg1">&larr;选择完文件后请点击“上传”按钮</span>
+</p>
+<p id="uploading" style="display: none;"><img src="<%=cache.imgdir%>/uploading.gif" style="vertical-align: middle;" /> 上传中，请稍候，您可以<a href="javascript:;" onclick="hideMenu()">暂时关闭这个小窗口</a>，上传完成后您会收到通知</p>
+</div>
+
+<div class="notice upnf">
+文件尺寸: <span class="xi1"><%if(data.Maxattachsize>0){%>小于 <%=size_kb2mb(data.Maxattachsize)%> <%}else{%>大小不限制<%}%></span>
+
+<%if(data.Attachextensions!=""){%>
+, 可用扩展名: <span class="xi1"><%=data.Attachextensions%></span>&nbsp;
+<%}if(data.Allowuploadnum>0 || data.Allowuploadsize>0){%><br /><%if((data.Group_status>>20&1)==1){%>
+您今日还能上传 <%if(data.Allowuploadnum>0){%><strong><%=data.Allowuploadnum%></strong> 个文件<%}if(data.Allowuploadsize>0) { if(data.Allowuploadnum>0){%> 或者 <%}%>总大小 <strong><%=data.Allowuploadsize>0%></strong> 以内的文件<%}} else{%>
+<span class="xi1 xw1">今日您已无法上传更多的附件</span>
+<%}}%>
+</div>
+</div>
+
+<div class="p_opt post_tablelist" unselectable="on" id="e_attachlist">
+<%if((data.Group_status>>20&1)==1){%>
+<div class="pbm bbda">
+<span id="spanButtonPlaceholder"></span>
+</div>
+<%}%>
+<table cellpadding="0" cellspacing="0" border="0" width="100%" id="attach_tblheader" class="mtn bbs"<%if(!data.Attachs.Used || data.Attachs.Used.length==0){%> style="display: none"<%}%>>
+<tr>
+<td class="atnu"></td>
+<td class="atna pbn">文件名 ( <a onclick="insertAllAttachTag();return false;" href="javascript:;" class="xi2">插入全部附件</a> )</td>
+<td class="atds pbn">描述</td>
+<%if((data.Group_status>>0&1)==1){%>
+<td class="attv pbn">
+阅读权限
+<img src="static/image/common/faq.gif" alt="Tip" class="vm" style="margin: 0;" onmouseover="showTip(this)" tip="阅读权限按由高到低排列，高于或等于选中组的用户才可以阅读" />
+</td>
+<%}if(data.Maxprice>0){%><td class="attp pbn"><%=cache.extcredits[cache.creditstransextra['1']]['title']%></td><%}%>
+<td class="attc"></td>
+</tr>
+</table>
+<div class="upfl">
+<!--% if(data.Attachs.Used) { $attachlist = data.Attachs.Used;% >< % include template('forum/ajax_attachlist'); } %-->
+<div id="attachlist"></div>
+<div id="unusedattachlist"></div>
+<%if((data.Group_status>>20&1)==1){%>
+<div class="fieldset flash" id="fsUploadProgress"></div>
+<%}%>
+</div>
+<div class="notice upnf">
+<p id="attach_notice"<%if(!data.Attachs.Used || (data.Attachs.Used.length==0 && data.Attachs.Unused.length==0)){%> style="display: none"<%}%>>点击附件文件名添加到帖子内容中<%if(cache.allowattachurl==1){%>，"attach://" 开头的附件地址支持任何人下载请谨慎添加<%}%></p>
+文件尺寸: <span class="xi1"><%if(data.Maxattachsize>0){%>小于 <%=size_kb2mb(data.Maxattachsize)%> <%}else{%>大小不限制<%}%></span>
+<%if(data.Attachextensions!=""){%>
+, 可用扩展名: <span class="xi1"><%=data.Attachextensions%></span>&nbsp;
+<%}if(data.Allowuploadnum>0 || data.Allowuploadsize>0){%><br /><%if((data.Group_status>>20&1)==1){%>
+您今日还能上传 <%if(data.Allowuploadnum>0){%><strong><%=data.Allowuploadnum%></strong> 个文件<%}if(data.Allowuploadsize>0) { if(data.Allowuploadnum>0){%> 或者 <%}%>总大小 <strong><%=data.Allowuploadsize>0%></strong> 以内的文件<%}} else{%>
+<span class="xi1 xw1">今日您已无法上传更多的附件</span>
+<%}} if(data.Maxprice>0 && cache.maxincperthread!=0){%><br />附件出售最高收入上限为 <%=cache.maxincperthread%> <%=cache.extcredits[cache.creditstransextra['1']]['unit']%>&nbsp;&nbsp;&nbsp;&nbsp;<%}%>
+</div>
+</div>
+</div>
+<div class="o">
+<button onclick="hideAttachMenu('attach')" class="pn pnc" id="attach_confirms">
+<strong>确定</strong>
+</button>
+</div>
+</td><td class="m_r"></td></tr><tr><td class="b_l"></td><td class="b_c"></td><td class="b_r"></td></tr></table>
+</div>
+<%}%>
+
+<iframe name="attachframe" id="attachframe" style="display: none;" ></iframe>
+
+</div>
+
+
+</div>
+</script>

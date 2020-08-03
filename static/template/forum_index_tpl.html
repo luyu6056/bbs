@@ -1,0 +1,139 @@
+
+<script id="tpl_forum_index" type="text/html">
+<div id="wp" class="wp time_wp cl">
+
+<div id="pt" class="bm cl">
+<%if(GET('Gid')){%>
+<div class="z">
+<a href="./" class="nvhm" title="首页"><svg class="svg" style="width: 17px;height: 17px;margin-top:6px;" aria-hidden="true"><use xlink:href="#icon-zhuye"></use></svg></a><em>&raquo;</em><a href="/index.html?tpl=forum_index" onclick="tpl_click(this.href);return false">论坛</a><em>›</em><%if(data.Catlist[0]){%><a href="/index.html?tpl=forum_index&Gid={{data.Catlist[0].Fid}}" onclick="tpl_click(this.href);return false">{{data.Catlist[0].Name}}</a><%}%></div>
+<%}else{%>
+<div id="chart" class="bm bw0 cl">
+<p class="chart"><svg class="svg" style="width: 18px;height: 18px;vertical-align:-3px;" aria-hidden="true"><use xlink:href="#icon-shuju"></use></svg>&nbsp;<em><%=data.Onlinenum%></em>&nbsp;在线<span class="pipe">,</span><em><%=data.Usernum%></em>&nbsp;会员<span class="pipe">,</span><em><%=data.Onlinenum-data.Usernum%></em>&nbsp;访客<span class="pipe">,</span>共&nbsp;<em><%=data.Threads%></em>&nbsp;篇主题<span class="pipe">,</span><em><%=data.Posts%></em>&nbsp;篇回复</p>
+</div>
+<%}%>
+<div href="javascript:void(0)" target="_blank" class="search-li" title="搜索">
+    <input type="text" name="search" placeholder="请输入搜索内容">
+   <div style="width: 50px;height: 30px;background-color: rgb(255, 128, 1);position: absolute;margin-top: -30px;margin-left: 291px;"></div>
+    <svg class="svg-search" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="28px" height="22px"><path fill-rule="evenodd"  fill="rgb(255, 255, 255)" d="M26.570,20.965 C25.811,22.054 24.302,22.328 23.204,21.572 L14.000,15.000 C13.296,14.518 15.194,15.479 15.221,14.689 C13.940,16.052 12.258,16.967 10.374,17.307 C8.059,17.726 5.722,17.225 3.792,15.900 C1.862,14.575 0.566,12.583 0.145,10.288 C-0.278,7.992 0.226,5.671 1.562,3.755 C4.323,-0.201 9.814,-1.193 13.803,1.545 C17.424,4.032 18.581,8.752 16.699,12.561 C17.434,12.254 16.293,10.515 17.000,11.000 L25.959,17.625 C27.057,18.381 27.331,19.875 26.570,20.965 ZM14.830,7.633 C14.537,6.033 13.634,4.643 12.288,3.720 C9.508,1.809 5.678,2.500 3.751,5.259 C1.827,8.021 2.524,11.819 5.305,13.727 C8.086,15.637 11.915,14.947 13.841,12.187 C14.773,10.852 15.124,9.234 14.830,7.633 Z"/></svg>
+</div>
+</div>
+
+<style id="diy_style" type="text/css"></style>
+
+<%if(!GET('Gid')){%>
+<div class="wp">
+<!--[diy=diy1]--><div id="diy1" class="area"></div><!--[/diy]-->
+</div>
+<%}%>
+
+<div id="ct" class="cl">
+
+<!--[diy=diy_chart]--><div id="diy_chart" class="area"></div><!--[/diy]-->
+<div class="mn mtw">
+
+<div>
+<%if(GET('Gid')==""){if(data.History){%>
+<div class="bml pbw w50">
+		<div class="plrn">
+<div class="bbo bm_h cl ">
+<!--<span class="o"><img id="forum_rules_2_img" src="/static/image/common/collapsed_no.gif" title="收起/展开" alt="收起/展开" onclick="toggle_collapse('forum_rules_2')"></span>-->
+<span class="y">
+
+
+
+</span>
+
+<h1 class="xs3">
+<a href="/index.html?tpl=forum&amp;Fid=2" onclick="tpl_click(this.href);return false">近期浏览</a>
+
+</h1>
+</div>
+<div class="bm_c cl pbn fl ptm">
+	<div class="g-scrolling-carousel">
+		  <div class="item1">
+		  	<%for(var i in data.History){if(data.History[i]){%><a href="/index.html?tpl=forum&Fid=<%=data.History[i].Fid%>" onclick="return false"><div class="img" ><img src="<%if(data.History[i].Icon){%><%=data.History[i].Icon%><%}else{%><%=cache.imgdir%>/forum<%if(data.History[i].Folder){%>_new<%}%>.gif<%}%>" alt="<%=data.History[i].Name%>"/><div class="itemtext" ><span>&nbsp;&nbsp;<%=data.History[i].Name%></span></div></div></a>
+
+		    <%}}%></div>
+		</div>
+</div>
+</div>
+</div>
+<%}%>
+<div class="bml pbw <%if(data.History){%>w50<%}%>">
+		<div class="plrn">
+<div class="bbo bm_h cl ">
+<!--<span class="o"><img id="forum_rules_2_img" src="/static/image/common/collapsed_no.gif" title="收起/展开" alt="收起/展开" onclick="toggle_collapse('forum_rules_2')"></span>-->
+<span class="y">
+
+
+
+</span>
+
+<h1 class="xs3">
+<a href="/index.html?tpl=forum&amp;Fid=2" onclick="tpl_click(this.href);return false">新游速递</a>
+
+</h1>
+</div>
+<div class="bm_c cl pbn fl ptm">
+<div class="g-scrolling-carousel">
+		  <div class="item2">
+		  	<%for(var i in data.Recommend){%><a href="/index.html?tpl=forum&Fid=<%=data.Recommend[i].Fid%>" onclick="return false"><div class="img" ><img src="<%if(data.Recommend[i].Icon){%><%=data.Recommend[i].Icon%><%}else{%><%=cache.imgdir%>/forum<%if(data.Recommend[i].Folder){%>_new<%}%>.gif<%}%>" alt="<%=data.Recommend[i].Name%>"/><div class="itemtext" ><span>&nbsp;&nbsp;<%=data.Recommend[i].Name%></span></div></div></a>
+		    <%}%></div>
+		</div>
+
+
+</div>
+</div>
+</div>
+<%}for(var i in data.Catlist){var cat=data.Catlist[i]%>
+<div class="mlrn fl bml<%if(cat.Forumcolumns){%> flg<%}%> cl">
+<div class="bbo bm_h cl">
+<span class="o">
+<img id="category_<%=cat.Fid%>_img" src="<%=cache.imgdir%>/<%if(getcookie('collapse').indexOf('category_'+cat.Fid+'_')){%>collapsed_no.gif<%}else{%>collapsed_yes.gif<%}%>" title="收起/展开" alt="收起/展开" onclick="toggle_collapse('category_<%=cat.Fid%>');" />
+</span>
+<%if(cat.Moderators){%><span class="y">分区版主: <%=cat.Moderators%></span><%}%><h2><a href="/index.html?tpl=forum_index&Gid=<%=cat.Fid%>"  onclick="tpl_click(this.href);return false" style="<%if(cat.Extra && cat.Extra.Namecolor){%>color: <%=cat.Extra.Namecolor%>;<%}%>"><%=cat.Name%></a></h2>
+</div>
+<div id="category_<%=cat.Fid%>" class="bm_c" style="">
+<table cellspacing="0" cellpadding="0" class="fl_tb">
+<tr>
+<%for(var i in cat.Forums){var forum=cat.Forums[i]%><%if(forum.Orderid && (forum.Orderid % cat.Forumcolumns == 0)){%>
+</tr>
+<%if(forum.Orderid < cat.Forumscount){%>
+<tr class="fl_row">
+<%}}%>
+<td class="fl_g" width="50%">
+<div class="fl_icn_g" >
+
+<a href="/index.html?tpl=forum&Fid=<%=forum.Fid%>" onclick="tpl_click(this.href);return false"><img src="<%if(forum.Icon){%><%=forum.Icon%><%}else{%><%=cache.imgdir%>/forum<%if(forum.Folder){%>_new<%}%>.gif<%}%>" alt="<%=forum.Name%>"  /></a>
+<%if(forum.Moderators){%><span class="z xw1">版主: <%=forum.Moderators%></span><%}%>
+</div>
+<dl<%if(forum.Extra && forum.Extra.Iconwidth && forum.Icon){%> style="margin-left: <%=forum.Extra.Iconwidth%>px;"<%}%>>
+<dt><a onclick="tpl_click(this.href);return false" class="xs3 rq xw1" href="/index.html?tpl=forum&Fid=<%=forum.Fid%>"<%if(forum.Extra && forum.Extra.Namecolor){%> style="color: <%=forum.Extra.Namecolor%>;"<%}%>><%=forum.Name%></a></dt>
+<dd>
+<%-discuzcode(forum.Description)%>
+
+</dd>
+
+</dl>
+</td>
+<%}%>
+
+<%=cat.Endrows%>
+</tr>
+</table>
+</div>
+</div>
+<%}%>
+</div>
+
+
+<div class="wp mtn">
+<!--[diy=diy3]--><div id="diy3" class="area"></div><!--[/diy]-->
+</div>
+
+
+</div>
+
+</div>
+</div>
+</script>

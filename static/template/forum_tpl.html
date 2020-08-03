@@ -1,0 +1,447 @@
+
+
+<script id="tpl_forum" type="text/html" defer>
+<style id="diy_style" type="text/css"></style>
+<div id="wp" class="wp time_wp cl">
+<!--[diy=diynavtop]--><div id="diynavtop" class="area"></div><!--[/diy]-->
+<div id="pt" class="bm cl">
+<div class="z">
+<a href="./" class="nvhm" title="首页"><svg class="svg" style="width: 17px;height: 17px;margin-top:6px;" aria-hidden="true"><use xlink:href="#icon-zhuye"></use></svg></a><em>&raquo;</em><a href="/index.html?tpl=forum_index" onclick="tpl_click(this.href);return false">论坛</a><em>›</em><%if(data.Parent){%><a href="/index.html?tpl=forum_index&Gid={{data.Parent.Fid}}" onclick="tpl_click(this.href);return false">{{data.Parent.Name}}</a><em>›</em><%}%><a href="/index.html?tpl=forum&Fid={{data.Fid}}" onclick="tpl_load('forum',WRITE_MSG_U2WS_forum,{Fid:{{data.Fid}}});return false">{{data.Name}}</a></div>
+               <div href="javascript:void(0)" target="_blank" class="search-li" title="搜索">
+                <input type="text" name="search" placeholder="请输入搜索内容">
+               <div style="width: 50px;height: 30px;background-color: rgb(255, 128, 1);position: absolute;margin-top: -30px;margin-left: 291px;"></div>
+                <svg class="svg-search" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="28px" height="22px"><path fill-rule="evenodd"  fill="rgb(255, 255, 255)" d="M26.570,20.965 C25.811,22.054 24.302,22.328 23.204,21.572 L14.000,15.000 C13.296,14.518 15.194,15.479 15.221,14.689 C13.940,16.052 12.258,16.967 10.374,17.307 C8.059,17.726 5.722,17.225 3.792,15.900 C1.862,14.575 0.566,12.583 0.145,10.288 C-0.278,7.992 0.226,5.671 1.562,3.755 C4.323,-0.201 9.814,-1.193 13.803,1.545 C17.424,4.032 18.581,8.752 16.699,12.561 C17.434,12.254 16.293,10.515 17.000,11.000 L25.959,17.625 C27.057,18.381 27.331,19.875 26.570,20.965 ZM14.830,7.633 C14.537,6.033 13.634,4.643 12.288,3.720 C9.508,1.809 5.678,2.500 3.751,5.259 C1.827,8.021 2.524,11.819 5.305,13.727 C8.086,15.637 11.915,14.947 13.841,12.187 C14.773,10.852 15.124,9.234 14.830,7.633 Z"/></svg>
+</div>
+</div>广告<div class="wp">
+<!--[diy=diy1]--><div id="diy1" class="area"></div><!--[/diy]-->
+</div>
+<div class="boardnav">
+<div id="ct" class="wp cl">
+<div class="mn">
+<div class="bbo bml pbn">
+<div class="bbo bm_h cl">
+	<%var page=1;if(GET('Page')>1){page=GET('Page')}%>
+<%if(page==1 && data.Rules!=""){%><span class="o"><img id="forum_rules_<%=data.Fid%>_img" src="<%=cache.imgdir%>/collapsed_<%if(getcookie('collapse')==""){%>no<%}else{%>yes<%}%>.gif" title="收起/展开" alt="收起/展开" onclick="toggle_collapse('forum_rules_<%=data.Fid%>')" /></span><%}%>
+<span class="y" style="display: none">
+<a href="/index.html?tpl=spacecp&ac=favorite&type=forum&id=<%=data.Fid%>&handlekey=favoriteforum&formhash=<%=FORMHASH%>" id="a_favorite" onclick="showWindow(this.id, this.href, 'get', 0);"><svg class="svg" style="width: 28px;height: 28px;vertical-align:-10px;" aria-hidden="true"><use xlink:href="#icon-shoucang"></use></svg>收藏本版 <strong class="xi1" id="number_favorite" <%if(data.Favtimes==0){%> style="display:none;"<%}%>>(<span id="number_favorite_num"><%=data.Favtimes%></span>)</strong></a>
+
+<%if(data.Allow>>0&1){if(data.Allow>>1&1){%>
+<span class="pipe">|</span><a href="<%if(cache.Head.Adminid==1){%>admin.php?mod=forum&action=recyclebin&frames=yes<%}else if(data.Allow>>0&1){%>forum.php?mod=modcp&action=recyclebin&Fid=<%=data.Fid%><%}%>" class="fa_bin" target="_blank">回收站</a>
+<%}if(data.Allow>>0&1){%>
+<span class="pipe">|</span><strong>
+<%if(data.Status!=3){%>
+<a href="forum.php?mod=modcp&Fid=<%=data.Fid%>">管理面板</a>
+<%}else{%>
+<a href="forum.php?mod=group&action=manage&Fid=<%=data.Fid%>">管理面板</a>
+<%}%>
+</strong>
+<%}%>
+<%}%>
+</span>
+
+<h1 class="xs3">
+<a href="/index.html?tpl=forum&Fid=<%=data.Fid%>" onclick="return false"><%=data.Name%></a>
+<%if(!(data.Allow>>2&1)){%><span class="xs2 xw0 i"><span class="pipe"></span>今日: <strong class="xi1"><%=data.Todayposts%></strong><%if(data.Todayposts){if(data.Todayposts < data.Yesterdayposts){%><b class="ico_fall">&nbsp;</b><%}else{%><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="17px" height="21px" style="vertical-align: -4px;margin-left: 5px;"><path fill-rule="evenodd"  fill="rgb(255, 184, 79)" d="M12.154,7.985 L12.154,15.001 L4.846,15.001 L4.846,7.985 L-0.000,8.000 L8.500,-0.002 L17.000,8.000 L12.154,7.985 ZM12.000,21.000 L5.000,21.000 L5.000,17.000 L12.000,17.000 L12.000,21.000 Z"/></svg>
+<%}}%><span class="pipe"></span>主题: <strong class="xi1"><%=data.Threads%></strong><%if(data.Rank){%><span class="pipe"></span>排名: <strong class="xi1" title="上次排名:<%=data.Oldrank%>"><%=data.Rank%></strong><%if(data.Rank <= data.Oldrank){%><b class="ico_increase">&nbsp;</b><%}else{%><b class="ico_fall">&nbsp;</b><%}}%></span><%}%>
+</h1>
+</div>
+<div class="bm_c cl pbn">
+
+<%if(page==1 && data.Rules){%>
+<div id="forum_rules_<%=data.Fid%>" class="forum_rules">
+<div class="xs3 xg0"><%-discuzcode(data.Rules)%></div>
+</div>
+<%}if(data.Moderators && data.Status!=3){%><div id="master-name">版主: <span class="xi2"><%var Moderators=data.Moderators.split(',')%><%for(var i in Moderators){%><%if(i!=0){%>,<%}%><a href="/index.html?tpl=space&Name=<%=encodeFastPostmsg(Moderators[i])%>" target="_blank" class="notabs" c="1"> <%=Moderators[i]%></a><%}%></span></div><%}%>
+</div>
+
+
+</div>
+
+<%if(data.Allow>>3&1){%>子版块<%}%>
+
+<div class="drag">
+<!--[diy=diy4]--><div id="diy4" class="area"></div><!--[/diy]-->
+</div>
+
+
+<%if(!(data.Allow>>2&1)){if(data.Threadmodcount){%><div class="bm"><div class="ntc_l hm xi2"><strong><a href="home.php?mod=space&uid=<%=cache.Head.Uid%>&do=thread&view=me&type=thread&from=&Filter=aduit">您有 <%=data.Threadmodcount%> 个主题正等待审核中，点击查看</a></strong></div></div><%}if(data.Livethread){%>
+<div id="livethread" class="tl bm bmw cl" style="padding:10px 15px;">
+<div class="livethreadtitle vm">
+<span class="replynumber xg1">回复 <span id="livereplies" class="xi1"><%=data.Livethread.Replies%></span></span>
+<a href="forum.php?mod=viewthread&tid=<%=data.Livethread.Tid%>" target="_blank"><%=data.Livethread.Subject%></a> <img src="<%=cache.imgdir%>/livethreadtitle.png" />
+</div>
+<div class="livethreadcon"><%=data.Livemessage%></div>
+<div id="livereplycontentout">
+<div id="livereplycontent">
+</div>
+</div>
+<div id="liverefresh">有新的发言了，点击刷新</div>
+<div id="livefastreply">
+<form id="livereplypostform" method="post" action="forum.php?mod=post&action=reply&Fid=<%=data.Fid%>&tid=<%=data.Livethread.Tid%>&replysubmit=yes&infloat=yes&handlekey=livereplypost&inajax=1" onsubmit="return livereplypostvalidate(this)">
+<div id="livefastcomment">
+<textarea id="livereplymessage" name="message" style="color:gray;<%if(data.Allow>>4&1){%>display:none;<%}%>">#在这里快速回复#</textarea>
+<%if(data.Allow>>4&1){%>
+<div>
+<%if(!cache.Head.Uid){%>
+您需要登录后才可以回帖 <a href="/index.html?tpl=login" onclick="showWindowEx('login', this.href)" class="xi2">登录</a> | <a href="javascript:;" onclick="tpl_load('register',WRITE_MSG_U2WS_GetHead,{})" class="xi2">注册</a>
+<%}else{%>
+您现在无权发帖。<a href="javascript:;" onclick="ajaxpost('livereplypostform', 'livereplypostreturn', 'livereplypostreturn', 'onerror', $('livereplysubmit'));" class="xi2">点击查看原因</a>
+<%}%>
+</div>
+<%}%>
+</div>
+<div id="livepostsubmit" style="display:none;">
+<p class="ptm pnpost" style="margin-bottom:10px;">
+<button type="submit" name="replysubmit" class="pn pnc vm" style="float:right;" value="replysubmit" id="livereplysubmit">
+<strong>发表</strong>
+</button>
+</p>
+</div>
+<input type="hidden" name="formhash" value="<%=FORMHASH%>">
+<input type="hidden" name="subject" value="  ">
+</form>
+</div>
+<span id="livereplypostreturn"></span>
+</div>
+<%}%>
+<div id="pgt" class=" bw0 pgs cl">
+<%var maxpage=ceil(data.Threadscount/cache.topicperpage);%>
+
+<span id="fd_page_top"><%if(maxpage>1){%><div class="pg">
+	<%if(page>6){%><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Filter=<%=GET('Filter')%>&Typeid=<%=GET('Typeid')%>&Orderby=<%=GET('Orderby')%>&Dateline=<%=GET('Dateline')%>" onclick="tpl_click(this.href);return false" class="first">首页</a><%}if(page>1){%><span class="pgb"><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Filter=<%=GET('Filter')%>&Typeid=<%=GET('Typeid')%>&Orderby=<%=GET('Orderby')%>&Dateline=<%=GET('Dateline')%>&Page=<%=page-1%>" onclick="tpl_click(this.href);return false"><span class="arrow-left"></span>上一页</a></span><%}for(var i=page-5;i<page;i++){%><%if(i>0){%><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Filter=<%=GET('Filter')%>&Typeid=<%=GET('Typeid')%>&Orderby=<%=GET('Orderby')%>&Dateline=<%=GET('Dateline')%>&Page=<%=i%>" onclick="tpl_click(this.href);return false"><%=i%></a><%}}%><strong><%=page%></strong><%for(var i=page+1;i<page+4 && i<=maxpage;i++){%><%if(i>0){%><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Page=<%=i%>" onclick="tpl_click(this.href);return false"><%=i%></a><%}}%><label><input type="text" name="custompage" class="px" size="2" title="输入页码，按回车快速跳转" value="<%=page%>" onkeydown="if(event.keyCode==13) {tpl_load('forum',WRITE_MSG_U2WS_forum,{Fid:<%=GET('Fid')%>,Page:this.value,Specialtype:'<%=GET('Specialtype')%>',Filter:'<%=GET('Filter')%>',Typeid:'<%=GET('Typeid')%>',Orderby:'<%=GET('Orderby')%>',Dateline:'<%=GET('Dateline')%>'}); doane(event);}"><span title="共 <%=maxpage%> 页"> / <%=maxpage%> 页</span></label><%if(page<maxpage-3){%><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Filter=<%=GET('Filter')%>&Typeid=<%=GET('Typeid')%>&Orderby=<%=GET('Orderby')%>&Dateline=<%=GET('Dateline')%>&Page=<%=maxpage%>" onclick="tpl_click(this.href);return false" class="first">尾页</a><%}%><%if(page<maxpage){%><span class="pgn"><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Filter=<%=GET('Filter')%>&Typeid=<%=GET('Typeid')%>&Orderby=<%=GET('Orderby')%>&Dateline=<%=GET('Dateline')%>&Page=<%=page+1%>" onclick="tpl_click(this.href);return false" class="first">下一页<span class="arrow-right"></span></a></span><%}%>
+	</div>
+	<%}%>
+</span>
+<span class="pgb y"><a href="/index.html?tpl=forum_index" onclick="tpl_click(this.href);return false"><span class="arrow-left"></span>返回</a></span>
+
+<a href="/index.html?tpl=forum_newthread&Fid=<%=data.Fid%>&Type=0" id="newspecial" onmouseover="$('newspecial').id = 'newspecialtmp';this.id = 'newspecial';showMenu({'ctrlid':this.id})" onclick="<%if(data.Allow>>5&1 && !(data.Allow>>6&1)){%>newthread(<%=data.Fid%>)<%}else{%>newthread(<%=data.Fid%>)<%}%>;return false;" title="发新帖"><span>发帖</span><span class="item arrow-bottom" style="margin-left:10px"></span></a>
+
+</div>
+
+
+<%if(data.Threadtypes.Status>>0&1 && data.Threadtypes.Status>>2&1){%>
+<ul id="thread_types" class="ttp cl bto">
+<li id="ttp_all" <%if(!GET('Typeid')){%>class="xw1 a"<%}%>><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>" onclick="tpl_click(this.href);return false">全部</a></li>
+<%if(data.Threadtypes.Status>>0&1){var threadtypes={};for(var i in data.Threadtypes.Types){var type=data.Threadtypes.Types[i];threadtypes[type.Id]=type%>
+<li <%if(GET('Typeid')==type.Id){%>class="xw1 a"<%}%>><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Typeid=<%=type.Id%>" onclick="tpl_load('forum',WRITE_MSG_U2WS_forum,{Fid:<%=GET('Fid')%>,Typeid:<%=type.Id%>});return false"><%if(type.Icon!="" && data.Threadtypes.Prefix==2){%><img class="vm" src="<%=type.Icon%>" alt="" /> <%}%><%=type.Name%><%if(type.Count){%><span class="xg1 num"><%=type.Count%></span><%}%></a></li>
+<%}} %>
+
+</ul>
+<%}%>
+
+
+<div id="threadlist" class="tl bm bmw"<%if(cache.Head.Uid){%> style="position: relative;"<%}%>>
+<div class="th">
+<table cellspacing="0" cellpadding="0">
+<tr>
+<th colspan="<%if( data.Allow>>0&1){%>3<%}else{%>2<%}%>">
+
+<%if(GET('Mod')!='guide'){%>
+<div class="tf">
+<span id="atarget" <%if(getcookie('atarget') > 0){%>onclick="setatarget(-1)" class="y atarget_1"<%}else{%>onclick="setatarget(1)" class="y"<%}%> title="在新窗口中打开帖子">新窗</span>
+<%if(GET('Specialtype')=='reward'){%>
+<a id="filter_reward" href="javascript:;" class="showmenu xgo" onclick="showMenu(this.id)"><%if(GET('Rewardtype')==''){%>全部悬赏<%}else if(GET('Rewardtype')=='1'){%>进行中<%}else if(GET('Rewardtype')=='2'){%>已解决<%}%></a>&nbsp;
+<%}%>
+筛选:&nbsp;&nbsp;<a id="filter_special" href="javascript:;" class="showmenu xgo" onclick="showMenu(this.id)"><%if(GET('Specialtype')=='poll'){%>投票<%}else if(GET('Specialtype')=='trade'){%>商品<%}else if(GET('Specialtype')=='reward'){%>悬赏<%}else if(GET('Specialtype')=='activity'){%>活动<%}else if(GET('Specialtype')=='debate'){%>辩论<%}else if(GET('Specialtype')=='common'){%>普通<%}else{%>全部主题<%}%></a>&nbsp;            
+<a id="filter_other" href="javascript:;" class="showmenu xgo" onclick="showMenu(this.id)"><%if(GET('Filter')=='heat'){%>热门<%}else if(GET('Filter')=='lastpost'){%>最新<%}else if(GET('Filter')=='hot'){%>热帖<%}else if(GET('Filter')=='digest'){%>精华<%}else if(GET('Filter')=='recommend'){%>推荐<%}else{%>全部主题<%}%></a>&nbsp; 
+排序:&nbsp;&nbsp;<a id="filter_orderby" href="javascript:;" class="showmenu xgo" onclick="showMenu(this.id)"><%if(GET('Orderby')=="replies"){%>回复<%}else if(GET('Orderby')=="views"){%>查看<%}else{%>最后发表<%}%></a>&nbsp;时间:&nbsp;&nbsp;<a id="filter_dateline" href="javascript:;" class="showmenu xgo" onclick="showMenu(this.id)"><%if(GET('Dateline')=="86400"){%>一天<%}else if(GET('Dateline')=="172800"){%>两天<%}else if(GET('Dateline')=="604800"){%>一周<%}else if(GET('Dateline')=="2592000"){%>一个月<%}else{%>全部时间<%}%></a>
+<%if(!(data.Allow>>6&1) && GET('Orderby')=='lastpost' && (!cache.forumseparator || !data.Separatepos) && !GET('Filter')){%>
+<a href="javascript:;" onclick="checkForumnew_btn('<%=data.Fid%>')" title="查看更新" class="forumrefresh"></a>
+<%}if(GET('Filter')=='hot'){%>
+<span><%=GET('Time')%></span>
+<img src="<%=cache.imgdir%>/date_magnify.png" class="cur1" alt="" id="hottime" value="<%=GET('Time')%>" fid="<%=data.Fid%>" onclick="showcalendar(event, this, false, false, false, false, function(){viewhot(this);});" align="absmiddle" />
+<%}%>
+<span id="clearstickthread" style="display: none;">
+<span class="pipe">|</span>
+<a href="javascript:;" onclick="clearStickThread()" class="xi2" title="显示置顶">显示置顶</a>
+</span>
+
+</div>
+<%}else{%>
+标题
+<%}%>
+</th>
+
+<%if(!(data.Allow>>6&1)){if(GET('Mod')=='guide'){%>
+<td class="by">版块/群组</td>
+<%}%>
+<td class="by">作者</td>
+<td class="num">回复/查看</td>
+<td class="by">最后回复</td>
+<%}else{%>
+<td class="by" colspan="3">
+<a<%if(getcookie('forumdefstyle')==""){%> href="/index.html?tpl=forum&Fid=<%=data.Fid%>&forumdefstyle=yes" class="chked"<%}else{%> href="/index.html?tpl=forum&Fid=<%=data.Fid%>&forumdefstyle=no" class="unchk"<%}%> title="图片模式浏览帖子">图片模式</a>
+</td>
+<%}%>
+</tr>
+</table>
+</div>
+
+<div class="bm_c">
+
+
+<div id="forumnew" style="display:none"></div>
+<form method="post" autocomplete="off" name="moderate" id="moderate" action="forum.php?mod=topicadmin&action=moderate&Fid=<%=data.Fid%>&infloat=yes&nopost=yes">
+<table summary="forum_<%=data.Fid%>" cellspacing="0" cellpadding="0" id="threadlisttableid">
+
+<%if(!data.Separatepos || !cache.forumseparator){%>
+<tbody id="separatorline" class="emptb"><tr><td class="icn"></td><%if(data.Allow>>0&1){%><td class="o"></td><%}%><th></th><%if(GET('Mod')=='guide'){%><td class="by"></td><%}%><td class="by"></td><td class="num"></td><td class="by"></td></tr></tbody>
+
+<%}if(data.Threadscount){for(var key in data.Threadlist){var thread=data.Threadlist[key];if(cache.forumseparator==1 && data.Separatepos==key){%>
+<tbody id="separatorline">
+<tr class="ts">
+<td>&nbsp;</td>
+<%if(data.Allow>>0&1){%><td>&nbsp;</td><%}%>
+
+<th><%if(!(data.Allow>>6&1) && (GET('Orderby')=='lastpost' || GET('Orderby')=='') && !GET('Filter')){%><a href="javascript:;" onclick="checkForumnew_btn('<%=data.Fid%>')" title="查看更新" class="forumrefresh">版块主题</a><%}else{%>&nbsp;<%}%></th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+</tr>
+</tbody>
+
+<%}if(data.Separatepos <= key+1){%><!--广告--><%}%>
+<tbody class="forum"id="<%if(data.Separatepos<key+1){%>normalthread_<%}else{%>stickthread_<%}%><%=thread.Tid%>"<%if(data.Allow>>7&1 && thread.Hidden){%> style='display:none'<%}%>>
+<tr>
+
+<td class="icn">
+<a href="/index.html?tpl=forum_viewthread&Tid=<%=thread.Tid%>" title="<%if(thread.Displayorder==1){%>本版置顶主题 - <%}if(thread.Displayorder==2){%>分类置顶主题 - <%}if(thread.Displayorder==3){%>全局置顶主题 - <%}if(thread.Displayorder==4){%>多版置顶主题 - <%}if(thread.Folder=='lock'){%>关闭的主题 - <%}if(thread.Special==1){%>投票 - <%}if(thread.Special==2){%>商品 - <%}if(thread.Special==3){%>悬赏 - <%}if(thread.Special==4){%>活动 - <%}if(thread.Special==5){%>辩论 - <%}if(thread.Folder=="new"){%>有新回复 - <%}%>
+新窗口打开" target="_blank">
+<%if(thread.Folder=='lock'){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-xGroup"></use></svg>
+<%}else if(thread.Special==1){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-toupiao"></use></svg>
+<%}else if(thread.Special==2){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-shangdian"></use></svg>
+<%}else if(thread.Special==3){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-shangyin"></use></svg>
+<%}else if(thread.Special==4){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-huodong"></use></svg>
+<%}else if(thread.Special==5){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-huatibianlun"></use></svg>
+<%}else if(in_array(thread.Displayorder, [1, 2, 3, 4])){%>
+<%if(thread.Displayorder==3){%>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32px" height="25px"><path fill-rule="evenodd"  fill="rgb(255, 84, 0)" d="M32.000,15.000 L15.458,0.001 L0.000,15.000 L6.861,15.015 L6.861,24.999 L25.139,24.999 L25.139,15.015 L32.000,15.000 Z"/></svg>
+<%}else if(thread.Displayorder==2){%>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32px" height="25px"><path fill-rule="evenodd"  fill="rgb(46, 198, 255)" d="M32.000,15.000 L15.458,0.001 L0.000,15.000 L6.861,15.015 L6.861,24.999 L25.139,24.999 L25.139,15.015 L32.000,15.000 Z"/></svg>
+<%}else if(thread.Displayorder==1){%>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32px" height="25px"><path fill-rule="evenodd"  fill="rgb(8, 227, 173)" d="M32.000,15.000 L15.458,0.001 L0.000,15.000 L6.861,15.015 L6.861,24.999 L25.139,24.999 L25.139,15.015 L32.000,15.000 Z"/></svg>
+<%}%>
+<svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="10px" height="9px" style="margin-left: -20px;margin-top: 11px;position: absolute;"><text kerning="auto" font-family="Adobe Heiti Std" fill="rgb(255, 255, 255)" font-size="12px" x="0px" y="9px"></text></svg>
+<%}else if(thread.Folder=="new"){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-tiezi"></use></svg>
+<%}else{%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-tiezi-copy"></use></svg>
+<%}%>
+</a>
+</td>
+<%if(data.Allow>>0&1){%>
+<td class="o">
+<%if(thread.Fid==data.Fid){if(thread.Displayorder <= 3 || cache.Head.Adminid==1){%>
+<input onclick="tmodclick(this)" type="checkbox" name="moderate[]" value="<%=thread.Tid%>" />
+<%}else{%>
+<input type="checkbox" disabled="disabled" />
+<%}}else{%>
+<input type="checkbox" disabled="disabled" />
+<%}%>
+</td>
+<%}%>
+<th class="<%=thread.Folder%>">
+<a href="javascript:;" id="content_<%=thread.Tid%>" class="showcontent y" title="更多操作" onclick="CONTENT_TID='<%=thread.Tid%>';CONTENT_ID='<%=thread.Tid%>';showMenu({'ctrlid':this.id,'menuid':'content_menu'})"></a>
+<%if(in_array(thread.Displayorder, [1, 2, 3, 4])){%>
+<!--<a href="javascript:void(0);" onclick="hideStickThread('<%=thread.Tid%>')" class="showhide y" title="隐藏置顶帖">隐藏置顶帖</a>--></em>
+<%}if(!thread.Forumstick && thread.Closed > 1 && (thread.Isgroup==1 || thread.Fid!=data.Fid)){thread.Tid=thread.Closed%><%}%>
+<%if(thread.Typeid && data.Threadtypes.Prefix>0){if(threadtypes[thread.Typeid]){if(data.Threadtypes.Prefix == 1) {%>
+<em>[<a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Typeid=<%=threadtypes[thread.Typeid].Id%>" onclick="tpl_click(this.href);return false;"><%=threadtypes[thread.Typeid].Name%></a>]</em>
+<%}else if(threadtypes[thread.Typeid].Icon!="" && data.Threadtypes.Prefix == 2) {%>
+<em><a title="<%=threadtypes[thread.Typeid].Name%>" href=""><img style="vertical-align: middle;padding-right:4px;" src="<%=threadtypes[thread.Typeid].Icon%>" alt="<%=threadtypes[thread.Typeid].Name%>" /></a></em> 
+<%}}}%>
+<%if(thread.Moved){%>
+移动:<%thread.Tid=thread.Closed%><%}%>
+<a href="/index.html?tpl=forum_viewthread&Tid=<%=thread.Tid%>" onclick="viewthread(<%=thread.Tid%>);return false" <%-gethighlight(thread.Highlight)%><%if(thread.Isgroup==1 || thread.Forumstick){%> target="_blank"<%}else{%> onclick="atarget(this)"<%}%> class="s xst"><%=thread.Subject%></a>
+<%if( thread.Hidden >= 1){%><span class="xg1">隐藏</span>&nbsp;<%}if(thread.Icon >= 0 && cache.stamps[thread.Icon]){%>
+<img src="<%=cache.STATICURL%>image/stamp/<%=cache.stamps[thread.Icon]['url']%>" alt="<%=cache.stamps[thread.Icon]['text']%>" align="absmiddle" />
+<%}if(thread.Rushinfo){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-qiang"></use></svg>
+<%if(thread.Rushinfo){%>
+<span id="rushtimer_<%=thread.Tid%>"> 【还有 <span id="rushtimer_body_<%=thread.Tid%>"></span> <%-htmlDecode('&lt;')%>script language="javascript">settimer(<%=thread.Rushinfo.Timer%>, 'rushtimer_body_<%=thread.Tid%>');<%-htmlDecode('&lt;')%>/script><%if(thread.Rushinfo.Timertype=='start'){%> 开始 <%}else{%> 结束 <%}%> 】</span>
+<%}} if(thread.Readperm){%> - [阅读权限 <span class="xw1"><%=thread.Readperm%></span>]<%}if(thread.Price > 0){if(thread.Special=='3'){%>
+- <a href="" title="只看进行中的"><span class="xi1">[悬赏 <span class="xw1"><%=thread.Price%></span> <%=cache.extcredits[cache.creditstransextra['2']]['unit']%><%=cache.extcredits[cache.creditstransextra['2']]['title']%>]</span></a>
+<%}else{%>
+- [售价 <span class="xw1"><%=thread.Price%></span> <%=cache.extcredits[cache.creditstransextra['1']]['unit']%><%=cache.extcredits[cache.creditstransextra['1']]['title']%>]
+<%}}else if(thread.Special=='3' && thread.Price < 0){%>
+- <a href="" title="只看已解决的">[已解决]</a>
+<%}if(thread.Attachment==2){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-tupian"></use></svg>
+<%}else if(thread.Attachment==1){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-lianjie"></use></svg>
+<%}if(thread.Mobile){%>
+<img src="<%=cache.imgdir%>/mobile-attach-<%=thread.Mobile%>.png" alt="手机发帖" align="absmiddle" />
+<%}if(thread.Digest > 0 /*&& GET('Filter')!='digest'*/){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-jingxuan"></use></svg>
+<%}if(thread.Displayorder==0){if(getRecommendlevel(thread.Recommends) /*&& GET('Filter')!='recommend'*/){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-tuijian"></use></svg>
+<%}if(getheatlevel(thread.Heats)){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-huoHOT"></use></svg>
+<%}if(thread.Rate > 0){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-bian-copy"></use></svg>
+<%}else if(thread.Rate < 0){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-zan"></use></svg>
+<%}} if(thread.Replycredit > 0){%>
+- <span class="xi1">[回帖奖励 <strong> <%=thread.Replycredit%></strong> ]</span>
+<%}%>
+<%if(thread.Multipage){%>
+<span class="tps"><%=thread.Multipage%></span>
+<%}if(cache.Head.Timestamp - 604800 <= thread.Dateline){%>
+<a href="/index.html?tpl=forum_viewthread&Tid=<%=thread.Tid%>" onclick="tpl_click(this.href);return false;" class="xi1">New</a>
+<%}if(!thread.Forumstick && (thread.Isgroup==1 || thread.Fid!=data.Fid)){if(thread.Related_group==0 && thread.Closed > 1){thread.Tid=thread.Closed%><%}if(thread.Groupname!=""){%>
+<span class="fromg xg1"> [来自: <a href="" target="_blank" class="xg1"><%=thread.Groupname%></a>]</span>
+<%}}%>
+</th>
+<%if(GET('Mod')=='guide'){%>
+<td class="by"><a href="" target="_blank"><%=thread.Forumname%></a></td>
+<%}%>
+<td class="by">
+<cite>
+<%if(thread.Authorid && thread.Author){%>
+<a href="/index.html?tpl=space&Name=<%=thread.Author%>" c="1" target="_blank"<%if(thread.Groupcolor){%> style="color: <%=thread.Groupcolor%>;"<%}%>><%=thread.Author%></a><%if(thread.Verify){%> <%=thread.Verify%><%}} else{%>
+匿名
+<%}%>
+</cite>
+<em><span<%if(thread.Dateline>cache.todaytime){%> class="xi1"<%}%>><%=date('Y-m-d H:i',thread.Dateline)%></span></em>
+</td>
+<td class="num"><a href="javascript:;"><%=thread.Allreplies%></a><em><%if(thread.Isgroup!=1){%><%=thread.Views%><%}else{%><%=thread.Groupviews%><%}%></em></td>
+<td class="by">
+<cite><%if(thread.Lastposter){%><a href="/index.html?tpl=space&Name=<%=thread.Lastposter%>" c="1" target="_blank"><%=thread.Lastposter%></a><%}else{%>匿名<%}%></cite>
+<em><a href="/index.html?tpl=forum_viewthread&Tid=<%=thread.Tid%>&Page=<%=ceil(thread.Allreplies/cache.postperpage)%>&Position=<%=thread.Allreplies%>"><%=date('Y-m-d H:i',thread.Lastpost)%></a></em>
+
+</td>
+</tr>
+</tbody>
+<%}%>
+</table><!-- end of table "forum_G[fid]" branch 1/3 -->
+<%if(data.Allow>>7&1){%>              
+<div id="hiddenthread"<%if(thread.Hidden){%> class="last"<%}%>><a href="javascript:;" onclick="display_blocked_thread()">还有一些帖子被系统自动隐藏，点此展开</a></div>
+<%}}else{%>
+<tbody class="bw0_all"><tr><th colspan="<%if(true && data.Allow>>0&1){%>6<%}else{%>5<%}%>"><p class="emp">本版块或指定的范围内尚无主题</p></th></tr></tbody>
+</table><!-- end of table "forum_G[fid]" branch 3/3 -->
+<%}if(data.Allow>>0&1 && data.Threadscount){%>
+<div id="mdly" style="display: none;<%if(data.Allow>>6&1){%> margin-top: 20px;<%}%>">
+<input type="hidden" name="optgroup" />
+<input type="hidden" name="operation" />
+<a class="cp" href="javascript:;" title="最小化" onclick="$('mdly').className='cpd'">最小化</a>
+<label><input type="checkbox" name="chkall" class="pc" onclick="if(!($('mdct').innerHTML = modclickcount = checkall(this.form, 'moderate'))) {$('mdly').style.display = 'none';}" />全选</label>
+<h6><span>选中</span><strong onclick="$('mdly').className='';" onmouseover="this.title='最大化'" id="mdct"></strong><span>篇: </span></h6>
+<p>
+<%if(data.Group_status>>1&1){%>
+<strong><a href="javascript:;" onclick="tmodthreads(0);return false;">删除</a></strong>
+<span class="pipe">|</span>
+<%}if(data.Group_status>>2&1 && data.Status != 3){%>
+<strong><a href="javascript:;" onclick="tmodthreads(9);return false;">移动</a></strong>
+<span class="pipe">|</span>
+<%}if(data.Group_status>>3&1){%>
+<strong><a href="javascript:;" onclick="tmodthreads(10);return false;">分类</a></strong>
+<%}if(data.Status == 3 && in_array(cache.Head.Adminid, ['1','2'])){%>
+<span class="pipe">|</span>
+<strong><a href="javascript:;" onclick="tmodthreads(5);return false;">推荐到版块</a></strong>
+<%}%>
+</p>
+<p>
+<%if(data.Allowstickthread>0){%>
+<a href="javascript:;" onclick="tmodthreads(2);return false;">置顶</a>
+<%}if(data.Group_status>>5&1){%>
+<a href="javascript:;" onclick="tmodthreads(4);return false;">精华</a>
+<%}if(data.Group_status>>6&1){%>
+<a href="javascript:;" onclick="tmodthreads(3);return false;">高亮</a>
+<%}if(data.Group_status>>7&1 && data.Modrecommend && data.Modrecommend.Sort != 1){%>
+<a href="javascript:;" onclick="tmodthreads(5);return false;">推荐</a>
+<%}if(data.Group_status>>8&1 || data.Group_status>>9&1){%>
+<span class="pipe">|</span>
+<%}if(data.Group_status>>8&1){%>
+<a href="javascript:;" onclick="tmodthreads(1);return false;">提升下沉</a>
+<%}if(data.Status != 3 && data.Group_status>>10&1){%>
+<a href="javascript:;" onclick="tmodthreads(8);return false;">关闭打开</a>
+<%}%>
+</p>
+</div>
+
+<%}%>
+</form>
+</div>
+</div>
+
+<div id="filter_special_menu" class="p_pop" style="display:none" change="location.href='/index.html?tpl=forum&Fid=<%=data.Fid%>&Filter='+$('filter_special').value">
+<ul>
+<li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>" onclick="tpl_click(this.href);return false;">全部主题</a></li>
+<li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=common&Dateline=<%=GET('Dateline')%>&Orderby=<%=GET('Orderby')%>&Filter=<%=GET('Filter')%>&Typeid=<%=GET('Typeid')%>" onclick="tpl_click(this.href);return false;">普通</a></li>
+<%if(data.Allow>>8&1){%><li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=poll&Dateline=<%=GET('Dateline')%>&Orderby=<%=GET('Orderby')%>&Filter=<%=GET('Filter')%>&Typeid=<%=GET('Typeid')%>" onclick="tpl_click(this.href);return false;">投票</a></li>
+<%}if(data.Allow>>9&1){%><li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=trade&Dateline=<%=GET('Dateline')%>&Orderby=<%=GET('Orderby')%>&Filter=<%=GET('Filter')%>&Typeid=<%=GET('Typeid')%>" onclick="tpl_click(this.href);return false;">商品</a></li>
+<%}if(data.Allow>>10&1){%><li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=reward&Dateline=<%=GET('Dateline')%>&Orderby=<%=GET('Orderby')%>&Filter=<%=GET('Filter')%>&Typeid=<%=GET('Typeid')%>" onclick="tpl_click(this.href);return false;">悬赏</a></li>
+<%}if(data.Allow>>11&1){%><li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=activity&Dateline=<%=GET('Dateline')%>&Orderby=<%=GET('Orderby')%>&Filter=<%=GET('Filter')%>&Typeid=<%=GET('Typeid')%>" onclick="tpl_click(this.href);return false;">活动</a></li>
+<%}if(data.Allow>>12&1){%><li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&pecialtype=debate&Dateline=<%=GET('Dateline')%>&Orderby=<%=GET('Orderby')%>&Filter=<%=GET('Filter')%>&Typeid=<%=GET('Typeid')%>" onclick="tpl_click(this.href);return false;">辩论</a></li><%}%>
+</ul>
+</div>
+<div id="filter_other_menu" class="p_pop" style="display:none" change="location.href='/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Filter='+$('filter_other').value">
+<ul>
+<li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Dateline=<%=GET('Dateline')%>&Orderby=<%=GET('Orderby')%>&Typeid=<%=GET('Typeid')%>" onclick="tpl_click(this.href);return false;">全部主题</a></li>
+<li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Filter=heat&Dateline=<%=GET('Dateline')%>&Orderby=<%=GET('Orderby')%>&Typeid=<%=GET('Typeid')%>" onclick="tpl_click(this.href);return false" >热门</a></li>
+<!--<li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Typeid=<%=GET('Typeid')%>&Filter=hot" onclick="tpl_click(this.href);return false" >热帖</a></li>-->
+<li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Filter=digest&Dateline=<%=GET('Dateline')%>&Orderby=<%=GET('Orderby')%>&Typeid=<%=GET('Typeid')%>" onclick="tpl_click(this.href);return false" >精华</a></li>
+<li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Filter=recommend&Dateline=<%=GET('Dateline')%>&Orderby=<%=GET('Orderby')%>&Typeid=<%=GET('Typeid')%>" onclick="tpl_click(this.href);return false" >推荐</a></li>
+</ul>
+</div>
+<div id="filter_reward_menu" class="p_pop" style="display:none" change="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Filter=specialtype&Specialtype=reward&Rewardtype='+$('filter_reward').value">
+<ul>
+<li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Filter=specialtype&Specialtype=reward" onclick="tpl_click(this.href);return false">全部悬赏</a></li>
+<%if(data.Allow>>8&1){%><li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Filter=specialtype&Specialtype=reward&Rewardtype=1" onclick="tpl_click(this.href);return false">进行中</a></li><%}if(data.Allow>>10&1){%><li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Filter=specialtype&Specialtype=reward&Rewardtype=2" onclick="tpl_click(this.href);return false">已解决</a></li><%}%>
+</ul>
+</div>
+
+<div id="filter_dateline_menu" class="p_pop" style="display:none">
+<ul class="pop_moremenu">
+<li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Filter=<%=GET('Filter')%>&Typeid=<%=GET('Typeid')%>&Orderby=<%=GET('Orderby')%>" onclick="tpl_click(this.href);return false">全部时间</a></li>
+<li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Filter=<%=GET('Filter')%>&Typeid=<%=GET('Typeid')%>&Orderby=<%=GET('Orderby')%>&Dateline=86400" onclick="tpl_click(this.href);return false">一天</a></li>
+<li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Filter=<%=GET('Filter')%>&Typeid=<%=GET('Typeid')%>&Orderby=<%=GET('Orderby')%>&Dateline=172800" onclick="tpl_click(this.href);return false">两天</a></li>
+<li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Filter=<%=GET('Filter')%>&Typeid=<%=GET('Typeid')%>&Orderby=<%=GET('Orderby')%>&Dateline=604800" onclick="tpl_click(this.href);return false">一周</a></li>
+<li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Filter=<%=GET('Filter')%>&Typeid=<%=GET('Typeid')%>&Orderby=<%=GET('Orderby')%>&Dateline=2592000" onclick="tpl_click(this.href);return false">一个月</a></li>
+</ul>
+</div>
+
+
+<div id="filter_orderby_menu" class="p_pop" style="display:none">
+<ul>
+<li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Filter=<%=GET('Filter')%>&Typeid=<%=GET('Typeid')%>&Dateline=<%=GET('Dateline')%>&Orderby=lastpost" onclick="tpl_click(this.href);return false">最后发表</a></li>
+<li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Filter=<%=GET('Filter')%>&Typeid=<%=GET('Typeid')%>&Dateline=<%=GET('Dateline')%>&Orderby=replies" onclick="tpl_click(this.href);return false">回复</a></li>
+<li><a href="/index.html?tpl=forum&Fid=<%=data.Fid%>&Specialtype=<%=GET('Specialtype')%>&Filter=<%=GET('Filter')%>&Typeid=<%=GET('Typeid')%>&Dateline=<%=GET('Dateline')%>&Orderby=views" onclick="tpl_click(this.href);return false">查看</a></li>
+
+</ul>
+</div>
+
+
+
+<div class="bm bw0 pgs cl">
+<span id="fd_page_bottom"></span>
+<span class="pgb y"><a href="/index.html?tpl=forum_index" onclick="tpl_click(this.href);return false"><span class="arrow-left"></span>返回</a></span>
+
+<a href="javascript:;" id="newspecialtmp" onmouseover="$('newspecial').id = 'newspecialtmp';this.id = 'newspecial';showMenu({'ctrlid':this.id})" onclick="<%if(data.Allow>>5&1 && !(data.Allow>>6&1)){%>newthread(<%=data.Fid%>)<%}else{%>newthread(<%=data.Fid%>)<%}%>;return false;" title="发新帖"><span>发帖</span><span class="item arrow-bottom" style="margin-left:10px"></span></a>
+
+</div>
+<%}%>
+
+<!--[diy=diyfastposttop]--><div id="diyfastposttop" class="area"></div><!--[/diy]-->
+
+
+<!--[diy=diyforumdisplaybottom]--><div id="diyforumdisplaybottom" class="area"></div><!--[/diy]-->
+</div>
+
+
+</div>
+</div>
+<%if(data.Group_status>>11&1){%>
+<ul class="p_pop" id="newspecial_menu" style="display: none">
+<%if(data.Allow>>5&1){%><li><a href="/index.html?tpl=forum_newthread&Fid=<%=data.Fid%>&Type=0" onclick="newthread(<%=data.Fid%>);return false;">发表帖子</a></li><%}if(data.Group_status>>12&1){%><li class="poll"><a href="/index.html?tpl=forum_newthread&Fid=<%=data.Fid%>&Special=1&Type=0" onclick="newthread(<%=data.Fid%>,1);return false;">发起投票</a></li><%}if(data.Group_status>>13&1){%><li class="reward"><a href="/index.html?tpl=forum_newthread&Fid=<%=data.Fid%>&special=3&Type=0" onclick="newthread(<%=data.Fid%>,3);return false;">发布悬赏</a></li><%}if(data.Group_status>>14&1){%><li class="debate"><a href="/index.html?tpl=forum_newthread&Fid=<%=data.Fid%>&special=5&Type=0" onclick="newthread(<%=data.Fid%>,5);return false;">发起辩论</a></li><%}if(data.Group_status>>15&1){%><li class="activity"><a href="/index.html?tpl=forum_newthread&Fid=<%=data.Fid%>&special=4&Type=0" onclick="newthread(<%=data.Fid%>,4);return false;">发起活动</a></li><%}if(data.Group_status>>16&1){%><li class="trade"><a href="/index.html?tpl=forum_newthread&Fid=<%=data.Fid%>&special=2&Type=0" onclick="newthread(<%=data.Fid%>,2);return false;">出售商品</a></li><%}%>
+</ul>
+
+<%}%>
+<div class="wp mtn">
+<!--[diy=diy3]--><div id="diy3" class="area"></div><!--[/diy]-->
+</div>
+</div>
+</script>

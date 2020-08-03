@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>搜索</title>
+
+<meta name="keywords" content="" />
+<meta name="description" content=",Discuz! Board1" />
+<meta name="generator" content="Discuz! X3.4" />
+<meta name="author" content="Discuz! Team and Comsenz UI Team" />
+<meta name="copyright" content="2001-2017 Comsenz Inc." />
+<meta name="MSSmartTagsPreventParsing" content="True" />
+<meta http-equiv="MSThemeCompatible" content="Yes" />
+<link rel="stylesheet" type="text/css" href="data/cache/style_1_common.css" /><link rel="stylesheet" type="text/css" href="/data/cache/style_1_search_forum.css" />
+<script type="text/javascript">
+var ApiUrl=(location.protocol=="http:"?"ws":"wss");
+	ApiUrl+="://"+location.hostname+":"+location.port+"/ws";
+	if(document.location.hostname=='bbs.jachun.com') ApiUrl='wss://home.89757.name:440/ws';
+var ws = new WebSocket(ApiUrl);
+var load_start=new Date().getTime()/1000;var STYLEID = '1', STATICURL = '/static/', IMGDIR = '/static/image/common', VERHASH = 'xbq', charset = 'utf-8', discuz_uid = '0', cookiepre = 'yJlE_2132_', cookiedomain = '', cookiepath = '/', showusercard = '1', attackevasive = '0', disallowfloat = 'newthread', creditnotice = '1|威望|,2|金钱|,3|贡献|', defaultstyle = '', REPORTURL = 'aHR0cDovLzE5Mi4xNjguMTgyLjEwMC9mb3J1bS5waHA=', SITEURL = '', JSPATH = '/static/js/', CSSPATH = 'data/cache/style_', DYNAMICURL = '';
+</script>
+<script src="/all.min.js" type="text/javascript"></script>
+</head>
+
+<body id="nv_search" onkeydown="if(event.keyCode==27) return false;">
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+
+<div id="ct" class="cl w">
+<div class="mw">
+<form class="searchform" method="post" autocomplete="off" action="" onsubmit="">
+	<table id="scform" class="mbm" cellspacing="0" cellpadding="0">
+<tr>
+<td><h1><a href="/index.html" title="首页"><img src="/logo.png" alt="首页" /></a></h1></td>
+<td>
+<div id="scform_tb" class="cl">
+<!--<span class="y">
+<a href="javascript:;" id="quick_sch" class="showmenu" onmouseover="delayShow(this);">快速</a>
+<a href="search.php?mod=forum&amp;adv=yes&amp;srchtxt=123">高级</a>
+</span>-->
+<a href="javascript:;" class="a">帖子</a></div>
+<table id="scform_form" cellspacing="0" cellpadding="0">
+<tr>
+<td class="td_srchtxt"><input type="text" id="scform_srchtxt" name="srchtxt" size="45" maxlength="40" value="" tabindex="1" placeholder="请输入搜索内容" x-webkit-speech speech /><script type="text/javascript">initSearchmenu('scform_srchtxt');$('scform_srchtxt').focus();</script></td>
+<td class="td_srchbtn"><input type="hidden" name="searchsubmit" value="yes" /><button type="submit" id="scform_submit" class="schbtn"><strong>搜索</strong></button></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<ul id="quick_sch_menu" class="p_pop" style="display: none;">
+<li><a href="search.php?mod=forum&amp;srchfrom=3600&amp;searchsubmit=yes">1 小时以内的新帖</a></li>
+<li><a href="search.php?mod=forum&amp;srchfrom=14400&amp;searchsubmit=yes">4 小时以内的新帖</a></li>
+<li><a href="search.php?mod=forum&amp;srchfrom=28800&amp;searchsubmit=yes">8 小时以内的新帖</a></li>
+<li><a href="search.php?mod=forum&amp;srchfrom=86400&amp;searchsubmit=yes">24 小时以内的新帖</a></li>
+<li><a href="search.php?mod=forum&amp;srchfrom=604800&amp;searchsubmit=yes">1 周内帖子</a></li>
+<li><a href="search.php?mod=forum&amp;srchfrom=2592000&amp;searchsubmit=yes">1 月内帖子</a></li>
+<li><a href="search.php?mod=forum&amp;srchfrom=15552000&amp;searchsubmit=yes">6 月内帖子</a></li>
+<li><a href="search.php?mod=forum&amp;srchfrom=31536000&amp;searchsubmit=yes">1 年内帖子</a></li>
+</ul>
+</form>
+
+<div class="tl">
+<div class="sttl mbn" id="search_title">
+<h2>请输入搜索内容</h2>
+
+</div>
+<div class="slst mtw" id="tpl_content">
+</div>
+</div>
+</div>
+</div>
+
+<div id="ft" class="w cl">
+<em>Powered by <strong><a href="http://www.discuz.net" target="_blank">Discuz!</a></strong> <em>X3.4</em></em> &nbsp;
+<em>&copy; 2001-2017 <a href="http://www.comsenz.com" target="_blank">Comsenz Inc.</a></em>
+
+</div>
+</body>
+
+<script id="tpl_search" type="text/html">
+	
+<%if(!data.Threadlist){%>
+<p class="emp xs2 xg2">对不起，没有找到匹配结果。</p>
+<%}else{%>
+
+<ul><%for(var i in data.Threadlist){var thread=data.Threadlist[i];%><li class="pbw" id="<%=thread.Tid%>">
+<h3 class="xs3">
+<a href="/index.html?tpl=forum_viewthread&Tid=<%=thread.Tid%>" target="_blank" ><%-getSearchSubject(thread.Subject,GET('Word'))%></a>
+</h3>
+<p class="xg1"><%=thread.Replies%> 个回复 - <%=thread.Views%> 次查看</p>
+<p><%if(thread.Cutmessage){%><%=thread.Cutmessage%><%}else{%>内容隐藏需要，请点击进去查看<%}%></p>
+<p>
+<span><%=thread_time(thread.Dateline)%></span>
+ -
+<span>
+<%if(thread.Authorid && thread.Author){%>
+<a href="/index.html?tpl=space&Uid=<%=thread.Authorid%>" target="_blank"><%=thread.Author%></a>
+<%}else { if(thread.Authorid){%><a href="/index.html?tpl=space&Uid=<%=thread.Authorid%>" target="_blank">匿名</a><%}else{%>匿名<%}} %>
+</span>
+ -
+<span><a href="/index.html?tpl=forum&Fid=<%=thread.Fid%>" target="_blank" class="xi1"><%=thread.ForumName%></a></span>
+</p>
+</li>
+<%}%>
+</ul>
+<%}%>
+<%var page=GET("Page");var maxpage=ceil(data.Threadcount/cache.topicperpage)%>
+<%if(maxpage>1){%><div class="pgs cl mbm"><div class="pg"><%if(page>1){%><span class="pgb"><a href="/search.html?tpl=search&Word=<%=GET('Word')%>&Page=<%=page-1%>" onclick="tpl_click(this.href);return false"><span class="arrow-left"></span>上一页</a></span><%}for(var i=page-5;i<page;i++){%><%if(i>0){%><a href="/search.html?tpl=search&Word=<%=GET('Word')%>&Page=<%=i%>" onclick="tpl_click(this.href);return false"><%=i%></a><%}}%><strong><%=page%></strong><%for(var i=page+1;i<page+4 && i<=maxpage;i++){%><%if(i>0){%><a href="/search.html?tpl=search&Word=<%=GET('Word')%>&Page=<%=i%>" onclick="tpl_click(this.href);return false"><%=i%></a><%}}%><label><input type="text" name="custompage" class="px" size="2" title="输入页码，按回车快速跳转" value="<%=page%>" onkeydown="if(event.keyCode==13) {window.location='/search.html?tpl=search&Word=<%=GET('Word')%>&Page='+this.value;; doane(event);}"><span title="共 <%=maxpage%> 页"> / <%=maxpage%> 页</span></label><%if(page<maxpage){%><span class="pgn"><a href="/search.html?tpl=search&Word=<%=GET('Word')%>&Page=<%=page+1%>" onclick="tpl_click(this.href);return false" class="first">下一页<span class="arrow-right"></span></a></span><%}%></div></div><%}%>
+</script>
+<script type="text/javascript">
+	websocket_func[CMD_MSG_WS2U_searchThread]=tpl_susess
+	
+	if(GET('Word')){
+		var page=parseInt(GET("Page"))>0?parseInt(GET("Page")):1;
+		$('input[name="srchtxt"]').val(GET('Word'));
+		tpl_load("search",WRITE_MSG_U2WS_searchThread,{Word:GET('Word'),Page:page})
+	}
+	$('.searchform').submit(function(event) {
+		var word=$('input[name="srchtxt"]').val();
+		if(!word){
+			showDialog("搜索内容为空")
+		}else{
+			tpl_load("search",WRITE_MSG_U2WS_searchThread,{Word:word,Page:1})
+		}
+		return false;
+	});
+	
+</script>
+</html>
+

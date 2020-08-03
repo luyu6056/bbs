@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>登录管理中心</title>
+<link rel="stylesheet" href="/static/image/admincp/admincp.css?" type="text/css" media="all" />
+<script type="text/javascript">
+  var load_start=new Date().getTime()/1000;var STYLEID = '1', STATICURL = '/static/', IMGDIR = '/static/image/common', VERHASH = 'xbq', charset = 'utf-8', discuz_uid = '0', cookiepre = 'yJlE_2132_', cookiedomain = '', cookiepath = '/', showusercard = '1', attackevasive = '0', disallowfloat = 'newthread', creditnotice = '1|威望|,2|金钱|,3|贡献|', defaultstyle = '', REPORTURL = 'aHR0cDovLzE5Mi4xNjguMTgyLjEwMC9mb3J1bS5waHA=', SITEURL = '', JSPATH = '/static/js/', CSSPATH = 'data/cache/style_', DYNAMICURL = '';
+</script>
+<script src="/static/js/common.js?t=" type="text/javascript"></script>
+<script src="/static/js/protocol/msg.js?t=" type="text/javascript"></script>
+<script src="/static/js/protocol/U2WS.js?t=" type="text/javascript"></script>
+<script src="/static/js/protocol/handle.js?t=" type="text/javascript"></script>
+<script src="/static/js/protocol/aes_cfb.min.js?t=" type="text/javascript"></script>
+<meta content="Comsenz Inc." name="Copyright" />
+
+</head>
+<body><script language="JavaScript">
+	if(self.parent.frames.length != 0) {
+		self.parent.location=document.location;
+	}
+	function checkpasswd(){
+		ajax_post(WRITE_MSG_U2WS_Login_Gethash({Name:"admin"}),function(res){
+			var hash = res.Hash,
+                time = res.Time;
+            if (hash.length < 36) {
+            	showDialog("无法登录，请联系管理员")
+                return false;
+            }
+
+            pwd = l_c('admin',$('#admin_password').val(),hash,time);
+            ajax_post(WRITE_MSG_U2WS_UserLogin({Username:'admin',Passwd:pwd,Seccode:$('input[name="seccodeverify"]').val()}),function(res){
+                location.href = '/admin/index.html';
+            })
+		});
+
+		return false;
+		
+	}
+	ajax_post(WRITE_MSG_U2WS_Getlogin(),function(res){
+		if(res.Islogin==1){
+			location.href = '/admin/index.html';
+			return
+		}
+		binary="";
+		var len = res.Img.length;
+        for (var i = 0; i < len; i++) {
+            binary += String.fromCharCode(res.Img[i]);
+        }
+        $('#seccode').attr('src', 'data:image/jpeg;base64,'+window.btoa(binary));
+	})
+</script>
+<div id="append_parent"><div id="ls_fastloginfield_ctrl_menu" class="sltm" style="display: none; width: 40px;"><ul><li class="current">用户名</li><li>Email</li></ul></div></div>
+<table class="logintb">
+<tr>
+	<td class="login">
+		<h1>Discuz! Administrator's Control Panel</h1>
+		<p>Discuz! 是 <a href="http://www.tencent.com" target="_blank">腾讯</a> 旗下 <a href="http://www.comsenz.com" target="_blank">Comsenz</a> 公司推出的以社区为基础的专业建站平台，帮助网站实现一站式服务。</p>
+	</td>
+
+	<td>		
+		<form method="post" autocomplete="off" name="login" id="loginform" onsubmit="return checkpasswd()">
+		<p class="logintitle">用户名: </p>
+		<p class="loginform">admin</p>
+		<p class="logintitle">密　码:</p>
+		<p class="loginform"><input name="admin_password" tabindex="1" type="password" class="txt" id="admin_password" autocomplete="off" /></p>
+        <p class="logintitle">验证码:</p>
+        <span id="" class="seccode_1"><div class="rfm"><table><tbody><tr><td><input name="seccodeverify" type="text" autocomplete="off" style="ime-mode:disabled;width:100px" class="txt px vm" > <a href="javascript:;" onclick="updateseccode();doane(event);" class="xi2">换一个</a><span id="checkseccodeverify"><img src="/static/image/common/none.gif" width="16" height="16" class="vm"></span><br><span id="">输入下图中的字符<br><img id="seccode" onclick="updateseccode()" width="90" height="35" src="" class="vm" alt=""></span></td></tr></tbody></table></div></span> 
+		<p class="loginnofloat"><input name="submit" value="提交"  tabindex="3" type="submit" class="btn" /></p>
+
+		</form><script type="text/JavaScript">document.getElementById('loginform').admin_password.focus();</script>
+	</td>
+</tr>
+</table>
+<table class="logintb">
+<tr>
+	<td colspan="2" class="footer">
+		<div class="copyright">
+			<p>Powered by <a href="http://www.discuz.net/" target="_blank">Discuz!</a> X3.4 </p>
+			<p>&copy; 2001-2017, <a href="http://www.comsenz.com/" target="_blank">Comsenz</a> Inc.</p>
+		</div>
+	</td>
+</tr>
+</table>
+</body>
+</html>

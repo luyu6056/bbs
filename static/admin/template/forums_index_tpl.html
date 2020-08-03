@@ -1,0 +1,48 @@
+
+ <script id="tpl_main" type="text/html">
+<div id="ajaxwaitid"></div>
+<div class="container" id="cpcontainer"><div class="itemtitle"><h3>版块管理</h3></div>
+<table class="tb tb2 " id="tips">
+<tbody><tr><th class="partition">技巧提示</th></tr>
+<tr><td class="tipsblock" s="1"><ul id="tipslis"><li>版主用户名为粗体，则表示该版主权限可继承到下级版块</li></ul></td></tr></tbody></table>
+
+<form name="cpform" method="post" autocomplete="off" action="admin.php?action=forums" id="cpform"><div style="height:30px;line-height:30px;"><a href="javascript:;" onclick="show_all()">全部展开</a> | <a href="javascript:;" onclick="hide_all()">全部折叠</a> <input type="text" id="srchforumipt" class="txt"> <input type="submit" class="btn" value="搜索" onclick="return srchforum()"></div>
+<table class="tb tb2 ">
+
+<tbody><tr class="header"><th></th><th>显示顺序</th><th>版块名称</th><th></th><th>版主</th><th><a href="javascript:;" onclick="if(getmultiids()) location.href='admin.php?action=forums&amp;operation=edit&amp;multi=' + getmultiids();return false;">批量编辑</a></th></tr>
+	</tbody>
+	{{each data.Catlist cat k}}
+	<tbody>
+	<tr class="hover"><td class="td25" onclick="toggle_group('group_{{cat.Fid}}', $('a_group_{{cat.Fid}}'))"><a href="javascript:;" id="a_group_{{cat.Fid}}">[-]</a></td>
+			<td class="td25"><input type="text" class="txt" name="order" fid="{{cat.Fid}}" value="{{cat.Displayorder}}"></td>
+			<td><div class="parentboard"><input type="text" name="name" fid="{{cat.Fid}}" value="{{cat.Name}}" class="txt"></div>{{if cat.Status==0}}<div class="boardattr">隐藏</div>{{/if}}</td>
+			<td align="right" class="td23 lightfont">(gid:{{cat.Fid}})</td><td class="td23"><a href="javascript:tpl_load('forums_moderators',WRITE_MSG_U2WS_Admin_menu_forums_moderators,{Fid:{{cat.Fid}}});" title="编辑本版块版主">{{if cat.Moderators==""}}无 / 添加版主{{else}}{{cat.Moderators}} »{{/if}}</a></td>
+			<td width="160"><input class="checkbox" value="1" type="checkbox" name="gc{{k}}" onclick="checkAll('value', this.form, 'g{{k}}', 'gc{{k}}', 1)">
+			<a href="javascript:tpl_load('forums_edit',WRITE_MSG_U2WS_Admin_menu_forums_edit,{Fid:{{cat.Fid}}});" class="act">编辑</a><a href="javascript:showDialog('是否删除板块 {{cat.Name}} 所有相关子版块与帖子,该操作无法恢复','confirm','删除{{cat.Name}}',function(){delete_forum({{cat.Fid}});});" title="删除本版块及其中所有帖子" class="act">删除</a></td></tr>
+		</tbody>
+			<tbody id="group_{{cat.Fid}}">
+			{{each cat.Forums  forum}}
+			<tr class="hover"><td class="td25"></td>
+			<td class="td25"><input type="text" class="txt" name="order" fid="{{forum.Fid}}" value="{{forum.Displayorder}}"></td><td><div class="board"><input type="text" name="name" fid="{{forum.Fid}}" value="{{forum.Name}}" class="txt"><a href="javasvript:" onclick="addrowdirect = 1;addrow(this, 2, {{forum.Fid}})" class="addchildboard">添加子版块</a></div>{{if forum.Status==0}}<div class="boardattr">隐藏</div>{{/if}}</td><td align="right" class="td23 lightfont">(fid:{{forum.Fid}})</td><td class="td23"><a href="javascript:tpl_load('forums_moderators',WRITE_MSG_U2WS_Admin_menu_forums_moderators,{Fid:{{forum.Fid}}});" title="编辑本版块版主">{{if forum.Moderators==""}}无 / 添加版主{{else}}{{forum.Moderators}} »{{/if}}</a></td>
+			<td width="160"><input class="checkbox" value="{{forum.Fid}}" type="checkbox" chkvalue="g{{k}}" onclick="multiupdate(this, {{forum.Fid}})">
+			<a href="javascript:tpl_load('forums_edit',WRITE_MSG_U2WS_Admin_menu_forums_edit,{Fid:{{forum.Fid}}});" title="编辑本版块设置" class="act">编辑</a><!--<a href="admin.php?action=forums&amp;operation=copy&amp;source=2" title="将本版块的设置复制到其他版块" class="act">设置复制</a>--><a href="javascript:showDialog('是否删除板块 {{forum.Name}} 所有相关子版块与帖子,该操作无法恢复','confirm','删除{{forum.Name}}',function(){delete_forum({{forum.Fid}});});" title="删除本版块及其中所有帖子" class="act">删除</a></td></tr>
+				{{each forum.Level_three  three}}
+					<tr class="hover"><td class="td25"></td>
+					<td class="td25"><input type="text" class="txt" name="order" fid="{{three.Fid}}" value="{{three.Displayorder}}"></td><td><div id="cb_{{three.Fid}}" class="childboard"><input type="text" name="name" fid="{{three.Fid}}" value="{{three.Name}}" class="txt"></div>{{if three.Status==0}}<div class="boardattr">隐藏</div>{{/if}}</td><td align="right" class="td23 lightfont">(fid:{{three.Fid}})</td><td class="td23"><a href="javascript:tpl_load('forums_moderators',WRITE_MSG_U2WS_Admin_menu_forums_moderators,{Fid:{{three.Fid}}});" title="编辑本版块版主">{{if three.Moderators==""}}无 / 添加版主{{else}}{{three.Moderators}} »{{/if}}</a></td>
+					<td width="160"><input class="checkbox" value="40" type="checkbox" chkvalue="g{{k}}" onclick="multiupdate(this, {{three.Fid}})">
+					<a href="javascript:tpl_load('forums_edit',WRITE_MSG_U2WS_Admin_menu_forums_edit,{Fid:{{three.Fid}}});" title="编辑本版块设置" class="act">编辑</a><!--<a href="admin.php?action=forums&amp;operation=copy&amp;source=40" title="将本版块的设置复制到其他版块" class="act">设置复制</a>--><a href="javascript:showDialog('是否删除板块 {{three.Name}} 所有相关子版块与帖子,该操作无法恢复','confirm','删除{{three.Name}}',function(){delete_forum({{three.Fid}});});" title="删除本版块及其中所有帖子" class="act">删除</a></td></tr>
+				{{/each}}
+			{{/each}}
+			
+			<tr><td></td><td colspan="4"><div class="lastboard"><a href="javascript:" onclick="addrow(this, 1, {{cat.Fid}})" class="addtr">添加新版块</a></div></td><td>&nbsp;</td></tr>
+			</tbody>
+			{{/each}}
+			<tbody><tr><td></td><td colspan="4"><div><a href="javascript:" onclick="addrow(this, 0)" class="addtr">添加新分区</a></div></td><td class="bold"><a href="javascript:;" onclick="if(getmultiids()) location.href='admin.php?action=forums&amp;operation=edit&amp;multi=' + getmultiids();return false;">批量编辑</a></td></tr><tr><td colspan="15"><div class="fixsel"><input type="submit" class="btn" id="submit_editsubmit" name="editsubmit" title="按 Enter 键可随时提交您的修改" value="提交"></div></td></tr></tbody>
+			</table>
+
+</form>
+
+</div>
+
+
+</script>

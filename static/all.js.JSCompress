@@ -1,0 +1,21 @@
+﻿<jscompress public="http://www.jscompress.cn/" command="import-combineset">
+<combinefile path="all.js">
+    <auto value="0" />
+    <sourcefile path=".\static\js\protocol\msg.js" />
+    <sourcefile path="..\..\protocol_tool\js\handle.js" />
+    <sourcefile path="..\..\protocol_tool\js\basic.js" />
+    <sourcefile path="..\..\protocol_tool\js\U2WS.js" />
+    <sourcefile path="..\..\protocol_tool\js\U2ADMIN.js" />
+    <sourcefile path=".\static\js\common.js" />
+    <sourcefile path=".\static\js\jquery.superslide.js" />
+    <sourcefile path=".\static\js\jquery.gScrollingCarousel.js" />
+    <sourcefile path=".\data\cache\common_smilies_var.js" />
+    <sourcefile path=".\static\js\font.js" />
+    <sourcefile path=".\static\js\forum.js" />
+    <sourcefile path=".\static\js\protocol\aes.js" />
+    <sourcefile path=".\static\js\smilies.js" />
+    <sourcefile path=".\static\js\forum_viewthread.js" />
+    <sourcefile path=".\static\js\common_extra.js" />
+    <sourcefile path=".\static\js\v3.js" />
+</combinefile>
+</jscompress>

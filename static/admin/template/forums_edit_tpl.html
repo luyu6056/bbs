@@ -1,0 +1,340 @@
+<script id="tpl_forums_edit" type="text/html">
+<div id="ajaxwaitid"></div>
+<div class="container" id="cpcontainer"><form name="menuform" method="get" autocomplete="off" action="admin.php?action=" id="menuform">
+<div class="floattop"><div class="itemtitle"><h3>{{if data.Type==0}}分区详细设置 - {{data.Base.Name}}(gid:{{data.Fid}})</h3>{{else}}编辑版块 - {{data.Base.Name}}(fid:{{data.Fid}})</h3><ul class="tab1" id="submenu"><li id="nav_basic" onclick="showanchor(this)" class="current"><a href="javascript:"><span>基本设置</span></a></li><li id="nav_extend" onclick="showanchor(this)"><a href="javascript:"><span>扩展设置</span></a></li><li id="nav_posts" onclick="showanchor(this)"><a href="javascript:"><span>帖子选项</span></a></li><!--<li id="nav_perm" onclick="showanchor(this)"><a href="javascript:"><span>权限相关</span></a></li>--><li id="nav_credits" onclick="showanchor(this)"><a href="javascript:"><span>积分策略</span></a></li><li id="nav_m5" class="hasdropmenu" onmouseover="dropmenu(this);" initialized="true"><a href="javascript:"><span>其他<em>&nbsp;&nbsp;</em></span></a><div id="nav_m5child" class="dropmenu" style="position: absolute; z-index: 301; left: 551px; top: 28px; display: none;" initialized="true"><ul><li id="nav_threadtypes" onclick="showanchor(this)"><a href="javascript:" class=" hidefocus">主题分类</a></li><li id="nav_threadsorts" onclick="showanchor(this)"><a href="javascript:">分类信息</a></li><li id="nav_attachtype" onclick="showanchor(this)"><a href="javascript:">附件类型</a></li><li id="nav_" onclick="showanchor(this)"><a href="javascript:"></a></li></ul></div></li></ul></div></div><div class="floattopempty"></div>{{/if}}</form>
+<form name="cpform" method="post" autocomplete="off" action="admin.php?action=forums&amp;operation=edit&amp;fid=2&amp;" id="cpform" enctype="multipart/form-data">
+<input type="hidden" name="anchor" value="basic">
+<div id="basic">
+
+
+<table class="tb tb2 nobdb">
+<tbody><tr><th colspan="15" class="partition">基本设置</th></tr>
+<tr><td colspan="2" class="td27" s="1">版块名称:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq7e01')">{{@showsetting('Namenew',data.Base.Name, 'text')}}<td class="vtop tips2" s="1"></td></tr>
+<tr><td colspan="2" class="td27" s="1">版块名称颜色:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqe878')"><td class="vtop rowform">
+<input id="c1_v" type="text" class="txt" style="float:left; width:210px;" value="{{data.Base.Extranew.Namecolor}}" name="Extranew.Namecolor" onchange="updatecolorpreview('c1')">
+<input id="c1" onclick="c1_frame.location='static/image/admincp/getcolor.htm?c1|c1_v';showMenu({'ctrlid':'c1'})" type="button" class="colorwd" value="{{data.Base.Extranew.Namecolor}}" style="background: "><span id="c1_menu" style="display: none"><iframe name="c1_frame" src="" frameborder="0" width="210" height="148" scrolling="no"></iframe></span>
+</td><td class="vtop tips2" s="1"></td></tr>
+{{if data.Type==0}}
+<tr><td colspan="2" class="td27" s="1">论坛首页下级子版块横排:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqd102')">{{@showsetting('Forumcolumnsnew',data.Base.Forumcolumns, 'number')}}<td class="vtop tips2" s="1">设置进入论坛首页时下级子版块横排时每行版块数量，如果设置为 0，则按正常方式排列</td></tr>
+<tr><td colspan="2" class="td27" s="1">分区下级子版块横排:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq1ad3')">{{@showsetting('Catforumcolumnsnew',data.Base.Catforumcolumns, 'number')}}<td class="vtop tips2" s="1">设置进入分区时，下级子版块横排时每行版块数量，如果设置为 0，则按正常方式排列</td></tr>
+{{else}}
+<input type="hidden" name="Catforumcolumnsnew" value="{{data.Base.Catforumcolumns}}">
+<tr><td colspan="2" class="td27" s="1">版块图标:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq22aa')"><td class="vtop tips2" s="1">{{if data.Base.Icon!=""}}<label id="filele_0_label"><a href="javascript:$('#filele_0_label').parent().remove();tpldata.Base.Icon='';void(0);"> 删除</label><br><img src="{{data.Base.Icon}}" width="80px"><br>{{/if}}</td><td class="vtop rowform">
+<input id="filele_0" style="display:" name="iconnew" value="" type="file" class="txt uploadbtn marginbot" accept=".jpg,.jpeg,.png"></td></tr>
+<!--<tr><td colspan="2" class="td27" s="1">图标宽度 (单位: px):</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqf8c1')">{{@showsetting('Extranew.Iconwidth',data.Base.Extranew.Iconwidth, 'number')}}<td class="vtop tips2" s="1"></td></tr>-->
+
+{{/if}}
+
+{{if data.Type!=0}}
+<tr><td colspan="2" class="td27" s="1">上级版块:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq75ea')"><td class="vtop rowform"><select name="fupnew">
+	{{each data.Base.Catlist cat}}
+	{{if cat.Fid!=data.Fid}}<option value="{{cat.Fid}}"{{if data.Base.Fup==cat.Fid}} selected="selected"{{/if}}>{{cat.Name}}</option>{{/if}}
+	{{each cat.Forums forum}}
+	{{if forum.Fid!=data.Fid}}<option value="{{forum.Fid}}{{if data.Base.Fup==forum.Fid}} selected="selected"{{/if}}">&nbsp; &gt; {{forum.Name}}</option>{{/if}}
+	{{/each}}
+	{{/each}}
+</select></td><td class="vtop tips2" s="1">本版块的上级版块或分类</td></tr>
+{{/if}}
+<tr><td colspan="2" class="td27" s="1">显示版块:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq4984')">{{@showsetting('Statusnew',data.Base.Status, 'radio')}}<td class="vtop tips2" s="1">选择“不显示”将暂时将版块隐藏不显示，但版块内容仍将保留，且用户仍可通过直接提供带有 fid 的 URL 访问到此版块</td></tr>
+<!--<tr><td colspan="2" class="td27" s="1">在导航显示:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq7885')">{{@showsetting('Shownavnew',data.Shownav, 'radio')}}<td class="vtop tips2" s="1">选择是否在主导航中显示</td></tr>-->
+<tr><td colspan="2" class="td27" s="1">版块简介:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq350a')">{{@showsetting('Descriptionnew',data.Base.Description, 'textarea')}}<td class="vtop tips2" s="1">将显示于版块名称的下面，提供对本版块的简短描述<br>支持内置的 Discuz! 代码<br>双击输入框可扩大/缩小</td></tr>
+<tr><td colspan="2" class="td27" s="1">本版块规则:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqc5b2')">{{@showsetting('Rulesnew',data.Base.Rules, 'textarea')}}<td class="vtop tips2" s="1">显示于主题列表页的当前版块规则，留空为不显示<br>支持内置的 Discuz! 代码<br>双击输入框可扩大/缩小</td></tr>
+</table>
+</div><div id="extend" style="display: none">
+<table class="tb tb2 " id="tips">
+<tbody><tr><th class="partition">技巧提示</th></tr>
+<tr><td class="tipsblock" s="1"><ul id="tipslis"><li>以下设置没有继承性，即仅对当前版块有效，不会对下级子版块产生影响。</li></ul></td></tr></tbody></table>
+
+<table class="tb tb2 nobdb">
+<tbody><tr><th colspan="15" class="partition">扩展设置</th></tr>
+<tr><td colspan="2" class="td27" s="1">风格方案:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq9260')"><td class="vtop rowform">
+<select name="styleidnew"><option value="0">- 使用默认 -</option><option value="1">默认风格</option>
+<option value="2">zvis_6_ui</option>
+</select></td><td class="vtop tips2" s="1">访问者进入本版块所使用的风格方案</td></tr>
+<tr><td colspan="2" class="td27" s="1">论坛版块下级子版块横排:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq110a')">{{@showsetting('Forumcolumnsnew',data.Ext.Forumcolumns, 'number')}}<td class="vtop tips2" s="1">设置进入论坛版块时下级子版块横排时每行版块数量，如果设置为 0，则按正常方式排列</td></tr>
+<tr><td colspan="2" class="td27" s="1">本版块在首页显示下级子版块:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqac01')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li class="checked"><input class="radio" type="radio" name="subforumsindexnew" value="-1" checked="">&nbsp;默认</li><li><input class="radio" type="radio" name="subforumsindexnew" value="1">&nbsp;是</li><li><input class="radio" type="radio" name="subforumsindexnew" value="0">&nbsp;否</li></ul></td><td class="vtop tips2" s="1">首页版块列表中在版块简介下方显示下级子版块名字和链接(如果存在的话)。注意: 本功能不考虑子版块特殊浏览权限的情况，只要存在即会被显示出来。选择“默认”，将使用全局设置</td></tr>
+<tr><td colspan="2" class="td27" s="1">只显示下级子版块:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq6166')">{{@showsetting('Simplenew',data.Simplenew, 'radio')}}<td class="vtop tips2" s="1">选择“是”将不显示本版块的主题列表、发帖按钮等等，类似于一个分类</td></tr>
+<tr><td colspan="2" class="td27" s="1">本版块宽窄风格:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqa46c')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li class="checked"><input class="radio" type="radio" name="widthautonew" value="0" checked="">&nbsp;默认</li><li><input class="radio" type="radio" name="widthautonew" value="-1">&nbsp;窄屏(固定宽度)</li><li><input class="radio" type="radio" name="widthautonew" value="1">&nbsp;宽屏(自由宽度)</li></ul></td><td class="vtop tips2" s="1">设置本版块的显示风格是宽版还是窄版，设置后用户将无法自由切换宽窄风格。默认表示继承全局设置</td></tr>
+<tr><td colspan="2" class="td27" s="1">开启图片列表模式:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq081e')">{{@showsetting('Picstylenew',data.Picstylenew, 'radio')}}<td class="vtop tips2" s="1">主题列表将以图片方式显示，主题封面可统一<a href="admin.php?action=setting&amp;operation=styles&amp;anchor=forumdisplay">设置宽高</a></td></tr>
+<tr><td colspan="2" class="td27" s="1">显示边栏:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqfd62')">{{@showsetting('Allowsidenew',data.Allowsidenew, 'radio')}}<td class="vtop tips2" s="1">选择“是”版块首页侧边将显示聚合本版内容的信息</td></tr>
+<tr><td colspan="2" class="td27" s="1">显示全局置顶和分类置顶的主题:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq8ab8')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li class="checked"><input class="radio" type="radio" name="allowglobalsticknew" value="1" checked="">&nbsp;是</li><li><input class="radio" type="radio" name="allowglobalsticknew" value="0">&nbsp;否</li></ul></td><td class="vtop tips2" s="1">是否在本版显示全局置顶和分版置顶</td></tr>
+<tr><td colspan="2" class="td27" s="1"><span class="spectitle">主题默认排序字段</span>:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq8a87')"><td class="vtop rowform">
+<ul class="nofloat" onmouseover="altStyle(this);"><li class="checked"><input class="radio" type="radio" name="defaultorderfieldnew" value="0" checked="">&nbsp;回复时间</li><li><input class="radio" type="radio" name="defaultorderfieldnew" value="1">&nbsp;发布时间</li><li><input class="radio" type="radio" name="defaultorderfieldnew" value="2">&nbsp;回复数量</li><li><input class="radio" type="radio" name="defaultorderfieldnew" value="3">&nbsp;浏览次数</li></ul></td><td class="vtop tips2" s="1">设置版块的主题列表默认按照哪个字段进行排序显示。默认为“回复时间”，除默认设置外其他排序方式会加重服务器负担</td></tr>
+<tr><td colspan="2" class="td27" s="1"><span class="spectitle">主题默认排序方式</span>:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq0d5f')"><td class="vtop rowform">
+<ul class="nofloat" onmouseover="altStyle(this);"><li class="checked"><input class="radio" type="radio" name="defaultordernew" value="0" checked="">&nbsp;按降序排列</li><li><input class="radio" type="radio" name="defaultordernew" value="1">&nbsp;按升序排列</li></ul></td><td class="vtop tips2" s="1">设置版块的主题列表默认排序的方式。默认为“按降序排列”，除默认设置外其他排序方式会加重服务器负担</td></tr>
+<tr><td colspan="2" class="td27" s="1">页面缓存系数:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqc8f7')">{{@showsetting('Threadcachesnew',data.Threadcachesnew, 'text')}}<td class="vtop tips2" s="1">此功能可以将游客经常访问的主题临时缓存起来，缓解大型服务器压力。系数范围 0～100，建议数值 20 ～ 40，0 为关闭缓存。在磁盘空间允许的情况下，适当调高缓存系数，可以提高缓存效果<br>注：版块设置完毕后请到 全局 -&gt; 优化设置 -&gt; 站点页面缓存设置，调整其缓存时间</td></tr>
+<tr><td colspan="2" class="td27" s="1">关联群组/版块:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq13e5')">{{@showsetting('Relatedgroupnew',data.Relatedgroupnew, 'text')}}<td class="vtop tips2" s="1">填写被关联群组/版块的fid，以半角逗号 "," 隔开。版块的主题列表页将显示被关联群组/版块的主题</td></tr>
+<tr><td colspan="2" class="td27" s="1">允许版主修改本版块规则:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq624c')">{{@showsetting('Alloweditrulesnew',data.Alloweditrulesnew, 'radio')}}<td class="vtop tips2" s="1">设置是否允许超级版主和版主修改本版规则</td></tr>
+<tr><td colspan="2" class="td27" s="1">禁止淘帖:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqc248')">{{@showsetting('Disablecollectnew',data.Disablecollectnew, 'radio')}}<td class="vtop tips2" s="1">选择“是”将禁止用户淘帖本版主题</td></tr>
+<tr><td colspan="2" class="td27" s="1">是否开启推荐主题功能:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqd9f7')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li><input class="radio" type="radio" name="modrecommendnew[open]" value="1" onclick="$('hidden_forums_edit_extend_recommend').style.display = '';">&nbsp;是</li><li class="checked"><input class="radio" type="radio" name="modrecommendnew[open]" value="0" checked="" onclick="$('hidden_forums_edit_extend_recommend').style.display = 'none';">&nbsp;否</li></ul></td><td class="vtop tips2" s="1">设置是否开启推荐主题功能</td></tr></tbody><tbody class="sub" id="hidden_forums_edit_extend_recommend" style="display: none">
+<tr><td colspan="2" class="td27" s="1">版主推荐主题方式:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqd0be')"><td class="vtop rowform">
+<ul class="nofloat" onmouseover="altStyle(this);"><li><input class="radio" type="radio" name="modrecommendnew[sort]" value="1">&nbsp;自动生成</li><li><input class="radio" type="radio" name="modrecommendnew[sort]" value="0">&nbsp;手动生成</li><li><input class="radio" type="radio" name="modrecommendnew[sort]" value="2">&nbsp;半自动生成</li></ul></td><td class="vtop tips2" s="1">自动生成则按照推荐主题规则设定生成推荐列表。<br>手动生成则由版主自行推荐生成推荐列表。<br>半自动生成则和手动方式类似，当手动生成的列表条数不足设置的显示条数时，将按照推荐主题规则自动补足相差条数</td></tr>
+<tr><td colspan="2" class="td27" s="1">推荐主题规则:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqf2dc')"><td class="vtop rowform">
+<ul class="nofloat" onmouseover="altStyle(this);"><li><input class="radio" type="radio" name="modrecommendnew[orderby]" value="0">&nbsp;按发帖时间</li><li><input class="radio" type="radio" name="modrecommendnew[orderby]" value="1">&nbsp;按最后回复时间</li><li><input class="radio" type="radio" name="modrecommendnew[orderby]" value="2">&nbsp;按查看数</li><li><input class="radio" type="radio" name="modrecommendnew[orderby]" value="3">&nbsp;按回复数</li><li><input class="radio" type="radio" name="modrecommendnew[orderby]" value="4">&nbsp;按精华帖</li><li><input class="radio" type="radio" name="modrecommendnew[orderby]" value="5">&nbsp;按评价指数</li><li><input class="radio" type="radio" name="modrecommendnew[orderby]" value="6">&nbsp;按主题热度</li></ul></td><td class="vtop tips2" s="1">推荐主题规则，只对自动和半自动生成推荐主题列表有效，此规则均为降序排列</td></tr>
+<tr><td colspan="2" class="td27" s="1">推荐主题显示数量:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqcd95')">{{@showsetting('Modrecommendnew[num]',data.Modrecommendnew[num], 'text')}}<td class="vtop tips2" s="1">推荐主题显示的数量，默认为 10 条，建议不要超过 20 条</td></tr>
+<tr><td colspan="2" class="td27" s="1">推荐主题图片附件显示数量:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqaae6')">{{@showsetting('Modrecommendnew[imagenum]',data.Modrecommendnew[imagenum], 'text')}}<td class="vtop tips2" s="1">推荐主题中图片附件显示的数量，默认为 5 条。设置为 0 则不显示，建议不要超过 10 条</td></tr>
+<tr><td colspan="2" class="td27" s="1">推荐主题图片附件显示大小:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq378d')"><td class="vtop rowform">
+<input type="text" class="txt" name="modrecommendnew[imagewidth]" value="300" style="width: 108px; margin-right: 5px;"> X <input type="text" class="txt" name="modrecommendnew[imageheight]" value="250" style="width: 108px; margin-left: 5px;"></td><td class="vtop tips2" s="1">推荐主题中图片附件显示的大小，默认为 300 x 250</td></tr>
+<tr><td colspan="2" class="td27" s="1">标题最大字节数:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqd588')">{{@showsetting('Modrecommendnew[maxlength]',data.Modrecommendnew[maxlength], 'text')}}<td class="vtop tips2" s="1">设置当标题长度超过本设定时，是否将标题自动缩减到本设定中的字节数，0 为不自动缩减</td></tr>
+<tr><td colspan="2" class="td27" s="1">数据缓存时间(秒):</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq19e9')">{{@showsetting('Modrecommendnew[cachelife]',data.Modrecommendnew[cachelife], 'text')}}<td class="vtop tips2" s="1">由于一些排序检索操作比较耗费资源，建议设置为 900 的数值</td></tr>
+<tr><td colspan="2" class="td27" s="1">推荐主题时间段:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq03ca')">{{@showsetting('Modrecommendnew[dateline]',data.Modrecommendnew[dateline], 'text')}}<td class="vtop tips2" s="1">按照设置的排序方式，取从访问推荐主题列表这一刻往前推送时间段内的主题，自动生成推荐主题列表，单位为小时，设置成0为所有时段</td></tr></tbody></table>
+</div><div id="posts" style="display: none">
+<table class="tb tb2 " id="tips">
+<tbody><tr><th class="partition">技巧提示</th></tr>
+<tr><td class="tipsblock" s="1"><ul id="tipslis"><li>以下设置没有继承性，即仅对当前版块有效，不会对下级子版块产生影响。</li></ul></td></tr></tbody></table>
+
+<table class="tb tb2 nobdb">
+<tbody><tr><th colspan="15" class="partition">帖子选项</th></tr>
+<tr><td colspan="2" class="td27" s="1">发帖审核:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq278a')"><td class="vtop rowform">
+<ul class="nofloat" onmouseover="altStyle(this);"><li class="checked"><input class="radio" type="radio" name="modnewpostsnew" value="0" checked="">&nbsp;无</li><li><input class="radio" type="radio" name="modnewpostsnew" value="1">&nbsp;审核新主题</li><li><input class="radio" type="radio" name="modnewpostsnew" value="2">&nbsp;审核新主题和新回复</li></ul></td><td class="vtop tips2" s="1">选择“是”将使用户在本版发表的帖子待版主或管理员审查通过后才显示出来，打开此功能后，您可以在用户组中设定哪些组发帖可不经审核，也可以在管理组中设定哪些组可以审核别人的帖子</td></tr>
+<tr><td colspan="2" class="td27" s="1">允许编辑帖子:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq12d7')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li class="checked"><input class="radio" type="radio" name="alloweditpostnew" value="1" checked="">&nbsp;是</li><li><input class="radio" type="radio" name="alloweditpostnew" value="0">&nbsp;否</li></ul></td><td class="vtop tips2" s="1">选择“是”将允许用户编辑本版发表的帖子</td></tr>
+<tr><td colspan="2" class="td27" s="1">回收站:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqe995')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li class="checked"><input class="radio" type="radio" name="recyclebinnew" value="1" checked="">&nbsp;是</li><li><input class="radio" type="radio" name="recyclebinnew" value="0">&nbsp;否</li></ul></td><td class="vtop tips2" s="1">是否在本版启用回收站功能，打开此功能后，所有被删除主题和回帖将被放在回收站中，而不会被直接删除</td></tr>
+<tr><td colspan="2" class="td27" s="1">允许使用 HTML 代码:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqd4d8')">{{@showsetting('Allowhtmlnew',data.Allowhtmlnew, 'radio')}}<td class="vtop tips2" s="1">注意: 选择“是”将不屏蔽帖子中的任何代码，将带来严重的安全隐患，请慎用</td></tr>
+<tr><td colspan="2" class="td27" s="1">允许使用Discuz!代码:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqead6')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li class="checked"><input class="radio" type="radio" name="allowbbcodenew" value="1" checked="">&nbsp;是</li><li><input class="radio" type="radio" name="allowbbcodenew" value="0">&nbsp;否</li></ul></td><td class="vtop tips2" s="1">Discuz! 代码是一种简化和安全的页面格式代码</td></tr>
+<tr><td colspan="2" class="td27" s="1">允许使用 [img] 代码:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqd367')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li class="checked"><input class="radio" type="radio" name="allowimgcodenew" value="1" checked="">&nbsp;是</li><li><input class="radio" type="radio" name="allowimgcodenew" value="0">&nbsp;否</li></ul></td><td class="vtop tips2" s="1">允许 [img] 代码作者将可以在帖子插入其他网站的图片并显示</td></tr>
+<tr><td colspan="2" class="td27" s="1">允许使用多媒体代码:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq29f9')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li class="checked"><input class="radio" type="radio" name="allowmediacodenew" value="1" checked="">&nbsp;是</li><li><input class="radio" type="radio" name="allowmediacodenew" value="0">&nbsp;否</li></ul></td><td class="vtop tips2" s="1">允许 [audio] [media] [flash] 等多媒体代码后，作者将可以在帖子插入多媒体文件并显示</td></tr>
+<tr><td colspan="2" class="td27" s="1">允许使用表情:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqc599')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li class="checked"><input class="radio" type="radio" name="allowsmiliesnew" value="1" checked="">&nbsp;是</li><li><input class="radio" type="radio" name="allowsmiliesnew" value="0">&nbsp;否</li></ul></td><td class="vtop tips2" s="1">表情提供对表情符号，如“:)”的解析，使之作为图片显示</td></tr>
+<tr><td colspan="2" class="td27" s="1">启用内容干扰码:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq2001')">{{@showsetting('Jammernew',data.Jammernew, 'radio')}}<td class="vtop tips2" s="1">选择“是”将在帖子内容中增加随机的干扰字串，使得访问者无法复制原始内容。注意: 本功能会轻微加重服务器负担</td></tr>
+<tr><td colspan="2" class="td27" s="1">允许匿名发帖:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq708f')">{{@showsetting('Allowanonymousnew',data.Allowanonymousnew, 'radio')}}<td class="vtop tips2" s="1">是否允许用户在本版匿名发表主题和回复，只要用户组或本版块允许，用户均可使用匿名发帖功能。匿名发帖不同于游客发帖，用户需要登录后才可使用，版主和管理员可以查看真实作者</td></tr>
+<tr><td colspan="2" class="td27" s="1">禁用图片附件添加缩略图:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq4f92')">{{@showsetting('Disablethumbnew',data.Disablethumbnew, 'radio')}}<td class="vtop tips2" s="1">选择“是”将不对本版块上传的图片附件自动缩略图，即便全局设置中开启了此项功能。选择“否”为按照系统默认设置决定是否添加缩略图</td></tr>
+<tr><td colspan="2" class="td27" s="1">禁用图片附件添加水印:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq0e21')">{{@showsetting('Disablewatermarknew',data.Disablewatermarknew, 'radio')}}<td class="vtop tips2" s="1">选择“是”将不对本版块上传的图片附件自动添加水印，即便全局设置中开启了此项功能。选择“否”为按照系统默认设置决定是否添加水印</td></tr>
+<tr><td colspan="2" class="td27" s="1">允许发布的特殊主题:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq183c')"><td class="vtop rowform">
+<ul class="nofloat" onmouseover="altStyle(this);"><li class="checked"><input class="checkbox" type="checkbox" name="allowpostspecialnew[1]" value="1" checked="">&nbsp;投票主题</li><li><input class="checkbox" type="checkbox" name="allowpostspecialnew[2]" value="1">&nbsp;商品主题</li><li><input class="checkbox" type="checkbox" name="allowpostspecialnew[3]" value="1">&nbsp;悬赏主题</li><li><input class="checkbox" type="checkbox" name="allowpostspecialnew[4]" value="1">&nbsp;活动主题</li><li><input class="checkbox" type="checkbox" name="allowpostspecialnew[5]" value="1">&nbsp;辩论主题</li></ul></td><td class="vtop tips2" s="1"></td></tr>
+<tr><td colspan="2" class="td27" s="1">只允许发布特殊类型主题:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq2bcc')">{{@showsetting('Allowspecialonlynew',data.Allowspecialonlynew, 'radio')}}<td class="vtop tips2" s="1">设置本版是否只允许发布特殊类型主题</td></tr>
+<tr><td colspan="2" class="td27" s="1">主题自动关闭:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq7e1a')"><td class="vtop rowform">
+<ul class="nofloat" onmouseover="altStyle(this);"><li class="checked"><input class="radio" type="radio" name="autoclosenew" value="0" checked="" onclick="$('autoclose_time').style.display = 'none';">&nbsp;不自动关闭</li><li><input class="radio" type="radio" name="autoclosenew" value="1" onclick="$('autoclose_time').style.display = '';">&nbsp;按发布时间自动关闭</li><li><input class="radio" type="radio" name="autoclosenew" value="-1" onclick="$('autoclose_time').style.display = '';">&nbsp;按最后回复时间自动关闭</li></ul></td><td class="vtop tips2" s="1">设置主题是否在某时间后自动关闭，禁止普通用户回复</td></tr></tbody><tbody class="sub" id="autoclose_time" style="display: none">
+<tr><td colspan="2" class="td27" s="1">自动关闭时间(天):</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq94c0')">{{@showsetting('Autoclosetimenew',data.Autoclosetimenew, 'text')}}<td class="vtop tips2" s="1">本设定必须在“主题自动关闭”功能打开时才生效，主题依据自动关闭的设定: 在发表后若干天、或被最后回复后若干天被自动转入关闭状态，从而使普通用户无法回复</td></tr></tbody>
+<tbody><tr><td colspan="2" class="td27" s="1">允许附件类型(小写):</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq6b9d')">{{@showsetting('Attachextensionsnew',data.Attachextensionsnew, 'text')}}<td class="vtop tips2" s="1">设置允许上传的附件扩展名，多个扩展名之间用半角逗号 "," 隔开。本设置的优先级高于用户组，留空为按照用户组允许的附件类型设定</td></tr>
+<tr><td colspan="2" class="td27" s="1">允许发送广播和动态:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq8201')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li class="checked"><input class="radio" type="radio" name="allowfeednew" value="1" checked="">&nbsp;是</li><li><input class="radio" type="radio" name="allowfeednew" value="0">&nbsp;否</li></ul></td><td class="vtop tips2" s="1">开启后默认允许用户发送广播和动态，同时用户也可以选择不发送，<strong>隐私版块建议设为否</strong>。如果关闭广播功能，该设置将无效。</td></tr>
+<tr><td colspan="2" class="td27" s="1">普通主题点评预置观点:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq5986')">{{@showsetting('Commentitemnew',data.Commentitemnew, 'textarea')}}<td class="vtop tips2" s="1">每个观点一行。如存在空行，空行下方的内容将显示在下拉菜单中作为备选观点。只有开启帖子点评功能后本设置才生效，如留空表示使用全局的“普通主题点评预置观点”设置<br>双击输入框可扩大/缩小</td></tr>
+<tr><td colspan="2" class="td27" s="1">关闭防采集:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq0e85')">{{@showsetting('Noantitheftnew',data.Noantitheftnew, 'radio')}}<td class="vtop tips2" s="1">关闭防采集功能可节省少量服务器资源，建议灌水类版块关闭防采集功能。</td></tr>
+<tr><td colspan="2" class="td27" s="1">关闭隐藏水帖:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq77a0')">{{@showsetting('Noforumhidewaternew',data.Noforumhidewaternew, 'radio')}}<td class="vtop tips2" s="1">可单独关闭本版的隐藏水帖功能，适用于灌水类版块。</td></tr>
+<tr><td colspan="2" class="td27" s="1">关闭推荐回复:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq506a')">{{@showsetting('Noforumrecommendnew',data.Noforumrecommendnew, 'radio')}}<td class="vtop tips2" s="1">可单独关闭本版的推荐回复功能，适用于灌水类版块。</td></tr></tbody></table>
+</div><div id="attachtype" style="display: none">
+<table class="tb tb2 " id="tips">
+<tbody><tr><th class="partition">技巧提示</th></tr>
+<tr><td class="tipsblock" s="1"><ul id="tipslis"><li>本功能可限定本版块某特定类型附件的最大尺寸，当这里设定的尺寸小于用户组允许的最大尺寸时，指定类型的附件尺寸限制将按本设定为准。</li><li>您可以设置某类附件最大尺寸为 0 以整体禁止这类附件被上传。</li><li>此处设置留空则使用全局的“附件类型尺寸”设置。</li></ul></td></tr></tbody></table>
+
+<table class="tb tb2 ">
+<tbody><tr class="partition hover"><td class="td25">删?</td><td class="td24">扩展名(小写)</td><td>最大尺寸(单位：KB)</td></tr><tr><td></td><td colspan="2"><div><a href="###" onclick="addrow(this, 1)" class="addtr">添加新附件类型</a></div></td></tr></tbody></table>
+</div><div id="credits" style="display: none">
+<table class="tb tb2 " id="tips">
+<tbody><tr><th class="partition">技巧提示</th></tr>
+<tr><td class="tipsblock" s="1"><ul id="tipslis"><li>以下设置没有继承性，即仅对当前版块有效，不会对下级子版块产生影响。</li></ul></td></tr></tbody></table>
+
+<table class="tb tb2 fixpadding">
+<tbody><tr><th colspan="15" class="partition">扩展积分增减策略</th></tr><tr class="header"><th>积分代号</th><th>周期</th><th>奖励次数</th><th class="td25">自定义</th><th>威望</th><th>金钱</th><th>贡献</th><th>&nbsp;</th></tr>
+<tr class="hover"><td>加精华</td><td>不限</td><td>0</td><td><input type="checkbox" name="usecustom[3]" onclick="modifystate(this);" value="1" class="checkbox"></td><td width="70"><input type="text" name="creditnew[3][1]" class="txt smtxt" value="" readonly="readonly" style="display:none;"><span class="sml">(0)</span></td><td width="70"><input type="text" name="creditnew[3][2]" class="txt smtxt" value="" readonly="readonly" style="display:none;"><span class="sml">(5)</span></td><td width="70"><input type="text" name="creditnew[3][3]" class="txt smtxt" value="" readonly="readonly" style="display:none;"><span class="sml">(0)</span></td><td width="70"><a href="admin.php?action=credits&amp;operation=edit&amp;rid=3&amp;fid=2" title="" class="act">编辑</a></td></tr>
+<tr class="hover"><td>下载附件</td><td>不限</td><td>0</td><td><input type="checkbox" name="usecustom[5]" onclick="modifystate(this);" value="1" class="checkbox"></td><td width="70"><input type="text" name="creditnew[5][1]" class="txt smtxt" value="" readonly="readonly" style="display:none;"><span class="sml">(0)</span></td><td width="70"><input type="text" name="creditnew[5][2]" class="txt smtxt" value="" readonly="readonly" style="display:none;"><span class="sml">(0)</span></td><td width="70"><input type="text" name="creditnew[5][3]" class="txt smtxt" value="" readonly="readonly" style="display:none;"><span class="sml">(0)</span></td><td width="70"><a href="admin.php?action=credits&amp;operation=edit&amp;rid=5&amp;fid=2" title="" class="act">编辑</a></td></tr>
+<tr class="hover"><td>发表主题</td><td>不限</td><td>0</td><td><input type="checkbox" name="usecustom[1]" onclick="modifystate(this);" value="1" class="checkbox"></td><td width="70"><input type="text" name="creditnew[1][1]" class="txt smtxt" value="" readonly="readonly" style="display:none;"><span class="sml">(0)</span></td><td width="70"><input type="text" name="creditnew[1][2]" class="txt smtxt" value="" readonly="readonly" style="display:none;"><span class="sml">(2)</span></td><td width="70"><input type="text" name="creditnew[1][3]" class="txt smtxt" value="" readonly="readonly" style="display:none;"><span class="sml">(0)</span></td><td width="70"><a href="admin.php?action=credits&amp;operation=edit&amp;rid=1&amp;fid=2" title="" class="act">编辑</a></td></tr>
+<tr class="hover"><td>上传附件</td><td>不限</td><td>0</td><td><input type="checkbox" name="usecustom[4]" onclick="modifystate(this);" value="1" class="checkbox"></td><td width="70"><input type="text" name="creditnew[4][1]" class="txt smtxt" value="" readonly="readonly" style="display:none;"><span class="sml">(0)</span></td><td width="70"><input type="text" name="creditnew[4][2]" class="txt smtxt" value="" readonly="readonly" style="display:none;"><span class="sml">(0)</span></td><td width="70"><input type="text" name="creditnew[4][3]" class="txt smtxt" value="" readonly="readonly" style="display:none;"><span class="sml">(0)</span></td><td width="70"><a href="admin.php?action=credits&amp;operation=edit&amp;rid=4&amp;fid=2" title="" class="act">编辑</a></td></tr>
+<tr class="hover"><td>发表回复</td><td>不限</td><td>0</td><td><input type="checkbox" name="usecustom[2]" onclick="modifystate(this);" value="1" class="checkbox"></td><td width="70"><input type="text" name="creditnew[2][1]" class="txt smtxt" value="" readonly="readonly" style="display:none;"><span class="sml">(0)</span></td><td width="70"><input type="text" name="creditnew[2][2]" class="txt smtxt" value="" readonly="readonly" style="display:none;"><span class="sml">(1)</span></td><td width="70"><input type="text" name="creditnew[2][3]" class="txt smtxt" value="" readonly="readonly" style="display:none;"><span class="sml">(0)</span></td><td width="70"><a href="admin.php?action=credits&amp;operation=edit&amp;rid=2&amp;fid=2" title="" class="act">编辑</a></td></tr>
+<tr><td class="lineheight" colspan="13">各项积分增减允许的范围为 -99～+99。括号中数字为全局积分策略中设定的值。<a href="home.php?mod=spacecp&amp;ac=credit&amp;op=rule&amp;fid=2" target="_blank">查看本版积分策略说明</a></td></tr></tbody></table>
+					</div>	<div id="threadtypes" style="display: none">
+<table class="tb tb2 " id="tips">
+<tbody><tr><th class="partition">技巧提示</th></tr>
+<tr><td class="tipsblock" s="1"><ul id="tipslis"><li>以下设置没有继承性，即仅对当前版块有效，不会对下级子版块产生影响。</li></ul></td></tr></tbody></table>
+
+<table class="tb tb2 nobdb">
+<tbody><tr><th colspan="15" class="partition">主题分类</th></tr>
+<tr><td colspan="2" class="td27" s="1">启用主题分类:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq8fa8')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);">
+	<li {{if data.Threadtypesnew.Status==1}}class="checked"{{/if}}><input class="radio" type="radio" name="Threadtypesnew.Status" value="1" {{if data.Threadtypesnew.Status==1}} checked=""{{/if}} onclick="$('threadtypes_config').style.display = '';$('threadtypes_manage').style.display = '';">&nbsp;是</li>
+	<li {{if data.Threadtypesnew.Status==0}}class="checked"{{/if}}><input class="radio" type="radio" name="Threadtypesnew.Status" value="0" {{if data.Threadtypesnew.Status==0}} checked=""{{/if}} onclick="$('threadtypes_config').style.display = 'none';$('threadtypes_manage').style.display = 'none';">&nbsp;否</li></ul></td><td class="vtop tips2" s="1">设置是否在本版块启用主题分类功能，您需要同时设定相应的分类选项，才能启用本功能</td></tr>
+</tbody>
+<tbody id="threadtypes_config" style="display: none">
+<tr><td colspan="2" class="td27" s="1">发帖必须归类:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq114c')">{{@showsetting('Threadtypesnew.Required',data.Threadtypesnew.Required, 'radio')}}<td class="vtop tips2" s="1">是否强制用户发表新主题时必须选择分类</td></tr>
+<tr><td colspan="2" class="td27" s="1">允许按类别浏览:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqd35b')">{{@showsetting('Threadtypesnew.Listable',data.Threadtypesnew.Listable, 'radio')}}<td class="vtop tips2" s="1">用户是否可以按照主题分类筛选浏览内容</td></tr>
+<tr><td colspan="2" class="td27" s="1">类别前缀:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq3c4e')">{{@showsetting('Threadtypesnew.Prefix',data.Threadtypesnew.Prefix, 'radio',['不显示','只显示文字','只显示图标'])}}<td class="vtop tips2" s="1">是否在主题前面显示分类的名称</td></tr></tbody></table>
+<div id="threadtypes_manage" style="display: none">
+<table class="tb tb2 noborder fixpadding">
+<tbody><tr><th colspan="15" class="partition">主题分类</th></tr>
+<tr class="header"><th>删除</th><th>显示顺序</th><th>分类名称 <em>(支持[color][b][u][i][s])</em></th><th>前缀图标</th><th>启用</th><th>管理组专用</th></tr>
+{{each data.Threadtypesnew.Types as type}}
+<tr class="hover"><td class="td25"><input type="checkbox" class="checkbox" name="threadtypesnew[options][delete][]" value="{{type.Id}}"></td><td><input type="text" size="2" name="threadtypesnew[options][displayorder][{{type.Id}}]" value="{{type.Displayorder}}"></td><td><input type="text" name="threadtypesnew[options][name][{{type.Id}}]" value="{{type.Name}}"></td><td><input type="text" name="threadtypesnew[options][icon][{{type.Id}}]" value="{{type.Icon}}"></td><td><input type="checkbox" name="threadtypesnew[options][enable][{{type.Id}}]" value="1" class="checkbox" {{if type.Enable==1}}checked="checked"{{/if}}></td><td><input type="checkbox" class="checkbox" name="threadtypesnew[options][moderators][{{type.Id}}]" value="1" {{if type.Moderators==1}}checked="checked"{{/if}}></td></tr>
+{{/each}}
+<tr><td colspan="7"><div><a href="javascript:" onclick="addrow(this, 0)" class="addtr">添加分类</a></div></td></tr></tbody></table>
+</div></div><div id="threadsorts" style="display: none">
+<table class="tb tb2 " id="tips">
+<tbody><tr><th class="partition">技巧提示</th></tr>
+<tr><td class="tipsblock" s="1"><ul id="tipslis"><li>以下设置没有继承性，即仅对当前版块有效，不会对下级子版块产生影响。</li></ul></td></tr></tbody></table>
+
+<table class="tb tb2 nobdb">
+<tbody><tr><th colspan="15" class="partition">分类信息</th></tr>
+<tr><td colspan="2" class="td27" s="1">启用分类信息:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq6c2b')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li><input class="radio" type="radio" name="threadsortsnew[status]" value="1" onclick="$('threadsorts_config').style.display = '';$('threadsorts_manage').style.display = '';">&nbsp;是</li><li class="checked"><input class="radio" type="radio" name="threadsortsnew[status]" value="0" checked="" onclick="$('threadsorts_config').style.display = 'none';$('threadsorts_manage').style.display = 'none';">&nbsp;否</li></ul></td><td class="vtop tips2" s="1"></td></tr></tbody><tbody id="threadsorts_config" style="display: none">
+<tr><td colspan="2" class="td27" s="1">发帖必须归类:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq114c')">{{@showsetting('Threadsortsnew[required]',data.Threadsortsnew.Required, 'radio')}}<td class="vtop tips2" s="1">是否强制用户发表新主题时必须选择分类</td></tr>
+<tr><td colspan="2" class="td27" s="1">类别前缀:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq3c4e')">{{@showsetting('Threadsortsnew[prefix]',data.Threadsortsnew.Prefix, 'radio')}}<td class="vtop tips2" s="1">是否在主题前面显示分类的名称</td></tr>
+<tr><td colspan="2" class="td27" s="1">启用默认显示分类:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqe583')">{{@showsetting('Threadsortsnew[Default]',data.Threadsortsnew.Default, 'radio')}}<td class="vtop tips2" s="1">是否启用默认显示分类，如果启用请在下面的分类信息里面选择</td></tr></tbody></table>
+<div id="threadsorts_manage" style="display: none">
+<table class="tb tb2 noborder fixpadding">
+<tbody><tr class="header"><th>启用</th><th>分类名称</th><th>分类说明</th><th>发帖菜单中显示</th><th>默认显示分类</th></tr></tbody></table>
+</div></div><div id="perm" style="display: none">
+<table class="tb tb2 " id="tips">
+<tbody><tr><th class="partition">技巧提示</th></tr>
+<tr><td class="tipsblock" s="1"><ul id="tipslis"><li>以下设置没有继承性，即仅对当前版块有效，不会对下级子版块产生影响。</li></ul></td></tr></tbody></table>
+
+<table class="tb tb2 nobdb">
+<tbody><tr><td colspan="2" class="td27" s="1">付费价格:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq7c0d')">{{@showsetting('Pricenew',data.Pricenew, 'text')}}<td class="vtop tips2" s="1">当你设置了价格后，用户必须使用指定的交易积分付费后才可进入此版块。当价格增长时，用户还需要支付所增加的积分</td></tr>
+<tr><td colspan="2" class="td27" s="1">访问密码:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq312c')">{{@showsetting('Passwordnew',data.Passwordnew, 'text')}}<td class="vtop tips2" s="1">当您设置密码后，用户必须输入密码才可以访问到此版块</td></tr>
+<tr><td colspan="2" class="td27" s="1">访问用户:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq01ec')">{{@showsetting('Formulapermusersnew',data.Formulapermusersnew, 'textarea')}}<td class="vtop tips2" s="1">限定只有列表中的用户可以访问本版块，每行填写一个用户名<br>双击输入框可扩大/缩小</td></tr></tbody><tbody id="" style="display: none">
+<tr><td colspan="2" class="td27" s="1">拥有勋章:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqe366')"><td class="vtop rowform">
+<ul class="nofloat" onmouseover="altStyle(this);"></ul></td><td class="vtop tips2" s="1">用户必须拥有指定的勋章才可访问此版块</td></tr></tbody></table>
+
+<table class="tb tb2 noborder fixpadding">
+<tbody><tr><th colspan="15" class="partition">版块权限</th></tr>
+<tr class="header"><th></th><th><input class="checkbox" type="checkbox" name="chkall1" onclick="checkAll('prefix', this.form, '^viewperm', 'chkall1')" id="chkall1"><label for="chkall1"><br>浏览版块</label></th><th><input class="checkbox" type="checkbox" name="chkall2" onclick="checkAll('prefix', this.form, '^postperm', 'chkall2')" id="chkall2"><label for="chkall2"><br>发新话题</label></th><th><input class="checkbox" type="checkbox" name="chkall3" onclick="checkAll('prefix', this.form, '^replyperm', 'chkall3')" id="chkall3"><label for="chkall3"><br>发表回复</label></th><th><input class="checkbox" type="checkbox" name="chkall4" onclick="checkAll('prefix', this.form, '^getattachperm', 'chkall4')" id="chkall4"><label for="chkall4"><br>下载附件/查看图片</label></th><th><input class="checkbox" type="checkbox" name="chkall5" onclick="checkAll('prefix', this.form, '^postattachperm', 'chkall5')" id="chkall5"><label for="chkall5"><br>上传附件</label></th><th><input class="checkbox" type="checkbox" name="chkall6" onclick="checkAll('prefix', this.form, '^postimageperm', 'chkall6')" id="chkall6"><label for="chkall6"><br>上传图片</label></th></tr>
+<tr><td><b>会员用户组</b></td></tr>
+<tr class="hover"><td width="21%"><input class="checkbox" title="全选" type="checkbox" name="chkallv9" onclick="checkAll('value', this.form, 9, 'chkallv9')" id="chkallv_9"><label for="chkallv_9"> 限制会员</label></td><td width="13%"><input class="checkbox" type="checkbox" name="viewperm[]" value="9" chkvalue="9"></td><td width="13%"><input class="checkbox" type="checkbox" name="postperm[]" value="9" chkvalue="9"></td><td width="13%"><input class="checkbox" type="checkbox" name="replyperm[]" value="9" chkvalue="9"></td><td width="16%"><input class="checkbox" type="checkbox" name="getattachperm[]" value="9" chkvalue="9"></td><td width="13%"><input class="checkbox" type="checkbox" name="postattachperm[]" value="9" chkvalue="9"></td><td width="13%"><input class="checkbox" type="checkbox" name="postimageperm[]" value="9" chkvalue="9"></td></tr>
+<tr class="hover"><td width="21%"><input class="checkbox" title="全选" type="checkbox" name="chkallv10" onclick="checkAll('value', this.form, 10, 'chkallv10')" id="chkallv_10"><label for="chkallv_10"> 新手上路</label></td><td width="13%"><input class="checkbox" type="checkbox" name="viewperm[]" value="10" chkvalue="10"></td><td width="13%"><input class="checkbox" type="checkbox" name="postperm[]" value="10" chkvalue="10"></td><td width="13%"><input class="checkbox" type="checkbox" name="replyperm[]" value="10" chkvalue="10"></td><td width="16%"><input class="checkbox" type="checkbox" name="getattachperm[]" value="10" chkvalue="10"></td><td width="13%"><input class="checkbox" type="checkbox" name="postattachperm[]" value="10" chkvalue="10"></td><td width="13%"><input class="checkbox" type="checkbox" name="postimageperm[]" value="10" chkvalue="10"></td></tr>
+<tr class="hover"><td width="21%"><input class="checkbox" title="全选" type="checkbox" name="chkallv11" onclick="checkAll('value', this.form, 11, 'chkallv11')" id="chkallv_11"><label for="chkallv_11"> 注册会员</label></td><td width="13%"><input class="checkbox" type="checkbox" name="viewperm[]" value="11" chkvalue="11"></td><td width="13%"><input class="checkbox" type="checkbox" name="postperm[]" value="11" chkvalue="11"></td><td width="13%"><input class="checkbox" type="checkbox" name="replyperm[]" value="11" chkvalue="11"></td><td width="16%"><input class="checkbox" type="checkbox" name="getattachperm[]" value="11" chkvalue="11"></td><td width="13%"><input class="checkbox" type="checkbox" name="postattachperm[]" value="11" chkvalue="11"></td><td width="13%"><input class="checkbox" type="checkbox" name="postimageperm[]" value="11" chkvalue="11"></td></tr>
+<tr class="hover"><td width="21%"><input class="checkbox" title="全选" type="checkbox" name="chkallv12" onclick="checkAll('value', this.form, 12, 'chkallv12')" id="chkallv_12"><label for="chkallv_12"> 中级会员</label></td><td width="13%"><input class="checkbox" type="checkbox" name="viewperm[]" value="12" chkvalue="12"></td><td width="13%"><input class="checkbox" type="checkbox" name="postperm[]" value="12" chkvalue="12"></td><td width="13%"><input class="checkbox" type="checkbox" name="replyperm[]" value="12" chkvalue="12"></td><td width="16%"><input class="checkbox" type="checkbox" name="getattachperm[]" value="12" chkvalue="12"></td><td width="13%"><input class="checkbox" type="checkbox" name="postattachperm[]" value="12" chkvalue="12"></td><td width="13%"><input class="checkbox" type="checkbox" name="postimageperm[]" value="12" chkvalue="12"></td></tr>
+<tr class="hover"><td width="21%"><input class="checkbox" title="全选" type="checkbox" name="chkallv13" onclick="checkAll('value', this.form, 13, 'chkallv13')" id="chkallv_13"><label for="chkallv_13"> 高级会员</label></td><td width="13%"><input class="checkbox" type="checkbox" name="viewperm[]" value="13" chkvalue="13"></td><td width="13%"><input class="checkbox" type="checkbox" name="postperm[]" value="13" chkvalue="13"></td><td width="13%"><input class="checkbox" type="checkbox" name="replyperm[]" value="13" chkvalue="13"></td><td width="16%"><input class="checkbox" type="checkbox" name="getattachperm[]" value="13" chkvalue="13"></td><td width="13%"><input class="checkbox" type="checkbox" name="postattachperm[]" value="13" chkvalue="13"></td><td width="13%"><input class="checkbox" type="checkbox" name="postimageperm[]" value="13" chkvalue="13"></td></tr>
+<tr class="hover"><td width="21%"><input class="checkbox" title="全选" type="checkbox" name="chkallv14" onclick="checkAll('value', this.form, 14, 'chkallv14')" id="chkallv_14"><label for="chkallv_14"> 金牌会员</label></td><td width="13%"><input class="checkbox" type="checkbox" name="viewperm[]" value="14" chkvalue="14"></td><td width="13%"><input class="checkbox" type="checkbox" name="postperm[]" value="14" chkvalue="14"></td><td width="13%"><input class="checkbox" type="checkbox" name="replyperm[]" value="14" chkvalue="14"></td><td width="16%"><input class="checkbox" type="checkbox" name="getattachperm[]" value="14" chkvalue="14"></td><td width="13%"><input class="checkbox" type="checkbox" name="postattachperm[]" value="14" chkvalue="14"></td><td width="13%"><input class="checkbox" type="checkbox" name="postimageperm[]" value="14" chkvalue="14"></td></tr>
+<tr class="hover"><td width="21%"><input class="checkbox" title="全选" type="checkbox" name="chkallv15" onclick="checkAll('value', this.form, 15, 'chkallv15')" id="chkallv_15"><label for="chkallv_15"> 论坛元老</label></td><td width="13%"><input class="checkbox" type="checkbox" name="viewperm[]" value="15" chkvalue="15"></td><td width="13%"><input class="checkbox" type="checkbox" name="postperm[]" value="15" chkvalue="15"></td><td width="13%"><input class="checkbox" type="checkbox" name="replyperm[]" value="15" chkvalue="15"></td><td width="16%"><input class="checkbox" type="checkbox" name="getattachperm[]" value="15" chkvalue="15"></td><td width="13%"><input class="checkbox" type="checkbox" name="postattachperm[]" value="15" chkvalue="15"></td><td width="13%"><input class="checkbox" type="checkbox" name="postimageperm[]" value="15" chkvalue="15"></td></tr>
+<tr><td><b>自定义用户组</b></td></tr>
+<tr><td><b>自定义管理组</b></td></tr>
+<tr class="hover"><td width="21%"><input class="checkbox" title="全选" type="checkbox" name="chkallv16" onclick="checkAll('value', this.form, 16, 'chkallv16')" id="chkallv_16"><label for="chkallv_16"> 实习版主</label></td><td width="13%"><input class="checkbox" type="checkbox" name="viewperm[]" value="16" chkvalue="16"></td><td width="13%"><input class="checkbox" type="checkbox" name="postperm[]" value="16" chkvalue="16"></td><td width="13%"><input class="checkbox" type="checkbox" name="replyperm[]" value="16" chkvalue="16"></td><td width="16%"><input class="checkbox" type="checkbox" name="getattachperm[]" value="16" chkvalue="16"></td><td width="13%"><input class="checkbox" type="checkbox" name="postattachperm[]" value="16" chkvalue="16"></td><td width="13%"><input class="checkbox" type="checkbox" name="postimageperm[]" value="16" chkvalue="16"></td></tr>
+<tr class="hover"><td width="21%"><input class="checkbox" title="全选" type="checkbox" name="chkallv17" onclick="checkAll('value', this.form, 17, 'chkallv17')" id="chkallv_17"><label for="chkallv_17"> 网站编辑</label></td><td width="13%"><input class="checkbox" type="checkbox" name="viewperm[]" value="17" chkvalue="17"></td><td width="13%"><input class="checkbox" type="checkbox" name="postperm[]" value="17" chkvalue="17"></td><td width="13%"><input class="checkbox" type="checkbox" name="replyperm[]" value="17" chkvalue="17"></td><td width="16%"><input class="checkbox" type="checkbox" name="getattachperm[]" value="17" chkvalue="17"></td><td width="13%"><input class="checkbox" type="checkbox" name="postattachperm[]" value="17" chkvalue="17"></td><td width="13%"><input class="checkbox" type="checkbox" name="postimageperm[]" value="17" chkvalue="17"></td></tr>
+<tr class="hover"><td width="21%"><input class="checkbox" title="全选" type="checkbox" name="chkallv18" onclick="checkAll('value', this.form, 18, 'chkallv18')" id="chkallv_18"><label for="chkallv_18"> 信息监察员</label></td><td width="13%"><input class="checkbox" type="checkbox" name="viewperm[]" value="18" chkvalue="18"></td><td width="13%"><input class="checkbox" type="checkbox" name="postperm[]" value="18" chkvalue="18"></td><td width="13%"><input class="checkbox" type="checkbox" name="replyperm[]" value="18" chkvalue="18"></td><td width="16%"><input class="checkbox" type="checkbox" name="getattachperm[]" value="18" chkvalue="18"></td><td width="13%"><input class="checkbox" type="checkbox" name="postattachperm[]" value="18" chkvalue="18"></td><td width="13%"><input class="checkbox" type="checkbox" name="postimageperm[]" value="18" chkvalue="18"></td></tr>
+<tr class="hover"><td width="21%"><input class="checkbox" title="全选" type="checkbox" name="chkallv19" onclick="checkAll('value', this.form, 19, 'chkallv19')" id="chkallv_19"><label for="chkallv_19"> 审核员</label></td><td width="13%"><input class="checkbox" type="checkbox" name="viewperm[]" value="19" chkvalue="19"></td><td width="13%"><input class="checkbox" type="checkbox" name="postperm[]" value="19" chkvalue="19"></td><td width="13%"><input class="checkbox" type="checkbox" name="replyperm[]" value="19" chkvalue="19"></td><td width="16%"><input class="checkbox" type="checkbox" name="getattachperm[]" value="19" chkvalue="19"></td><td width="13%"><input class="checkbox" type="checkbox" name="postattachperm[]" value="19" chkvalue="19"></td><td width="13%"><input class="checkbox" type="checkbox" name="postimageperm[]" value="19" chkvalue="19"></td></tr>
+<tr><td><b>系统用户组</b></td></tr>
+<tr class="hover"><td width="21%"><input class="checkbox" title="全选" type="checkbox" name="chkallv1" onclick="checkAll('value', this.form, 1, 'chkallv1')" id="chkallv_1"><label for="chkallv_1"> 管理员</label></td><td width="13%"><input class="checkbox" type="checkbox" name="viewperm[]" value="1" chkvalue="1"></td><td width="13%"><input class="checkbox" type="checkbox" name="postperm[]" value="1" chkvalue="1"></td><td width="13%"><input class="checkbox" type="checkbox" name="replyperm[]" value="1" chkvalue="1"></td><td width="16%"><input class="checkbox" type="checkbox" name="getattachperm[]" value="1" chkvalue="1"></td><td width="13%"><input class="checkbox" type="checkbox" name="postattachperm[]" value="1" chkvalue="1"></td><td width="13%"><input class="checkbox" type="checkbox" name="postimageperm[]" value="1" chkvalue="1"></td></tr>
+<tr class="hover"><td width="21%"><input class="checkbox" title="全选" type="checkbox" name="chkallv2" onclick="checkAll('value', this.form, 2, 'chkallv2')" id="chkallv_2"><label for="chkallv_2"> 超级版主</label></td><td width="13%"><input class="checkbox" type="checkbox" name="viewperm[]" value="2" chkvalue="2"></td><td width="13%"><input class="checkbox" type="checkbox" name="postperm[]" value="2" chkvalue="2"></td><td width="13%"><input class="checkbox" type="checkbox" name="replyperm[]" value="2" chkvalue="2"></td><td width="16%"><input class="checkbox" type="checkbox" name="getattachperm[]" value="2" chkvalue="2"></td><td width="13%"><input class="checkbox" type="checkbox" name="postattachperm[]" value="2" chkvalue="2"></td><td width="13%"><input class="checkbox" type="checkbox" name="postimageperm[]" value="2" chkvalue="2"></td></tr>
+<tr class="hover"><td width="21%"><input class="checkbox" title="全选" type="checkbox" name="chkallv3" onclick="checkAll('value', this.form, 3, 'chkallv3')" id="chkallv_3"><label for="chkallv_3"> 版主</label></td><td width="13%"><input class="checkbox" type="checkbox" name="viewperm[]" value="3" chkvalue="3"></td><td width="13%"><input class="checkbox" type="checkbox" name="postperm[]" value="3" chkvalue="3"></td><td width="13%"><input class="checkbox" type="checkbox" name="replyperm[]" value="3" chkvalue="3"></td><td width="16%"><input class="checkbox" type="checkbox" name="getattachperm[]" value="3" chkvalue="3"></td><td width="13%"><input class="checkbox" type="checkbox" name="postattachperm[]" value="3" chkvalue="3"></td><td width="13%"><input class="checkbox" type="checkbox" name="postimageperm[]" value="3" chkvalue="3"></td></tr>
+<tr class="hover"><td width="21%"><input class="checkbox" title="全选" type="checkbox" name="chkallv4" onclick="checkAll('value', this.form, 4, 'chkallv4')" id="chkallv_4"><label for="chkallv_4"> 禁止发言</label></td><td width="13%"><input class="checkbox" type="checkbox" name="viewperm[]" value="4" chkvalue="4"></td><td width="13%"><input class="checkbox" type="checkbox" name="postperm[]" value="4" chkvalue="4"></td><td width="13%"><input class="checkbox" type="checkbox" name="replyperm[]" value="4" chkvalue="4"></td><td width="16%"><input class="checkbox" type="checkbox" name="getattachperm[]" value="4" chkvalue="4"></td><td width="13%"><input class="checkbox" type="checkbox" name="postattachperm[]" value="4" chkvalue="4"></td><td width="13%"><input class="checkbox" type="checkbox" name="postimageperm[]" value="4" chkvalue="4"></td></tr>
+<tr class="hover"><td width="21%"><input class="checkbox" title="全选" type="checkbox" name="chkallv5" onclick="checkAll('value', this.form, 5, 'chkallv5')" id="chkallv_5"><label for="chkallv_5"> 禁止访问</label></td><td width="13%"><input class="checkbox" type="checkbox" name="viewperm[]" value="5" chkvalue="5"></td><td width="13%"><input class="checkbox" type="checkbox" name="postperm[]" value="5" chkvalue="5"></td><td width="13%"><input class="checkbox" type="checkbox" name="replyperm[]" value="5" chkvalue="5"></td><td width="16%"><input class="checkbox" type="checkbox" name="getattachperm[]" value="5" chkvalue="5"></td><td width="13%"><input class="checkbox" type="checkbox" name="postattachperm[]" value="5" chkvalue="5"></td><td width="13%"><input class="checkbox" type="checkbox" name="postimageperm[]" value="5" chkvalue="5"></td></tr>
+<tr class="hover"><td width="21%"><input class="checkbox" title="全选" type="checkbox" name="chkallv6" onclick="checkAll('value', this.form, 6, 'chkallv6')" id="chkallv_6"><label for="chkallv_6"> 禁止 IP</label></td><td width="13%"><input class="checkbox" type="checkbox" name="viewperm[]" value="6" chkvalue="6"></td><td width="13%"><input class="checkbox" type="checkbox" name="postperm[]" value="6" chkvalue="6"></td><td width="13%"><input class="checkbox" type="checkbox" name="replyperm[]" value="6" chkvalue="6"></td><td width="16%"><input class="checkbox" type="checkbox" name="getattachperm[]" value="6" chkvalue="6"></td><td width="13%"><input class="checkbox" type="checkbox" name="postattachperm[]" value="6" chkvalue="6"></td><td width="13%"><input class="checkbox" type="checkbox" name="postimageperm[]" value="6" chkvalue="6"></td></tr>
+<tr class="hover"><td width="21%"><input class="checkbox" title="全选" type="checkbox" name="chkallv7" onclick="checkAll('value', this.form, 7, 'chkallv7')" id="chkallv_7"><label for="chkallv_7"> 游客</label></td><td width="13%"><input class="checkbox" type="checkbox" name="viewperm[]" value="7" chkvalue="7"></td><td width="13%"><input class="checkbox" type="checkbox" name="postperm[]" value="7" chkvalue="7"></td><td width="13%"><input class="checkbox" type="checkbox" name="replyperm[]" value="7" chkvalue="7"></td><td width="16%"><input class="checkbox" type="checkbox" name="getattachperm[]" value="7" chkvalue="7"></td><td width="13%"><input class="checkbox" type="checkbox" name="postattachperm[]" value="7" chkvalue="7"></td><td width="13%"><input class="checkbox" type="checkbox" name="postimageperm[]" value="7" chkvalue="7"></td></tr>
+<tr class="hover"><td width="21%"><input class="checkbox" title="全选" type="checkbox" name="chkallv8" onclick="checkAll('value', this.form, 8, 'chkallv8')" id="chkallv_8"><label for="chkallv_8"> 等待验证会员</label></td><td width="13%"><input class="checkbox" type="checkbox" name="viewperm[]" value="8" chkvalue="8"></td><td width="13%"><input class="checkbox" type="checkbox" name="postperm[]" value="8" chkvalue="8"></td><td width="13%"><input class="checkbox" type="checkbox" name="replyperm[]" value="8" chkvalue="8"></td><td width="16%"><input class="checkbox" type="checkbox" name="getattachperm[]" value="8" chkvalue="8"></td><td width="13%"><input class="checkbox" type="checkbox" name="postattachperm[]" value="8" chkvalue="8"></td><td width="13%"><input class="checkbox" type="checkbox" name="postimageperm[]" value="8" chkvalue="8"></td></tr>
+<tr><td class="lineheight" colspan="6">某权限如果全部未选则表示如下含义:<br>　　浏览版块，全部用户组具有浏览版块帖子权限；发新话题，除游客以外的用户组具有发帖权限；发表回复，除游客以外的用户组具有回复权限；查看附件，全部用户组具有下载/查看附件权限；上传附件，除游客以外的用户组具有上传附件权限；上传图片，除游客以外的用户组具有上传图片权限</td></tr></tbody></table>
+
+<table class="tb tb2 fixpadding">
+<tbody><tr><th colspan="15" class="partition">权限表达式设置</th></tr>
+	<tr><td colspan="2"><div class="extcredits">
+	<a href="###" onclick="foruminsertunit('extcredits1')">威望</a> &nbsp;<a href="###" onclick="foruminsertunit('extcredits2')">金钱</a> &nbsp;<a href="###" onclick="foruminsertunit('extcredits3')">贡献</a> &nbsp;<a href="###" onclick="foruminsertunit('extcredits4')">自定义积分4</a> &nbsp;<a href="###" onclick="foruminsertunit('extcredits5')">自定义积分5</a> &nbsp;<a href="###" onclick="foruminsertunit('extcredits6')">自定义积分6</a> &nbsp;<a href="###" onclick="foruminsertunit('extcredits7')">自定义积分7</a> &nbsp;<a href="###" onclick="foruminsertunit('extcredits8')">自定义积分8</a> &nbsp;	<a href="###" onclick="foruminsertunit(' regdate ')">&nbsp;注册时间&nbsp;</a>&nbsp;
+	<a href="###" onclick="foruminsertunit(' regday ')">&nbsp;注册天数&nbsp;</a>&nbsp;
+	<a href="###" onclick="foruminsertunit(' regip ')">&nbsp;注册IP&nbsp;</a>&nbsp;
+	<a href="###" onclick="foruminsertunit(' lastip ')">&nbsp;最后登录IP&nbsp;</a>&nbsp;
+	<a href="###" onclick="foruminsertunit(' buyercredit ')">&nbsp;买家信用评价&nbsp;</a>&nbsp;
+	<a href="###" onclick="foruminsertunit(' sellercredit ')">&nbsp;卖家信用评价&nbsp;</a>&nbsp;
+	<a href="###" onclick="foruminsertunit(' digestposts ')">精华帖数</a>&nbsp;
+	<a href="###" onclick="foruminsertunit(' posts ')">发帖数</a>&nbsp;
+	<a href="###" onclick="foruminsertunit(' threads ')">主题数</a>&nbsp;
+	<a href="###" onclick="foruminsertunit(' oltime ')">在线时间(小时)</a>&nbsp;
+	<a href="###" onclick="foruminsertunit(' + ')">&nbsp;+&nbsp;</a>&nbsp;
+	<a href="###" onclick="foruminsertunit(' - ')">&nbsp;-&nbsp;</a>&nbsp;
+	<a href="###" onclick="foruminsertunit(' * ')">&nbsp;*&nbsp;</a>&nbsp;
+	<a href="###" onclick="foruminsertunit(' / ')">&nbsp;/&nbsp;</a>&nbsp;
+	<a href="###" onclick="foruminsertunit(' > ')">&nbsp;&gt;&nbsp;</a>&nbsp;
+	<a href="###" onclick="foruminsertunit(' >= ')">&nbsp;&gt;=&nbsp;</a>&nbsp;
+	<a href="###" onclick="foruminsertunit(' < ')">&nbsp;&lt;&nbsp;</a>&nbsp;
+	<a href="###" onclick="foruminsertunit(' <= ')">&nbsp;&lt;=&nbsp;</a>&nbsp;
+	<a href="###" onclick="foruminsertunit(' == ')">&nbsp;=&nbsp;</a>&nbsp;
+	<a href="###" onclick="foruminsertunit(' != ')">&nbsp;!=&nbsp;</a>&nbsp;
+	<a href="###" onclick="foruminsertunit(' (', ') ')">&nbsp;(&nbsp;)&nbsp;</a>&nbsp;
+	<a href="###" onclick="foruminsertunit(' and ')">&nbsp;并且&nbsp;</a>&nbsp;
+	<a href="###" onclick="foruminsertunit(' or ')">&nbsp;或者&nbsp;</a>&nbsp;<br>
+	
+
+	<div id="formulapermexp" class="margintop marginbot diffcolor2"></div>
+	</div>
+	<textarea name="formulapermnew" id="formulapermnew" class="marginbot" style="width:80%" rows="3" onkeyup="formulaexp()" onkeydown="textareakey(this, event)"></textarea>
+	
+	<br><span class="smalltxt">当您设定了权限表达式后，只有符合此表达式的会员才可以浏览本版块。如 "posts &gt; 100 and extcredits1 &gt; 10" 表示 "发帖数 &gt; 100 并且 威望 &gt; 10"<br>日期格式 "{Y-M-D}"，如 "{2009-10-1}"。IP 格式 "{x.x.x.x}"，既可输入完整地址，也可只输入 IP 开头，如 "{10.0.0.1}"、"{192.168.0}"</span>
+	</td></tr>
+	</tbody></table>
+
+<table class="tb tb2 noborder fixpadding">
+<tbody><tr><td colspan="2" class="td27" s="1">不受限制的用户组:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq9b17')"><td colspan="2" class="vtop rowform">
+<ul class="nofloat" onmouseover="altStyle(this);" style="width: 790px"><li style="float: left; width: 18%;overflow: hidden;" title="限制会员"><input class="checkbox" type="checkbox" name="spviewpermnew[]" value="9">&nbsp;限制会员</li><li style="float: left; width: 18%;overflow: hidden;" title="新手上路"><input class="checkbox" type="checkbox" name="spviewpermnew[]" value="10">&nbsp;新手上路</li><li style="float: left; width: 18%;overflow: hidden;" title="注册会员"><input class="checkbox" type="checkbox" name="spviewpermnew[]" value="11">&nbsp;注册会员</li><li style="float: left; width: 18%;overflow: hidden;" title="中级会员"><input class="checkbox" type="checkbox" name="spviewpermnew[]" value="12">&nbsp;中级会员</li><li style="float: left; width: 18%;overflow: hidden;" title="高级会员"><input class="checkbox" type="checkbox" name="spviewpermnew[]" value="13">&nbsp;高级会员</li><li style="float: left; width: 18%;overflow: hidden;" title="金牌会员"><input class="checkbox" type="checkbox" name="spviewpermnew[]" value="14">&nbsp;金牌会员</li><li style="float: left; width: 18%;overflow: hidden;" title="论坛元老"><input class="checkbox" type="checkbox" name="spviewpermnew[]" value="15">&nbsp;论坛元老</li><li style="float: left; width: 18%;overflow: hidden;" title="实习版主"><input class="checkbox" type="checkbox" name="spviewpermnew[]" value="16">&nbsp;实习版主</li><li style="float: left; width: 18%;overflow: hidden;" title="网站编辑"><input class="checkbox" type="checkbox" name="spviewpermnew[]" value="17">&nbsp;网站编辑</li><li style="float: left; width: 18%;overflow: hidden;" title="信息监察员"><input class="checkbox" type="checkbox" name="spviewpermnew[]" value="18">&nbsp;信息监察员</li><li style="float: left; width: 18%;overflow: hidden;" title="审核员"><input class="checkbox" type="checkbox" name="spviewpermnew[]" value="19">&nbsp;审核员</li><li style="float: left; width: 18%;overflow: hidden;" title="超级版主"><input class="checkbox" type="checkbox" name="spviewpermnew[]" value="2">&nbsp;超级版主</li><li style="float: left; width: 18%;overflow: hidden;" title="版主"><input class="checkbox" type="checkbox" name="spviewpermnew[]" value="3">&nbsp;版主</li><li style="float: left; width: 18%;overflow: hidden;" title="禁止发言"><input class="checkbox" type="checkbox" name="spviewpermnew[]" value="4">&nbsp;禁止发言</li><li style="float: left; width: 18%;overflow: hidden;" title="禁止访问"><input class="checkbox" type="checkbox" name="spviewpermnew[]" value="5">&nbsp;禁止访问</li><li style="float: left; width: 18%;overflow: hidden;" title="禁止 IP"><input class="checkbox" type="checkbox" name="spviewpermnew[]" value="6">&nbsp;禁止 IP</li><li style="float: left; width: 18%;overflow: hidden;" title="游客"><input class="checkbox" type="checkbox" name="spviewpermnew[]" value="7">&nbsp;游客</li><li style="float: left; width: 18%;overflow: hidden;" title="等待验证会员"><input class="checkbox" type="checkbox" name="spviewpermnew[]" value="8">&nbsp;等待验证会员</li></ul></td></tr>
+<tr><td colspan="2" class="td27" s="1">无权限访问时的提示信息:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq2b71')">{{@showsetting('Formulapermmessagenew',data.Formulapermmessagenew, 'textarea')}}<td class="vtop tips2" s="1">自定义无权限时的提示信息，如不填写则无权限时将显示权限表达式的公式<br>双击输入框可扩大/缩小</td></tr></tbody></table>
+</div>
+<table class="tb tb2 nobdt"><tbody><tr><td colspan="15"><div class="fixsel"><input type="submit" class="btn" id="submit_detailsubmit" name="detailsubmit" title="按 Enter 键可随时提交您的修改" value="提交"></div></td></tr></tbody></table>
+</form>
+
+</div>
+
+
+ </script>

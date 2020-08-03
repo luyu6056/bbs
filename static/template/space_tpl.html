@@ -1,0 +1,246 @@
+<script id="tpl_space" type="text/html">
+<div id="wp" class="wp time_wp cl">
+<div id="pt" class=" cl">
+                <div class="z"><a href="/" class="nvhm" title="首页"><svg class="svg" style="width: 17px;height: 17px;margin-top:6px;" aria-hidden="true"><use xlink:href="#icon-zhuye"></use></svg></a><em></em><span><%=data.Username%></span><em></em>个人资料</div>
+               <div href="javascript:void(0)" target="_blank" class="search-li" title="搜索">
+               	<input type="text" name="search" placeholder="请输入搜索内容">
+               <div style="width: 50px;height: 30px;background-color: rgb(255, 128, 1);position: absolute;margin-top: -30px;margin-left: 291px;"></div>
+               	<svg class="svg-search" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="28px" height="22px"><path fill-rule="evenodd" fill="rgb(255, 255, 255)" d="M26.570,20.965 C25.811,22.054 24.302,22.328 23.204,21.572 L14.000,15.000 C13.296,14.518 15.194,15.479 15.221,14.689 C13.940,16.052 12.258,16.967 10.374,17.307 C8.059,17.726 5.722,17.225 3.792,15.900 C1.862,14.575 0.566,12.583 0.145,10.288 C-0.278,7.992 0.226,5.671 1.562,3.755 C4.323,-0.201 9.814,-1.193 13.803,1.545 C17.424,4.032 18.581,8.752 16.699,12.561 C17.434,12.254 16.293,10.515 17.000,11.000 L25.959,17.625 C27.057,18.381 27.331,19.875 26.570,20.965 ZM14.830,7.633 C14.537,6.033 13.634,4.643 12.288,3.720 C9.508,1.809 5.678,2.500 3.751,5.259 C1.827,8.021 2.524,11.819 5.305,13.727 C8.086,15.637 11.915,14.947 13.841,12.187 C14.773,10.852 15.124,9.234 14.830,7.633 Z"></path></svg>
+
+</div>
+</div>
+<div id="uhd">
+<%if(GET('Uid')!=cache.Head.Uid){%>
+<div class="mn">
+<ul>
+
+<li class="addf">
+
+</li>
+<li class="pm2">
+
+</li>
+</ul>
+
+</div>
+<%}%>
+<div class="h cl">
+<div class="icn avt"><%-get_avatar(data.Avatar,240)%></div>
+<h2 class="mt">
+<%=data.Username%>
+</h2>
+<p>
+
+<%if(data.Status>>0&1 || data.Status>>1&1 || cache.Head.Adminid == 1){%>
+<span class="pipe">|</span>
+<%if(data.Status>>0&1 || data.Status>>1&1) { if(data.Status>>0&1){%>
+<a href="/index.html?tpl=modcp&Action=banmember&Uid=<%=GET('Uid')%>" id="usermanageli" onmouseover="showMenu(this.id)" class="showmenu" target="_blank">用户管理</a>
+<%}else{%>
+<a href="/index.html?tpl=modcp&Action=editmember&Uid=<%=GET('Uid')%>" id="usermanageli" onmouseover="showMenu(this.id)" class="showmenu" target="_blank">用户管理</a>
+<%}} if(cache.Head.Adminid == 1){%>
+<a href="/index.html?tpl=modcp&amp;Action=postthread&amp;Users=<%=encodeURIComponent(data.Username)%>" id="umanageli" onmouseover="showMenu(this.id)" class="showmenu">内容管理</a>
+<%}if(data.Status>>0&1 || data.Status>>1&1){%>
+<ul id="usermanageli_menu" class="p_pop" style="width: 80px; display:none;">
+<%if(data.Status>>0&1){%>
+<li><a href="/index.html?tpl=modcp&Action=banmember&Uid=<%=GET('Uid')%>" target="_blank">禁止用户</a></li>
+<%}if(data.Status>>1&1){%>
+<li><a href="/index.html?tpl=modcp&Action=editmember&Uid=<%=GET('Uid')%>" target="_blank">编辑用户</a></li>
+<%}%>
+</ul>
+<%}if(cache.Head.Adminid == 1){%>
+<ul id="umanageli_menu" class="p_pop" style="width: 80px; display:none;">
+<li><a href="/index.html?tpl=modcp&amp;Action=postthread&amp;Users=<%=encodeURIComponent(data.Username)%>" target="_blank">管理帖子</a></li>
+</ul>
+<%}}%>
+</p>
+</div>
+
+
+<!--<ul class="tb cl" style="padding-left: 75px;">
+	<li <%if(GET('Do')=="thread" || GET('Do')=="reply"){%>class="a"<%}%> class="a"><a href="/index.html?tpl=space&Uid=<%=data.Uid%>&Do=thread" onclick="return false">主题</a></li>
+	<li <%if(GET('Do')=="" || GET('Do')=="home"){%>class="a"<%}%>><a href="/index.html?tpl=space&Uid=<%=data.Uid%>&Do=home" onclick="tpl_click(this.href);return false">个人资料</a></li>
+</ul>-->
+</div>
+<div id="ct" class="ct1 wp cl">
+<div class="mn">
+<!--[diy=diycontenttop]--><div id="diycontenttop" class="area"></div><!--[/diy]-->
+<div class="bm bw0">
+<div class="bm_c">
+<!--
+<div class="bm_c u_profile">
+<div class="pbm mbm bbda cl">
+<h2 class="mbn">
+<%=data.Username%>
+<%if(data.Status>>2&1){%>
+<img src="<%=cache.IMGDIR%>/ol.gif" alt="online" title="在线" class="vm" />&nbsp;
+<%}%>
+<span class="xw0">(UID: <%=GET('Uid')%>)</span>
+</h2>
+<ul class="pf_l cl pbm mbm">
+
+<li><em>空间访问量</em><strong class="xi1"><%=data.Views%></strong></li>
+<%if(data.Email){%>
+<li><em>Email</em><%=data.Email%></li>
+<%}%>
+<li><em>邮箱状态</em><%if(data.Status>>3&1){%>已验证<%}else{%>未验证<%}%></li>
+</ul>
+<ul>
+<%if(data.Customstatus){%><li class="xg1"><em>自定义头衔&nbsp;&nbsp;</em><%=data.Customstatus%></li><%}if(data.Sightml){%><li><em class="xg1">个人签名&nbsp;&nbsp;</em><table><tr><td><%-data.Sightml%></td></tr></table></li><%}%>
+</ul>
+<ul class="cl bbda pbm mbm">
+<li>
+<em class="xg2">统计信息</em>
+<span class="pipe">|</span>回帖数 <%=data.Posts%>
+<span class="pipe">|</span>主题数 <%=data.Threads%>
+</li>
+</ul>
+
+<ul class="pf_l cl"><%for(var i in data.Profiles){%><li><em><%=data.Profiles[i].Title%></em><%=data.Profiles[i].Value%></li>
+<%}%>
+</ul>
+</div>
+
+</a>
+</p>
+</div>
+<div class="pbm mbm bbda cl">
+<h2 class="mbn">活跃概况</h2>
+<ul>
+<%if(data.Admingroup){%><li><em class="xg1">管理组&nbsp;&nbsp;</em><a href="/index.html?tpl=spacecp&amp;Ac=usergroup&amp;Gid=<%=data.Admingroup.Id%>" target="_blank"><%=data.Admingroup.Grouptitle%></a> <%=data.Admingroup.Icon%></li><%}%>
+
+<li><em class="xg1">用户组&nbsp;&nbsp;</em><span style="color:<%=data.Group.Color%>"<%if(data.Upgradecredit >0){%> class="xi2" onmouseover="showTip(this)" tip="积分 <%=data.Credits%>, 距离下一级还需 <%=data.Upgradecredit%> 积分"<%}%>><a href="/index.html?tpl=spacecp&amp;Ac=usergroup&amp;Gid=<%=data.Group.Id%>" target="_blank"><%=data.Group.Grouptitle%></a></span> <%=data.Group.Icon%> <%if(data.Groupexpiry){%>&nbsp;有效期至&nbsp;<%=date('Y-m-d H:i',data.Groupexpiry)%><%}%></li>
+<%if(data.Extgroupids){%><li><em class="xg1">扩展用户组&nbsp;&nbsp;</em><%=data.Extgroupids%></li><%}%>
+
+</ul>
+<ul id="pbbs" class="pf_l">
+<%if(data.Oltime){%><li><em>在线时间</em><%=data.Oltime%> 小时</li><%}%>
+<li><em>注册时间</em><%=date("Y-m-d h:i",data.Regdate)%></li>
+<li><em>最后访问</em><%=date("Y-m-d h:i",data.Lastvisit)%></li>
+
+<%if(data.Regip){%>
+<li><em>注册 IP</em><%=data.Regip%></li>
+<li><em>上次访问 IP</em><%=data.Lastip%></li>
+<%}if(data.Lastpost){%><li><em>上次发表时间</em><%=date("Y-m-d h:i",data.Lastpost)%></li><%}if(data.Lastsendmail){%><li><em>上次邮件通知</em><%=date("Y-m-d h:i",data.Lastsendmail)%></li><%}%>
+</ul>
+</div>
+
+<div id="psts" class="<%if($clist){%>pbm mbm bbda <%}%>cl">
+<h2 class="mbn">统计信息</h2>
+<ul class="pf_l">
+<li><em>已用空间</em><%=data.Attachsize%></li>
+<li><em>积分</em><%=data.Credits%></li><%for(var key in cache.extcredits) { if(cache.extcredits[key]['title']){%>
+<li><em><%=cache.extcredits[key]['title']%></em><%=data["Extcredits"+key]%> <%=cache.extcredits[key]['unit']%></li>
+<%}}%>
+</ul>
+</div>
+-->
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</script>
+<script id="tpl_space_thread" type="text/html">
+	
+<p class="tbmu">
+<a href="/index.html?tpl=space&Uid=<%=data.Uid%>&Do=thread"<%if(GET('Do')=="thread" || GET('Do')==""){%> class="a"<%}%> onclick="tpl_click(this.href);return false">主题</a>
+<span class="pipe">|</span>
+<a href="/index.html?tpl=space&Uid=<%=data.Uid%>&Do=reply"<%if(GET('Do')=="reply"){%> class="a"<%}%> onclick="tpl_click(this.href);return false">回复</a>
+</p>
+
+<div class="tl">
+<form method="post" autocomplete="off" name="delform" id="delform" action="home.php?mod=space&amp;do=thread&amp;view=all&amp;order=dateline" onsubmit="showDialog('确定要删除选中的主题吗？', 'confirm', '', '$(\'delform\').submit();'); return false;">
+
+
+<table cellspacing="0" cellpadding="0">
+<tr class="th">
+<td class="icn">&nbsp;</td>
+<th><%if(GET('Do')=="thread" || GET("Do")=="reply"){%>帖子<%}else{%>主题<%}%></th>
+<td class="frm">版块</td>
+<td class="by"><cite>作者</cite></td>
+<td class="num">回复/查看</td>
+<td class="by"><cite>最后回复</cite></td>
+</tr>
+
+<%if(data.Threadlist && data.Threadlist.length>0){for(var i in data.Threadlist){var thread=data.Threadlist[i]%>
+<tr<%if(GET('Do')=='reply'){%> class="bw0_all"<%}%>>
+<td class="icn">
+<a href="/index.html?tpl=forum_viewthread&Tid=<%=thread.Tid%>" title="新窗口打开" target="_blank">
+<%if(thread.Folder=='lock'){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-xGroup"></use></svg>
+<%}else if(thread.Special==1){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-toupiao"></use></svg>
+<%}else if(thread.Special==2){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-shangdian"></use></svg>
+<%}else if(thread.Special==3){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-shangyin"></use></svg>
+<%}else if(thread.Special==4){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-huodong"></use></svg>
+<%}else if(thread.Special==5){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-huatibianlun"></use></svg>
+<%}else if(in_array(thread.Displayorder, [1, 2, 3, 4])){%>
+<%if(thread.Displayorder==3){%>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32px" height="25px"><path fill-rule="evenodd"  fill="rgb(255, 84, 0)" d="M32.000,15.000 L15.458,0.001 L0.000,15.000 L6.861,15.015 L6.861,24.999 L25.139,24.999 L25.139,15.015 L32.000,15.000 Z"/></svg>
+<%}else if(thread.Displayorder==2){%>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32px" height="25px"><path fill-rule="evenodd"  fill="rgb(46, 198, 255)" d="M32.000,15.000 L15.458,0.001 L0.000,15.000 L6.861,15.015 L6.861,24.999 L25.139,24.999 L25.139,15.015 L32.000,15.000 Z"/></svg>
+<%}else if(thread.Displayorder==1){%>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32px" height="25px"><path fill-rule="evenodd"  fill="rgb(8, 227, 173)" d="M32.000,15.000 L15.458,0.001 L0.000,15.000 L6.861,15.015 L6.861,24.999 L25.139,24.999 L25.139,15.015 L32.000,15.000 Z"/></svg>
+<%}%>
+<svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="10px" height="9px" style="margin-left: -20px;margin-top: 11px;position: absolute;"><text kerning="auto" font-family="Adobe Heiti Std" fill="rgb(255, 255, 255)" font-size="12px" x="0px" y="9px"><%=thread.Displayorder%></text></svg>
+<%}else if(thread.Folder=="new"){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-tiezi"></use></svg>
+<%}else{%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-tiezi-copy"></use></svg>
+<%}%>
+</a>
+</td>
+<th>
+<%if(GET('Do') == 'reply'){%>
+<a href="/index.html?tpl=forum_viewthread&Tid=<%=thread.Tid%>" target="_blank"><%=thread.Subject%></a>
+<%}else{%>
+<a href="/index.html?tpl=forum_viewthread&Tid=<%=thread.Tid%>" target="_blank" <%if(thread.Displayorder == -1){%>class="recy"<%}%>><%=thread.Subject%></a>
+<%}if(thread.Digest > 0){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-jingxuan"></use></svg>
+<%}if(thread.Attachment == 2){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-tupian"></use></svg>
+<%}else if(thread.Attachment == 1){%>
+<svg class="svg" style="width: 32px;height: 32px;vertical-align: inherit;" aria-hidden="true"><use xlink:href="#icon-lianjie"></use></svg>
+<%}if(thread.Multipage){%><span class="tps"><%=thread.Multipage%></span><%}if(thread.Displayorder == -4){%><span class="xg1">草稿</span>
+<%}else if(thread.Closed > 0){%><span class="xg1">已关闭</span>
+<%}%>
+</th>
+<td>
+<a href="/index.html?tpl=forum&Fid=<%=thread.Fid%>" class="xg1" target="_blank"><%=thread.ForumName%></a>
+</td>
+
+<td class="by">
+<cite><%=thread.Author%></cite>
+<em><%=(thread_time(thread.Dateline))%></em>
+</td>
+
+
+<td class="num">
+<%=thread.Replies%>
+<em><%=thread.Views%></em>
+</td>
+
+
+<td class="by">
+<cite><%if(thread.Lastposter){%><a href="/index.html?tpl=space&Name=<%=thread.Lastposter%>" target="_blank"><%=thread.Lastposter%></a><%}else{%>匿名<%}%></cite>
+<em><a href="/index.html?tpl=forum_viewthread&Tid=<%=thread.Tid%>&Page=<%=ceil(thread.Replies/cache.postperpage)%>&Position=<%=thread.Replies%>" target="_blank"><%=thread_time(thread.Lastpost)%></a></em>
+</td>
+</tr>
+<%if(thread.Postlist){for(var i in thread.Postlist){var post = thread.Postlist[i];%><tr>
+<td colspan="5" class="xg1">&nbsp;<img src="<%=cache.imgdir%>/icon_quote_m_s.gif" style="vertical-align:middle;" /> <a href="/index.html?tpl=forum_viewthread&Tid=<%=thread.Tid%>&Position=<%=post.Position%>" target="_blank"><%if(post.Message) {%><%=post.Message%><%}else{%>......<%}%></a> <img src="<%=cache.imgdir%>/icon_quote_m_e.gif" style="vertical-align:middle;" /></td>
+</tr>
+<%}}%>
+<%}}else{%>
+<tr>
+<td colspan="3"><p class="emp">还没有相关的帖子</p></td>
+</tr>
+<%}%>
+</table>
+</form>
+
+</script>

@@ -1,0 +1,1120 @@
+
+<script id="tpl_forum_viewthread" type="text/html">
+	<div id="wp" class="wp time_wp cl">
+		<style id="diy_style" type="text/css"></style>
+<!--[diy=diynavtop]--><div id="diynavtop" class="area"></div><!--[/diy]-->
+<div id="pt" class=" cl">
+                <div class="z"><a href="/" class="nvhm" title="首页"><svg class="svg" style="width: 17px;height: 17px;margin-top:6px;" aria-hidden="true"><use xlink:href="#icon-zhuye"></use></svg></a><em>&raquo;</em><a href="/index.html?tpl=forum_index" onclick="tpl_load('forum_index',WRITE_MSG_U2WS_forum_index,{});return false;">论坛</a><em>›</em><%if(data.Parent){%><a href="/index.html?tpl=forum_index&Gid={{data.Parent.Fid}}" onclick="tpl_load('forum_index',WRITE_MSG_U2WS_forum_index,{Gid:{{data.Parent.Fid}}});return false;">{{data.Parent.Name}}</a><em>›</em><%}%><a href="/index.html?tpl=forum&Fid={{data.Fid}}" onclick="tpl_load('forum',WRITE_MSG_U2WS_forum,{Fid:{{data.Fid}}});return false">{{data.Name}}</a><em>&rsaquo;</em>{{data.Thread.Subject}}</div>
+               <div href="javascript:void(0)" target="_blank" class="search-li" title="搜索">
+               	<input type="text" name="search" placeholder="请输入搜索内容">
+               <div style="width: 50px;height: 30px;background-color: rgb(255, 128, 1);position: absolute;margin-top: -30px;margin-left: 291px;"></div>
+               	<svg class="svg-search" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="28px" height="22px"><path fill-rule="evenodd"  fill="rgb(255, 255, 255)" d="M26.570,20.965 C25.811,22.054 24.302,22.328 23.204,21.572 L14.000,15.000 C13.296,14.518 15.194,15.479 15.221,14.689 C13.940,16.052 12.258,16.967 10.374,17.307 C8.059,17.726 5.722,17.225 3.792,15.900 C1.862,14.575 0.566,12.583 0.145,10.288 C-0.278,7.992 0.226,5.671 1.562,3.755 C4.323,-0.201 9.814,-1.193 13.803,1.545 C17.424,4.032 18.581,8.752 16.699,12.561 C17.434,12.254 16.293,10.515 17.000,11.000 L25.959,17.625 C27.057,18.381 27.331,19.875 26.570,20.965 ZM14.830,7.633 C14.537,6.033 13.634,4.643 12.288,3.720 C9.508,1.809 5.678,2.500 3.751,5.259 C1.827,8.021 2.524,11.819 5.305,13.727 C8.086,15.637 11.915,14.947 13.841,12.187 C14.773,10.852 15.124,9.234 14.830,7.633 Z"/></svg>
+
+</div>
+</div>
+<style id="diy_style" type="text/css"></style>
+<div class="wp">
+<!--[diy=diy1]--><div id="diy1" class="area"></div><!--[/diy]-->
+</div>
+<div id="postsml_menu" class="sllt" style="display: none;"><div id="postsmiliesdiv" style="overflow: hidden;"></div></div>
+<div id="ct" class="wp cl">
+<div id="pgt" class="pgs cl <%if(data.Modmenu>>0&1){%>pbm bbs<%}%>">
+<%var page=1;if(GET('Page')>1){page=GET('Page')}%>
+<div class="pgt"><%if(data.Page>1){%>
+	<div class="pg"><%if(page>6){%><a href="/index.html?tpl=forum_viewthread&Tid=<%=data.Thread.Tid%>&Page=1<%if(GET('Ordertype')==1){%>&Ordertype=1<%}%><%if(GET('Authorid')!=''){%>&Authorid=<%=GET('Authorid')%><%}%>" onclick="tpl_click(this.href);return false" class="first">首页</a><%}if(page>1){%><span class="pgb"><a href="/index.html?tpl=forum_viewthread&Tid=<%=data.Thread.Tid%>&Page=<%=page-1%><%if(GET('Ordertype')==1){%>&Ordertype=1<%}%><%if(GET('Authorid')!=''){%>&Authorid=<%=GET('Authorid')%><%}%>" onclick="tpl_click(this.href);return false"><span class="arrow-left"></span>上一页</a></span><%}for(var i=page-5;i<page;i++){%><%if(i>0){%><a href="/index.html?tpl=forum_viewthread&Tid=<%=data.Thread.Tid%>&Page=<%=i%><%if(GET('Ordertype')==1){%>&Ordertype=1<%}%><%if(GET('Authorid')!=''){%>&Authorid=<%=GET('Authorid')%><%}%>" onclick="tpl_click(this.href);return false"><%=i%></a><%}}%><strong><%=page%></strong><%for(var i=page+1;i<page+4 && i<=data.Page;i++){%><%if(i>0){%><a href="/index.html?tpl=forum_viewthread&Tid=<%=data.Thread.Tid%>&Page=<%=i%><%if(GET('Ordertype')==1){%>&Ordertype=1<%}%><%if(GET('Authorid')!=''){%>&Authorid=<%=GET('Authorid')%><%}%>" onclick="tpl_click(this.href);return false"><%=i%></a><%}}%><label><input type="text" name="custompage" class="px" size="2" title="输入页码，按回车快速跳转" value="<%=page%>" onkeydown="if(event.keyCode==13) {tpl_load('forum_viewthread',WRITE_MSG_U2WS_forum_viewthread,{Tid:<%=data.Thread.Tid%>,Page:this.value,<%if(GET('Ordertype')==1){%>Ordertype:1<%}%><%if(GET('Authorid')!=''){%>Authorid:<%=GET('Authorid')%><%}%>}); doane(event);}"><span title="共 <%=data.Page%> 页"> / <%=data.Page%> 页</span></label><%if(page<data.Page-3){%><a href="/index.html?tpl=forum_viewthread&Tid=<%=data.Thread.Tid%>&Page=<%=data.Page%><%if(GET('Ordertype')==1){%>&Ordertype=1<%}%><%if(GET('Authorid')!=''){%>&Authorid=<%=GET('Authorid')%><%}%>" onclick="tpl_click(this.href);return false" class="first">尾页</a><%}%><%if(page<data.Page){%><span class="pgn"><a href="/index.html?tpl=forum_viewthread&Tid=<%=data.Thread.Tid%>&Page=<%=page+1%><%if(GET('Ordertype')==1){%>&Ordertype=1<%}%><%if(GET('Authorid')!=''){%>&Authorid=<%=GET('Authorid')%><%}%>" onclick="tpl_click(this.href);return false">下一页<span class="arrow-right"></span></a></span><%}%></div>
+<%}%>
+</div>
+<span class="y pgb"<%if(cache.visitedforums>0){%> id="visitedforums" onmouseover="$('visitedforums').id = 'visitedforumstmp';this.id = 'visitedforums';showMenu({'ctrlid':this.id,'pos':'34'})"<%}%>><%if(checkback()){%><a  href="javascript:history.go(-1);"><span class="arrow-left"></span>返回</a><%}%></span>
+<a id="newspecial" onmouseover="$('newspecial').id = 'newspecialtmp';this.id = 'newspecial';showMenu({'ctrlid':this.id})" href="javascript:showWindowEx('newthread',{Fid:{{data.Fid}}});" title="发新帖"><span>发帖</span><span class="item arrow-bottom" style="margin-left:10px"></span></a><%  if(data.Group_status>>6&1){%>
+<a id="post_reply"  href="javascript:showWindowEx('reply', {Fid:<%=data.Fid%>,Tid:<%=data.Thread.Tid%>,Position:0})" title="回复"><span>回复</span></a>
+<%}%>
+</div>
+<%if(data.Group_status>>0&1 && (data.Group_status>>1&1 || data.Group_status>>2&1 || data.Group_status>>3&1 || data.Group_status>>4&1 || data.Group_status>>5&1)){%>
+<ul class="p_pop" id="newspecial_menu" style="display: none">
+<%if(data.Forum.Allowspecialonly==0){%><li><a href="javascript:showWindowEx('newthread',{Fid:{{data.Fid}}});">发表帖子</a></li><%}if(data.Group_status>>2&1){%><li class="poll"><a href="javascript:newthread({{data.Fid}},1);">发起投票</a></li><%}if(data.Group_status>>3&1){%><li class="reward"><a href="javascript:newthread({{data.Fid}},3);">发布悬赏</a></li><%}if(data.Group_status>>5&1){%><li class="debate"><a href="javascript:newthread({{data.Fid}},5);">发起辩论</a></li><%}if(data.Group_status>>4&1){%><li class="activity"><a href="javascript:newthread({{data.Fid}},4);">发起活动</a></li><%}if(data.Group_status>>1&1){%><li class="trade"><a href="javascript:newthread({{data.Fid}},2);">出售商品</a></li><%}%>
+</ul>
+<%}if(data.Modmenu>>1&1){%>
+<div id="mdly" class="fwinmask" style="display:none;z-index:350;">
+<table cellspacing="0" cellpadding="0" class="fwin">
+<tr>
+<td class="t_l"></td>
+<td class="t_c"></td>
+<td class="t_r"></td>
+</tr>
+<tr>
+<td class="m_l">&nbsp;&nbsp;</td>
+<td class="m_c">
+<div class="f_c">
+<div class="c">
+<h3>选中&nbsp;<strong id="mdct" class="xi1"></strong>&nbsp;篇: </h3>
+<%if(data.Forum.Ismoderator) { if(data.Admin_status>>9&1){%><a href="javascript:;" onclick="modaction(12,<%=data.Thread.Tid%>)">警告</a><span class="pipe">|</span><%}if(data.Admin_status>>8&1){%><a href="javascript:;" onclick="modaction(13,<%=data.Thread.Tid%>)">屏蔽</a><span class="pipe">|</span><%}if(data.Admin_status>>7&1 /*&& !rushreply*/){%><a href="javascript:;" onclick="modaction(16,<%=data.Thread.Tid%>)">删除</a><span class="pipe">|</span><%}} if(data.Forum.Ismoderator && data.Admin_status>>6&1 || data.Thread.Authorid == cache.Head.Uid){%><a href="javascript:;" onclick="modaction(15,<%=data.Thread.Tid%>)">置顶</a><span class="pipe">|</span><%}%>
+</div>
+</div>
+</td>
+<td class="m_r"></td>
+</tr>
+<tr>
+<td class="b_l"></td>
+<td class="b_c"></td>
+<td class="b_r"></td>
+</tr>
+</table>
+</div>
+<%}%>
+    <%if(data.Modmenu>>0&1){%>
+<div id="modmenu" class="Quater_menu "><%var modopt=0%><%if(data.Forum.Ismoderator) { if(data.Admin_status>>0&1) { modopt++%><a href="javascript:;" onclick="showWindowEx('mods',{Tids:[<%=data.Thread.Tid%>],Action:1})">升降</a><span class="pipe">|</span>
+	<%}if(data.Allowstickthread>0 && (data.Thread.Displayorder <= 3 || cache.Head.Adminid == 1) ) { modopt++%><a href="javascript:;" onclick="showWindowEx('mods',{Tids:[<%=data.Thread.Tid%>],Action:2,Allowstickthread:<%=data.Allowstickthread%>})">置顶</a><span class="pipe">|</span>
+	<%}if(/*_G['group']['allowlivethread'] &&*/ false) { modopt++%><a href="javascript:;" onclick="modaction('live',<%=data.Thread.Tid%>)">直播</a><span class="pipe">|</span>
+	<%}if(data.Admin_status>>2&1 ) { modopt++%><a href="javascript:;" onclick="showWindowEx('mods',{Tids:[<%=data.Thread.Tid%>],Action:3,Highlight:<%=data.Thread.Highlight%>})">高亮</a><span class="pipe">|</span>
+	<%}if(data.Admin_status>>3&1 ) { modopt++%><a href="javascript:;" onclick="showWindowEx('mods',{Tids:[<%=data.Thread.Tid%>],Action:4})">精华</a><span class="pipe">|</span>
+	<%}if(data.Admin_status>>5&1) { modopt++%><a href="javascript:;" onclick="showWindowEx('mods',{Tids:[<%=data.Thread.Tid%>],Action:6,Stamp:<%=data.Thread.Stamp%>})">图章</a><span class="pipe">|</span>
+	<%}if(data.Admin_status>>10&1) { modopt++%><a href="javascript:;" onclick="showWindowEx('mods',{Tids:[<%=data.Thread.Tid%>],Action:7,Icon:<%=data.Thread.Icon%>})">图标</a><span class="pipe">|</span>
+	<%}if(data.Admin_status>>11&1 && data.Forum.Status != 3) { modopt++%><a href="javascript:;" onclick="showWindowEx('mods',{Tids:[<%=data.Thread.Tid%>],Action:8,Closed:<%=data.Thread.Closed%>})"><%if(data.Thread.Closed==0){%>关闭<%}else{%>打开<%}%></a><span class="pipe">|</span>
+	<%}if(data.Admin_status>>12&1 && data.Forum.Status != 3) { modopt++%><a href="javascript:;" onclick="showWindowEx('mods',{Tids:[<%=data.Thread.Tid%>],Action:9})">移动</a><span class="pipe">|</span>
+	<%}if(data.Admin_status>>13&1 ) { modopt++%><a href="javascript:;" onclick="showWindowEx('mods',{Tids:[<%=data.Thread.Tid%>],Action:10,Fid:<%=data.Fid%>})">分类</a><span class="pipe">|</span>
+	<%}if(data.Thread.Special!=0) { if(data.Admin_status>>14&1 && data.Forum.Status != 3) { modopt++%><a href="javascript:;" onclick="modaction('copy')">复制</a><span class="pipe">|</span>
+	<%}if(data.Admin_status>>15&1 && data.Forum.Status != 3) { modopt++%><a href="javascript:;" onclick="modaction('merge')">合并</a><span class="pipe">|</span>
+	<%}if(/*_G['group']['allowrefund'] && data.Thread.Price > 0*/false) { modopt++%><a href="javascript:;" onclick="modaction('refund')">撤销付费</a><span class="pipe">|</span>
+	<%}} if(false && data.Admin_status>>16&1 && data.Forum.Status != 3) { modopt++%><a href="javascript:;" onclick="modaction('split')">分割</a><span class="pipe">|</span>
+	<%}if(false && data.Admin_status>>17&1) { modopt++%><a href="javascript:;" onclick="modaction('repair')">修复</a><span class="pipe">|</span><%} if(data.Postlist[0].Position==1) { if(data.Admin_status>>9&1) { modopt++%><a href="javascript:;" onclick="showWindowEx('mods', {Tids:[1],Action:12,Tid:<%=data.Thread.Tid%>})">警告</a><span class="pipe">|</span>
+	<%}if(data.Admin_status>>8&1) { modopt++%><a href="javascript:;" onclick="showWindowEx('mods', {Tids:[1],Action:13,Tid:<%=data.Thread.Tid%>})">屏蔽</a><span class="pipe">|</span><%}} if(data.Admin_status>>18&1 && data.Thread.Special == 3 ) { modopt++%><a href="javascript:;" onclick="modaction('removereward')">移除悬赏</a><span class="pipe">|</span>
+	<%}if(data.Forum.Status == 3 && in_array(cache.Head.Adminid, [1,2]) && data.Thread.Closed < 1){%><a href="javascript:;" onclick="modthreads(5, 'recommend_group');return false;">推到版块</a><span class="pipe">|</span>
+	<%}if(data.Admin_status>>19&1){%><a href="javascript:;" onclick="showWindowEx('mods', {Tids:[<%=data.Thread.Tid%>],Action:14,Tags:<%=JSON_stringify(data.Postlist[0].Tags)%>,Recent_use_tag:<%=JSON_stringify(data.Recent_use_tag)%>})">标签</a><span class="pipe">|</span>
+	<%}if(data.Admin_status>>20&1){%><a href="javascript:;" onclick="showWindow('usertag', 'forum.php?mod=misc&action=usertag&tid=<%=data.Thread.Tid%>', 'get', 0)">用户标签</a><span class="pipe">|</span><%}} %>
+    <%if(data.Admin_status>>7&1) { modopt++%><a href="javascript:;" onclick="showWindowEx('mods', {Tids:[<%=data.Thread.Tid%>],Action:0})">删除主题</a><span class="pipe">|</span><%}%></div>
+    <%}%>
+  
+  
+<div id="postlist" class="pl bm">
+<table cellspacing="0" cellpadding="0">
+<tr>
+<%if(getcookie('close_leftinfo')!=1){%>
+<td class="pls ptn pbn">
+<%if(page > 1){%>
+<div id="tath" class="cl">
+<%if(data.Thread.Authorid>0 && data.Thread.Author!=""){%>
+<a href="/index.html?tpl=space&amp;Uid=<%=data.Thread.Authorid%>" title="<%=data.Thread.Author%>"><%-get_avatar(data.Avatar,'240')%></a>
+楼主: <a href="/index.html?tpl=space&amp;Uid=<%=data.Thread.Authorid%>" title="<%=data.Thread.Author%>"><%=data.Thread.Author%></a>
+<%}else{%>
+楼主:
+<%if(data.Forum.Ismoderator){%>
+<a href="/index.html?tpl=space&amp;Uid=<%=data.Thread.Authorid%>">匿名</a>
+<%}else{%>
+匿名
+<%}}%>
+</div>
+<%}else{%>
+<div class="hm ptn xs2 tsl">
+<span class="xg1">查看:</span> <span class="color-green"><%=data.Thread.Views%></span><span class="pipe">|</span><span class="xg1">回复:</span> <span class="color-green"><%=data.Thread.Allreplies%></span>
+</div>
+<%}%>
+</td>
+<%}%>
+<td class="plc ptm pbn vwthd">
+<div class="y">
+
+<a href="javascript:nextnewset(0);" title="上一主题"><svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="23.25px" height="22.25px"><path fill-rule="evenodd"  stroke="rgb(102, 102, 102)" stroke-width="1.5px" stroke-linecap="butt" stroke-linejoin="miter" fill="none" d="M21.653,15.575 L10.691,15.575 L10.691,20.751 L0.748,10.750 L10.691,0.749 L10.691,5.925 L21.653,5.925 L21.653,15.575 Z"/></svg></a>
+<a href="javascript:nextnewset(1);" title="下一主题"><svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="23.25px" height="22.25px"><path fill-rule="evenodd"  stroke="rgb(102, 102, 102)" stroke-width="1.5px" stroke-linecap="butt" stroke-linejoin="miter" fill="none" d="M0.846,15.575 L11.809,15.575 L11.809,20.751 L21.752,10.750 L11.809,0.749 L11.809,5.925 L0.846,5.925 L0.846,15.575 Z"/></svg></a>
+</div>
+<%if(cache.close_leftinfo_userctrl==1){%>
+<span class="xg1 side_btn">
+<%if(getcookie('close_leftinfo')!=1){%>
+<a onclick="setcookie('close_leftinfo', 1);location.reload();" title="收起左侧" class="btn_s_close" href="javascript:;"><img src="<%=cache.imgdir%>/control_l.png" alt="收起左侧" class="vm" /></a>
+<%}else{%>
+<a onclick="setcookie('close_leftinfo', 2);location.reload();" title="开启左侧" class="btn_s_open" href="javascript:;"><img src="<%=cache.imgdir%>/control_r.png" alt="开启左侧" class="vm" /></a>
+<%}%>
+</span>
+<%}%>
+<h1 class="viewthreadts tsl">
+	
+<%if(data.Thread.Typeid>0 && data.Forum.Threadtypes.Status>>0&1) {for(var i in data.Forum.Threadtypes.Types){if( data.Forum.Threadtypes.Types[i].Id==data.Thread.Typeid && data.Forum.Threadtypes.Prefix>0){%>
+
+<%if(data.Forum.Threadtypes.Prefix==1){%>
+
+<%if((data.Forum.Threadtypes.Status>>2&1)==1 || data.Forum.Status == 3){%>
+<a href="javascript:tpl_load('forum',WRITE_MSG_U2WS_forum,{Fid:<%=data.Fid%>,Typeid:<%=data.Thread.Typeid%>})">[<%-viewThreadtype(data.Forum.Threadtypes.Types[i].Name)%>]</a>
+<%}else{%>
+[<%-viewThreadtype(data.Forum.Threadtypes.Types[i].Name)%>]
+<%}}%>
+<%if(data.Forum.Threadtypes.Prefix==2){%>
+<%if((data.Forum.Threadtypes.Status>>2&1)==1 || data.Forum.Status == 3){%>
+<a href="javascript:tpl_load('forum',WRITE_MSG_U2WS_forum,{Fid:<%=data.Fid%>,Typeid:<%=data.Thread.Typeid%>})">图标未处理[<%=data.Forum.Threadtypes.Types[i].Icon%>]</a>
+<%}else{%>
+图标未处理[<%=data.Forum.Threadtypes.Types[i].Icon%>]
+<%}}%>
+<%}}}%>
+<span id="thread_subject"><%=data.Thread.Subject%></span>
+</h1>
+<span class="xg1">
+<%if(data.Thread.Displayorder == -2){%>(审核中)
+<%}else if(data.Thread.Displayorder == -3){%>(已忽略)
+<%}else if(data.Thread.Displayorder == -4){%>(草稿)
+<%if(data.Postlist[0].StatusBool==1 && data.Postlist[0].Invisible == -3){%>
+<a class="psave" href="forum.php?mod=misc&amp;action=pubsave&amp;tid=<%=data.Thread.Tid%>">发表</a>
+<%}} if(data.Thread.Hidden >= 1) { if(data.Thread.Authorid == cache.Head.Uid){%><a class="psave" id="hiderecover" title="点击恢复主题隐藏状态" href="forum.php?mod=misc&amp;action=hiderecover&amp;tid=<%=data.Thread.Tid%>&amp;formhash=" onclick="showWindow(this.id, this.href, 'get', 0);">隐藏</a><%}else{%>(隐藏)<%}%>
+&nbsp;
+<%}if(getRecommendlevel(data.Thread.Recommends)){%>
+&nbsp;<img src="<%=cache.imgdir%>/recommend_<%=getRecommendlevel(data.Thread.Recommends)%>.gif" alt="" title="评价指数 <%=data.Thread.Recommends%>" />
+<%}if(getheatlevel(data.Thread.Heats)){%>
+&nbsp;<img src="<%=cache.imgdir%>/hot_<%=getheatlevel(data.Thread.Heats)%>.gif" alt="" title="热度: <%=data.Thread.Heats%>" />
+<%}if(data.Thread.Closed > 0){%>
+&nbsp;<img src="<%=cache.imgdir%>/locked.gif" alt="关闭" title="关闭" class="vm" />
+<%}%>
+<a href="/index.html?tpl=forum_viewthread&Tid=<%=data.Thread.Tid%><%if(cache.Head.Uid){%>&Fromuid=<%=cache.Head.Uid%><%}%>" onclick="return copyThreadUrl(this, '<%=cache.Head.Bbname%>')" <%if(cache.Head.Uid){%>title="分享帖子，您的朋友访问此链接后，您将获得相应的积分奖励"<%}%>>[复制链接]</a>
+</span>
+</td>
+</tr>
+</table>
+<%if(data.Thread.Replycredit > 0){%>
+<div id="pl_top">
+<table cellspacing="0" cellpadding="0">
+<tr class="ad">
+<td class="pls"></td>
+<td class="plc"></td>
+</tr>
+<tr>
+<%if(getcookie('close_leftinfo')!=1){%>
+<td class="pls vm ptm">
+<%}else{%>
+<td class="pls ptm pbm xi1" colspan="2">
+<%}%>
+<img src="<%=cache.imgdir%>/thread_prize_s.png" class="hm" alt="回帖奖励" />
+<strong><%=data.Thread.Replycredit%> <%=cache.extcredits[data.Thread.Replycredit_rule.Extcreditstype]['unit']%><%=cache.extcredits[data.Thread.Replycredit_rule.Extcreditstype]['title']%></strong>
+<%if(getcookie('close_leftinfo')!=1){%>
+</td>
+<td class="plc ptm pbm xi1">
+<%}else{%>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<%}%>
+回复本帖可获得 <%=data.Thread.Replycredit_rule.Extcredits%> <%=cache.extcredits[data.Thread.Replycredit_rule.Extcreditstype]['unit']%><%=cache.extcredits[data.Thread.Replycredit_rule.Extcreditstype]['title']%>奖励! 每人限 <%=data.Thread.Replycredit_rule.Membertimes%> 次<%if(data.Thread.Replycredit_rule.Random > 0){%><span class="xg1">(中奖概率 <%=data.Thread.Replycredit_rule.Random%>%)</span><%}%>
+</td>
+</tr>
+</table>
+</div>
+<%}%>
+<table cellspacing="0" cellpadding="0" class="ad">
+<tr>
+<td class="pls">
+<%if(getcookie('close_leftinfo')!=1){%>
+</td>
+<td class="plc">
+<%}%>
+</td>
+</tr>
+</table>
+<div id="postlistreply" class="pl"><div id="post_new" class="viewthread_table" style="display: none"></div></div>
+</div>
+<%if(data.Modmenu>>0&1){%>
+<div class="xi2 mbm pbm bbs">
+</div>
+<%}%>
+<div id="modmenu2"></div>
+<form method="post" autocomplete="off" name="modactions" id="modactions">
+<input type="hidden" name="optgroup" />
+<input type="hidden" name="operation" />
+<input type="hidden" name="page" value="<%=GET('Page')%>" />
+</form>
+
+<div class="pgs mtm mbm cl">
+	<div class="pgt"></div>
+<span class="pgb y"<%if(cache.visitedforums>0){%> id="visitedforumstmp" onmouseover="$('visitedforums').id = 'visitedforumstmp';this.id = 'visitedforums';showMenu({'ctrlid':this.id,'pos':'21'})"<%}%>><a  href="javascript:tpl_load('forum',WRITE_MSG_U2WS_forum,{Fid:{{data.Fid}}})"><span class="arrow-left"></span>返回</a></span>
+<a id="newspecialtmp" onmouseover="$('newspecial').id = 'newspecialtmp';this.id = 'newspecial';showMenu({'ctrlid':this.id})" href="javascript:javascript:showWindowEx('newthread',{Fid:{{data.Fid}}});" title="发新帖"><span>发帖</span><span class="item arrow-bottom" style="margin-left:10px"></span></a>
+<% if(data.Group_status>>6&1){%>
+<a id="post_replytmp" onclick="showWindowEx('reply', {Fid:<%=data.Fid%>,Tid:<%=data.Thread.Tid%>,Position:0})" href="javascript:;" title="回复"><span>回复</span></a>
+<%}%>
+</div>
+<!--[diy=diyfastposttop]--><div id="diyfastposttop" class="area"></div><!--[/diy]-->
+<div id="f_pst" class="pl<%if(GET('From')==''){%> bm bmw<%}%>">
+<form method="post" autocomplete="off" id="fastpostform" action="" <%if(GET('Ordertype') != 1){%> onSubmit="return fastpostvalidate(this)"<%}%>>
+<%if(GET('From')==''){%>
+<table cellspacing="0" cellpadding="0">
+<tr>
+<td class="pls">
+<%if(cache.Head.Uid){%><div class="avatar avtm" align="center"><%-get_avatar(cache.Head.Avatar,240)%></div><%}%>
+</td>
+<td class="plc">
+<%}%>
+<span id="fastpostreturn"></span>
+<%if(data.Thread.Special == 5 && data.Firststand==0){%>
+<div class="pbt cl">
+<div class="ftid sslt">
+<select id="stand" name="stand">
+<option value="">选择观点</option>
+<option value="0">中立</option>
+<option value="1">正方</option>
+<option value="2">反方</option>
+</select>
+</div>
+</div>
+<%}%>
+<div class="cl">
+<%if(GET('From')=='' && cache.fastsmilies==1){%><div id="fastsmiliesdiv" class="y"><div id="fastsmiliesdiv_data"><div id="fastsmilies"></div></div></div><%}%>
+<div<%if(GET('From')=='' && cache.fastsmilies==1){%> class="hasfsl"<%}%> id="fastposteditor">
+<div class="tedt<%if(!(data.Thread.Special == 5 && data.Firststand==0)){%> mtn<%}%>">
+<div class="bar">
+<span class="y">
+<a href="javascript:<%if(cache.Head.Uid){%>tpl_load('forum_newthread',WRITE_MSG_U2WS_forum_newthread,{Fid:<%=data.Fid%>,Type:2,Tid:<%=data.Thread.Tid%>,Position:0});<%}else{%>showWindowEx('quick_login')<%}%>" >高级模式</a>
+</span><%var seditor = ['fastpost', ['at', 'bold', 'color', 'img', 'link', 'quote', 'code', 'smilies'], !(data.Group_status>>9&1)?1:0, data.Group_status>>8&1 && GET('From') != 'preview' && data.Group_status>>9&1 && false ? '<span class="pipe z">|</span><span id="spanButtonPlaceholder">上传</span>' : '']%>
+<div class="fpd">
+<%if(in_array('bold', seditor[1])){%>
+<a href="javascript:;" title="文字加粗" class="fbld"<%if(seditor[2]==0){%> onclick="seditor_insertunit('<%seditor[0]%>', '[b]', '[/b]');doane(event);"<%}%>>B</a>
+<%}if(in_array('color', seditor[1])){%>
+<a href="javascript:;" title="设置文字颜色" class="fclr" id="<%=seditor[0]%>forecolor"<%if(seditor[2]==0){%> onclick="showColorBox(this.id, 2, '<%=seditor[0]%>');doane(event);"<%}%>>Color</a>
+<%}if(in_array('img', seditor[1])){%>
+<a id="<%=seditor[0]%>img" href="javascript:;" title="图片" class="fmg"<%if(seditor[2]==0){%> onclick="seditor_menu('<%=seditor[0]%>', 'img');doane(event);"<%}%>>Image</a>
+<%}if(in_array('link', seditor[1])){%>
+<a id="<%=seditor[0]%>url" href="javascript:;" title="添加链接" class="flnk"<%if(seditor[2]==0){%> onclick="seditor_menu('<%=seditor[0]%>', 'url');doane(event);"<%}%>>Link</a>
+<%}if(in_array('quote', seditor[1])){%>
+<a id="<%=seditor[0]%>quote" href="javascript:;" title="引用" class="fqt"<%if(seditor[2]==0){%> onclick="seditor_menu('<%=seditor[0]%>', 'quote');doane(event);"<%}%>>Quote</a>
+<%}if(in_array('code', seditor[1])){%>
+<a id="<%=seditor[0]%>code" href="javascript:;" title="代码" class="fcd"<%if(seditor[2]==0){%> onclick="seditor_menu('<%=seditor[0]%>', 'code');doane(event);"<%}%>>Code</a>
+<%}if(in_array('smilies', seditor[1])){%>
+<a href="javascript:;" class="fsml" id="<%=seditor[0]%>sml"<%if(seditor[2]==0){%> onclick="showMenu({'ctrlid':this.id,'evt':'click','layer':2});return false;"<%}%>>Smilies</a>
+<%}if(in_array('at', seditor[1]) && data.Group_status>>11&1){%>
+<a id="<%=seditor[0]%>at" href="javascript:;" title="@朋友" class="fat"<%if(seditor[2]==0){%> onclick="seditor_menu('<%=seditor[0]%>', 'at');doane(event);"<%}%>>@朋友</a>
+<%}%>
+<%-seditor[3]%>
+</div></div>
+<div class="area">
+
+<%if(data.Group_status>>9&1){%>
+
+<textarea rows="6" cols="80" name="message" id="fastpostmessage" onKeyDown="seditor_ctlent(event, <%if(GET('Ordertype') != 1){%>'fastpostvalidate($(\'fastpostform\'))'<%}else{%>'$(\'fastpostform\').submit()'<%}%>);" tabindex="4" class="pt"<%=getreplybg(data.Forum.Replybg)%>></textarea>
+<%}else{%>
+<div class="pt hm">
+
+<%if(!(data.Group_status>>10&1)) { if(cache.Head.Uid==0){%>
+您需要登录后才可以回帖 <a href="javascript:showWindowEx('quick_login')"  class="xi2">登录</a> | <a href="javascript:tpl_load('register',WRITE_MSG_U2WS_GetHead,{})" class="xi2">注册</a>
+<%}else{%>
+您需要 <a href="member.php?mod=connect" class="xi2">完善帐号信息</a> 或 <a href="member.php?mod=connect&amp;ac=bind" class="xi2">绑定已有帐号</a> 后才可以发帖
+<%}}else{%>
+您现在无法发帖。 <%=data.Reason%>
+<%}%>
+</div>
+<%}%>
+</div>
+</div>
+</div>
+</div>
+<%if(data.Group_status>>9&1){%>
+
+<%if(data.Group_status>>8&1 && GET('From') != 'preview'){%>
+
+<div class="upfl<%if(GET('From')=='' && cache.fastsmilies==1){%> hasfsl<%}%>">
+<table cellpadding="0" cellspacing="0" border="0" id="attach_tblheader" style="display: none;">
+<tr>
+<td>点击附件文件名添加到帖子内容中</td>
+<td class="atds">描述</td>
+<%if(data.Group_status>>12&1){%>
+<td class="attv">
+阅读权限
+<img src="<%=cache.imgdir%>/faq.gif" alt="Tip" class="vm" onmouseover="showTip(this)" tip="阅读权限按由高到低排列，高于或等于选中组的用户才可以阅读" />
+</td>
+<%}if(data.Maxprice){%><td class="attpr"><%=cache.extcredits[cache.creditstransextra['1']]['title']%></td><%}%>
+<td class="attc"></td>
+</tr>
+</table>
+<div class="fieldset flash" id="attachlist"></div>
+</div>
+<%}%>
+<input type="hidden" name="subject" value=" " />
+<p class="ptm pnpost">
+<!--<a href="/index.html?tpl=spacecp&amp;ac=credit&amp;op=rule&amp;fid=<%=data.Fid%>" class="y" target="_blank">本版积分规则</a>-->
+<button <%if(data.Group_status>>6&1){%>type="submit" <%}else if(cache.Head.Uid==0){%>type="button" onclick="showWindow('login', 'member.php?mod=logging&action=login&guestmessage=yes')" <%}if(!$seccodecheck && !$secqaacheck){%> <%}%>name="replysubmit" id="fastpostsubmit" class="pn pnc vm" value="replysubmit" tabindex="5"><strong>发表回复</strong></button>
+<%if(GET('Ordertype') != 1 && GET('From')==''){%>
+<label for="fastpostrefresh"><input id="fastpostrefresh" type="checkbox" class="pc" />回帖后跳转到最后一页</label>
+<%}}%>
+</p>
+<%if(GET('From')==''){%>
+</td>
+</tr>
+</table>
+<%}%>
+</form>
+</div>
+<%if(data.Status!=3 && data.Forum_history && data.Forum_history.length){%>
+<div id="visitedforums_menu" class="p_pop blk cl" style="display: none;">
+<table cellspacing="0" cellpadding="0">
+<tr>
+<td id="v_forums">
+<h3 class="mbn pbn bbda xg1">浏览过的版块</h3>
+<%for(var i in data.Forum_history){%>
+	<ul class="xl xl1">
+		<a href="/index.html?tpl=forum&amp;Fid=2" onclick="tpl_load('forum',WRITE_MSG_U2WS_forum,{Fid:<%=data.Forum_history[i].Fid%>});return false"><%=data.Forum_history[i].Name%></a>
+	
+	</ul>
+<%}%>
+
+</td>
+</tr>
+</table>
+</div>
+<%}for(var i in data.Medal_list) {var medal=data.Medal_list[i]%><div id="md_<%=medal.Id%>_menu" class="tip tip_4" style="display: none;">
+<div class="tip_horn"></div>
+<div class="tip_c">
+<h4><%=medal.Name%></h4>
+<p><%=medal.Description%></p>
+</div>
+</div>
+<%}%>
+</div>
+<div class="wp mtn">
+<!--[diy=diy3]--><div id="diy3" class="area"></div><!--[/diy]-->
+</div>
+</script>
+<script id="tpl_forum_post" type="text/html">
+<%for(var i in data.Postlist) { var post=data.Postlist[i]%>
+<div id="post_<%=post.Position%>" class="xs3" <%if(post.StatusBool>>10&1){%>style="display:none;"<%}%>><%var needhiddenreply = (data.Forum.Status>>2&1 && cache.Head.Uid != post.Authorid && cache.Head.Uid != data.Thread.Authorid && !(post.StatusBool>>0&1) && !data.Forum.Ismoderator);var postshowavatars = !(cache.bannedmessages & 2 && (post.Memberstatus == '-1' || (post.Authorid>0 && post.Username=="") || (post.Groupid == 4 || post.Groupid == 5) || (post.StatusBool>>11&1)))%>
+<%if(post.StatusBool>>0&1){%>
+<div id="threadstamp"><%if(data.Thread.Stamp>=0 && cache.stamps[data.Thread.Stamp]){%><img src="<%=cache.STATICURL%>image/stamp/<%=cache.stamps[data.Thread.Stamp]['url']%>" title="<%=cache.stamps[data.Thread.Stamp]['text']%>" /><%}else{%><img src="static/image/common/none.gif"><%}%></div>
+<%}if(!(post.StatusBool>>1&1)){%>
+<table id="pid<%=post.Position%>" class="plhin" summary="pid<%=post.Position%>" cellspacing="0" cellpadding="0">
+<tr>
+<%if(getcookie('close_leftinfo')!=1){%>
+<td class="pls" rowspan="2">
+<div id="favatar<%=post.Position%>" class="pls favatar">
+<%if(post.Dateline-getcookie('lastvisit')>0){%><a name="newpost"></a><%}%><%if(i==data.Postlist.length){%><a name="lastpost"></a><%}%>
+<%if(post.Authorid>0 && post.Username!="" && !(post.StatusBool>>3&1)) { if(cache.authoronleft==1){%>
+<div class="pi">
+<div class="authi"><a href="/index.html?tpl=space&amp;Uid=<%=post.Authorid%>" target="_blank" class="xw1 xs3"<%if(post.Groupcolor!=""){%> style="color: <%=post.Groupcolor%>"<%}%>><%=post.Author%></a></div>
+</div>
+<%}%>
+
+<%}if(post.Authorid>0 && post.Username!="" && !(post.StatusBool>>3&1)){%>
+<div>
+<%if(!postshowavatars){%>
+<div class="avatar">头像被屏蔽</div>
+<%}else if(post.Authorid>0 && (cache.showsettings>>1&1)==1) { if(post.Mobiletype>0){%>
+<div class="mobile-type mobile-type-<%=post.Mobiletype%>">
+<a></a>
+</div>
+<%}%>
+<div align="center" class="avatar"<%if(!(cache.threadguestlite==1 && cache.Head.Uid==0)){%> <%}%>><a href="/index.html?tpl=space&amp;Uid=<%=post.Authorid%>" class="avtm" target="_blank"><%-get_avatar(post.Avatar,240)%></a><p><em><a href="/index.html?tpl=spacecp&amp;Ac=usergroup&amp;Gid=1" target="_blank"><%=post.Grouptitle%></a></em></p></div><div align="center"><p><span><img src="static/image/common/star_level3.gif" alt="Rank: 9"><img src="static/image/common/star_level3.gif" alt="Rank: 9"><img src="static/image/common/star_level1.gif" alt="Rank: 9"></span></p></div>
+<%}%>
+</div>
+<div class="tns xg2 btda ptm xg0"><table cellspacing="0" cellpadding="0"><tbody>
+	<tr><td>主题</td><td><a href="/index.html?tpl=space&amp;Uid=<%=post.Authorid%>" target="_blank"><%=post.Threadnum%></a></td></tr>
+	<tr><td>精华</td><td><%=post.Digestnum%></td></tr>
+	<!--<tr><td>积分</td><td><%=post.Extcredits1%></td></tr>
+	<tr><td>金钱</td><td><%=post.Extcredits2%></td></tr>
+	<tr><td>荣誉</td><td><%=post.Extcredits3%></td></tr>-->
+	<!--<tr><td>人气</td><td><a href="/index.html?tpl=space&amp;Uid=1&amp;do=thread&amp;type=thread&amp;view=me&amp;from=space" class="xi2">29</a></td></tr>
+	<tr><td>评议</td><td><a href="/index.html?tpl=space&amp;Uid=1&amp;do=thread&amp;type=thread&amp;view=me&amp;from=space" class="xi2">29</a></td></tr>-->
+</tbody></table>
+</div>
+
+<%}else if(post.StatusBool>>12&1) { if(cache.authoronleft==1){%>
+<div class="pi">
+<div class="authi"><a href="javascript:;" class="xw1"><%=post.Author%></a></div>
+</div>
+<%}if((cache.showsettings>>1&1)==1){%>
+<div>
+<div class="avatar avtm"><a href="javascript:;"><%-get_avatar(post.Avatar,240)%></a></div>
+</div>
+<%}}else{%>
+<div class="pi">
+<%if(post.Authorid==0){%>
+<a href="javascript:;">匿名 <em><%=post.Useip%></em></a>
+<%}else if(post.Authorid>0 && post.Username!="" && post.StatusBool>>3&1) { if(data.Forum.Ismoderator){%><a href="/index.html?tpl=space&amp;Uid=<%=post.Authorid%>" target="_blank">匿名</a><%}else{%>匿名<%}} else{%>
+<%=post.Author%> <em>该用户已被删除</em>
+<%}%>
+</div>
+
+<%}if((data.Admin_status>>21&1 || data.Admin_status>>22&1 || (data.Forum.Ismoderator && data.Admin_status>>23&1)) && !(post.StatusBool>>12&1)){%>
+<div class="btda xs2">
+<%if(data.Forum.Ismoderator && data.Admin_status>>23&1){%>
+<a href="forum.php?mod=topicadmin&amp;action=getip&amp;fid=<%=data.Fid%>&amp;tid=<%=data.Thread.Tid%>&amp;pid=<%=post.Position%>" onclick="ajaxmenu(this, 0, 0, 2);doane(event)">IP</a>
+<%}if(data.Admin_status>>21&1){%>
+<a href="<%if(cache.Head.Adminid == 1){%>admin.php?frames=yes&action=members&operation=search&uid=<%=post.Authorid%>&submit=yes<%}else{%>forum.php?mod=modcp&action=member&op=edit&uid=<%=post.Authorid%><%}%>" target="_blank">编辑</a>
+<%}if(data.Admin_status>>22&1) { if(cache.Head.Adminid == 1){%>
+<a href="admin.php?action=members&amp;operation=ban&amp;username=<%=post.Authorid%>&amp;frames=yes" target="_blank">禁止</a>
+<%}else{%>
+<a href="forum.php?mod=modcp&amp;action=member&amp;op=ban&amp;uid=<%=post.Authorid%>" target="_blank">禁止</a>
+<%}}%>
+<a href="forum.php?mod=modcp&amp;action=thread&amp;op=post&amp;do=search&amp;searchsubmit=1&amp;users=<%=post.Authorid%>" target="_blank">帖子</a>
+<%if(cache.Head.Adminid == 1){%>
+<a href="forum.php?mod=ajax&amp;action=quickclear&amp;uid=<%=post.Authorid%>" onclick="showWindow('qclear_<%=post.Authorid%>', this.href, 'get', 0)">清理</a>
+<%}%>
+</div>
+<%}%>
+</div>
+</td>
+<%}%>
+<td class="plc"<%if(getcookie('close_leftinfo')==1){%> style="width:100%"<%}%>>
+<div class="pi"<%if(getcookie('close_leftinfo')==1 && !(post.StatusBool>>3&1) && postshowavatars && (cache.showsettings>>1&1)==1){%> style="height:48px"<%}%>>
+<%if(postcount==0 && post.StatusBool>>0&1 ){%>
+<div id="fj" class="y">
+<label class="z">电梯直达</label>
+<input type="text" class="px p_fre z" size="2" onkeyup="$('fj_btn').href='javascript:ElevatorDirect('+this.value+')'" onkeydown="if(event.keyCode==13) {ElevatorDirect(this.value);return false;}" title="跳转到指定楼层" />
+<a href="javascript:;" id="fj_btn" class="z" title="跳转到指定楼层"><svg class="svg" style="width: 16px;height: 16px;margin:-2px 0 0 5px;" aria-hidden="true"><use xlink:href="#icon-diantidingdian"></use></svg></a>
+</div>
+<%}if(post.StatusBool>>2&1){%>
+<a href="javascript:" title="受到警告" class="y" onclick="showWindowEx('viewwarning', {Tid:<%=data.Thread.Tid%>,Position:<%=post.Position%>,Username:'<%=post.Author%>'})"style="padding-top: 17px;"><img src="<%=cache.imgdir%>/warning.gif" alt="受到警告" /></a>
+<%}%>
+<strong>
+<a href="/index.html?tpl=forum_viewthread&Tid=<%=data.Thread.Tid%>&Position=<%=post.Position%><%if(cache.Head.Uid){%>&Fromuid=<%=cache.Head.Uid%><%}%>"  <%if(cache.Head.Uid){%>title="分享帖子，您的朋友访问此链接后，您将获得相应的积分奖励"<%}%> id="postnum<%=post.Position%>" onclick="setCopy(this.href, '帖子地址复制成功');return false;">
+<%if(post.StatusBool>>5&1){%>
+<img src ="<%=cache.imgdir%>/settop.png" title="置顶回复" class="vm" /> 来自 <%=post.Number%><%=cache.custominfo.postno[0]%>
+<%}else if(post.Number == -1){%>
+推荐
+<%}else { if(cache.custominfo.postno[post.Number]){%>
+<%=cache.custominfo.postno[post.Number]%>
+<%}else{%>
+<em><%=post.Number%></em><%=cache.custominfo.postno[0]%>
+<%}}%>
+</a>
+</strong>
+<div class="pti">
+<div class="pdbt">
+<%if(!(post.StatusBool>>0&1) && post.StatusBool>>6&1){%>
+<label class="pdbts pdbts_1">
+<a href="forum.php?mod=viewthread&amp;tid=<%=data.Thread.Tid%>&amp;checkrush=1" rel="nofollow" title="查看抢中楼层" class="v">恭喜</a>
+<a href="forum.php?mod=viewthread&amp;tid=<%=data.Thread.Tid%>&amp;checkrush=1" rel="nofollow" title="查看抢中楼层" class="b">抢中本楼</a>
+</label>
+<%}if(!(post.StatusBool>>0&1) && data.Thread.Special == 5){%>
+<label class="pdbts pdbts_<%=post.Stand%>">
+<%if(post.Stand == 1){%><a class="v" href="forum.php?mod=viewthread&amp;tid=<%=data.Thread.Tid%>&amp;extra=<%=GET('extra')%>&amp;filter=debate&amp;stand=1" title="只看正方">正方</a>
+<%}else if(post.Stand == 2){%><a class="v" href="forum.php?mod=viewthread&amp;tid=<%=data.Thread.Tid%>&amp;extra=<%=GET('extra')%>&amp;filter=debate&amp;stand=2" title="只看反方">反方</a>
+<%}else{%><a href="forum.php?mod=viewthread&amp;tid=<%=data.Thread.Tid%>&amp;extra=<%=GET('extra')%>&amp;filter=debate&amp;stand=0" title="只看中立">中立</a><%}if(post.Stand>0){%>
+<a class="b" href="forum.php?mod=misc&amp;action=debatevote&amp;tid=<%=data.Thread.Tid%>&amp;pid=<%=post.Position%>" id="voterdebate_<%=post.Position%>" onclick="ajaxmenu(this);doane(event);">支持 <%=post.Voters%></a>
+<%}%>
+</label>
+<%}%>
+</div>
+<div class="authi">
+<%if(getcookie('close_leftinfo')==1 && !(post.StatusBool>>3&1) && postshowavatars && (cache.showsettings>>1&1)==1){%>
+<a href="/index.html?tpl=space&amp;Uid=<%=post.Authorid%>" target="_blank" class="xi2 z" style="padding-right:10px;"><%=avatar(post.Authorid, 'small')%></a>
+<%}var _self = data.Thread.Author && post.Author == data.Thread.Author && post.Position !== '1'%><%if(_self ){%>
+<svg class="svg" style="width: 23px;height: 23px;vertical-align:-6px;" aria-hidden="true"><use xlink:href="#icon-Administratorinformation"></use></svg>
+<%}else { if(!(post.StatusBool>>3&1) && cache.groupicon[post.Groupid]){%>
+<img class="authicn vm" id="authicon<%=post.Position%>" src="<%=cache.STATICURL+'image/common/'+cache.groupicon[post.Groupid]%>" />
+<%}else{%>
+<img class="authicn vm" id="authicon<%=post.Position%>" src="<%=cache.STATICURL+'image/common/'+cache.groupicon['0']%>" />
+<%}} if(post.Authorid && !(post.StatusBool>>3&1)) {if(cache.authoronleft==0){%><a href="/index.html?tpl=space&amp;Uid=<%=post.Authorid%>" target="_blank" class="xi2"><%=post.Author%></a><%}if(getcookie('close_leftinfo')==1) { }%>
+&nbsp;<em id="authorposton<%=post.Position%>">发表于 <%=thread_time(post.Dateline)%></em>
+<%if(post.StatusBool>>13&1){%>
+<span class="xg1"><%if(cache.mobile.mobilecomefrom!=""){%><%=cache.mobile.mobilecomefrom%><%}else{%>来自手机<%}%></span>
+<%}if(post.Invisible == 0){%>
+<span class="pipe">|</span>
+<%if(GET('Authorid')==""){%>
+<a href="/index.html?tpl=forum_viewthread&Tid=<%=data.Thread.Tid%>&Ordertype=<%=GET('Ordertype')%>&Authorid=<%=post.Authorid%>" onclick="tpl_click(this.href);return false" rel="nofollow">只看该作者</a>
+<%}else{%>
+
+<a href="/index.html?tpl=forum_viewthread&Tid=<%=data.Thread.Tid%>&Ordertype=<%=GET('Ordertype')%>" onclick="tpl_click(this.href);return false" rel="nofollow">显示全部楼层</a>
+<%}} } else if(post.StatusBool>>12&1) { if(cache.authoronleft==0){%><a href="javascript:;" class="xi2"><%=post.Author%></a><%}%>
+&nbsp;<em id="authorposton<%=post.Position%>">发表于 <%=post.Dateline%></em>
+<%}else if(post.Authorid>0 && post.Username!="" && post.StatusBool>>3&1 || post.Authorid==0 && post.Username==""){%>
+匿名&nbsp;
+<em id="authorposton<%=post.Position%>">发表于 <%=post.Dateline%></em>
+<%}if(post.StatusBool>>0&1 ) { if(data.Thread.Attachment == 2 && data.Group_status>>13&1 && (cache.guestviewthumb['flag']==0 || (cache.guestviewthumb['flag']==1 && cache.Head.Uid>0))){%>
+<!--<span class="pipe">|</span><a href="forum.php?mod=viewthread&amp;tid=<%=data.Thread.Tid%>&amp;from=album">只看大图</a>-->
+<%}%>
+<span class="none"><img src="<%=cache.imgdir%>/arw_r.gif" class="vm" alt="回帖奖励" /></span>
+<%if(!data.Thread.Rushinfo) { if(GET('Ordertype') != 1){%>
+<span class="pipe show">|</span><a href="/index.html?tpl=forum_viewthread&Tid=<%=data.Thread.Tid%>&Ordertype=1<%if(GET('Authorid')!=""){%>&Authorid=<%=post.Authorid%><%}%>" onclick="tpl_click(this.href);return false" class="show">倒序浏览</a>
+<%}else{%>
+<span class="pipe show">|</span><a href="/index.html?tpl=forum_viewthread&Tid=<%=data.Thread.Tid%>&Ordertype=0<%if(GET('Authorid')!=""){%>&Authorid=<%=post.Authorid%><%}%>" onclick="tpl_click(this.href);return false" class="show">正序浏览</a>
+<%}}}%>
+</div></div></div><div class="pct">
+<style type="text/css">.pcb{margin-right:0}</style><%if(!(post.StatusBool>>0&1) && post.Replycredit > 0 && data.Thread.Replycredit_rule){%>
+<div class="cm">
+<h3 class="psth xs1"><span class="icon_ring vm"></span>
+回帖奖励 <span class="xw1 xs2 xi1">+<%=post.Replycredit%></span> <%=cache.extcredits[data.Thread.Replycredit_rule.Extcreditstype]['unit']%><%=cache.extcredits[data.Thread.Replycredit_rule.Extcreditstype]['title']%>
+</h3>
+</div>
+<%}%><div class="pcb">
+<%if(!data.Forum.Ismoderator && cache.bannedmessages & 1 && ((post.Authorid && post.Username=="") || (data.Thread.Digest == 0 && (post.Groupid == 4 || post.Groupid == 5 || post.Memberstatus == '-1')))){%>
+<div class="locked">提示: <em>作者被禁止或删除 内容自动屏蔽</em></div>
+<%}else if(!data.Forum.Ismoderator && post.StatusBool>>11&1){%>
+<div class="locked">提示: <em>该帖被管理员或版主屏蔽</em></div>
+<%}else if(needhiddenreply){%>
+<div class="locked">此帖仅作者可见</div>
+<%}else if(post.StatusBool>>0&1 && data.Thread.Price > 0 && data.Thread.Special == 0){%>购买贴，待处理<%}else { if(!(post.StatusBool>>0&1) && !post.Subject!=""){%>
+<h2><%=post.Subject%></h2>
+<%}%>
+<%if(cache.bannedmessages & 1 && ((post.Authorid && post.Username=="") || (data.Thread.Digest == 0 && (post.Groupid == 4 || post.Groupid == 5 || post.Memberstatus == '-1')))){%>
+<div class="locked">提示: <em>作者被禁止或删除 内容自动屏蔽，只有管理员或有管理权限的成员可见</em></div>
+<%}else if(post.StatusBool>>11&1){%>
+<div class="locked">提示: <em>该帖被管理员或版主屏蔽，只有管理员或有管理权限的成员可见</em></div>
+<%}if(!(post.StatusBool>>0&1) && (data.Thread.Status>>2&1)==1 && data.Forum.Ismoderator){%>
+<div class="locked">此帖仅作者可见</div>
+<%}if(post.StatusBool>>0&1){%> 
+<%if(data.Thread.Price > 0 && data.Thread.Special == 0){%>
+<div class="locked"><em class="y"><a href="forum.php?mod=misc&amp;action=viewpayments&amp;tid=<%=data.Thread.Tid%>" onclick="showWindow('pay', this.href)">记录</a></em>付费主题, 价格: <strong><%=data.Thread.Price%> <%=cache.extcredits[cache.creditstransextra['1']]['unit']%><%=cache.extcredits[cache.creditstransextra['1']]['title']%> </strong></div>
+<%}} %>
+<div class="<%if(data.Thread.Special==0){%>t_fsz<%}else{%>pcbs<%}%>">
+<%=post.Header%>
+<%if(post.StatusBool>>0&1) { if(data.Thread.Special==0){%>
+<table cellspacing="0" cellpadding="0"><tr><td class="t_f" id="postmessage_<%=post.Position%>">
+<%if(cache.guesttipsinthread.flag==1 && cache.Head.Uid==0 && !(post.StatusBool>>7&1) && GET('From') != 'Preview'){%>
+<div class="attach_nopermission attach_tips">
+<div>
+<h3><strong>
+<%if(cache.guesttipsinthread.text!=""){%>
+<%=cache.guesttipsinthread.text%>
+<%}else{%>
+马上注册，结交更多好友，享用更多功能，让你轻松玩转社区。
+<%}%>
+</strong></h3>
+<p>您需要 <a href="/index.html?tpl=login" onclick="showWindowEx('quick_login');return false;">登录</a> 才可以下载或查看，没有帐号？<a href="javascript:tpl_load('register',WRITE_MSG_U2WS_GetHead,{})" title="注册帐号"><%=cache.reglinkname%></a> </p>
+</div>
+<span class="atips_close" onclick="this.parentNode.style.display='none'">x</span>
+</div>
+<%}%>
+<%-post.Message%></td></tr></table>
+<%}else if(data.Thread.Special == 1){%>
+<table cellspacing="0" cellpadding="0"><tr><td class="t_f" id="postmessage_<%=post.Position%>"><%-post.Message%></td></tr></table>
+
+
+<form id="poll" name="poll" method="post" autocomplete="off">
+
+<div class="pinf">
+<%if(data.Poll.Maxchoices>1){%><strong>多选投票</strong>: ( 最多可选 <%=data.Poll.Maxchoices%> 项 )<%}else{%><strong>单选投票</strong><%}if(data.Poll.Visible && data.Group_status>>21&1){%> , 投票后结果可见<%}%>, 共有 <%=data.Poll.Voterscount%> 人参与投票
+<%if(!data.Poll.Visible && (data.Poll.Overt || cache.Head.Adminid == 1 || data.Thread.Authorid == cache.Head.Uid) && post.Invisible == 0){%>
+<a href="javascript:" onclick="showWindowEx('viewvote')">查看投票参与人</a>
+<%}%>
+</div>
+<%if(data.Poll.Expiration>cache.Head.Timestamp){%>
+<p class="ptmr">
+距结束还有:
+<strong>
+<%=getTimeDiff(data.Poll.Expiration,cache.Head.Timestamp)%>
+</strong>
+</p>
+<%}else if(data.Poll.Expiration){%>
+<p class="ptmr"><strong>投票已经结束</strong></p>
+<%}%>
+<div class="pcht">
+
+<table summary="poll panel" cellspacing="0" cellpadding="0" width="100%">
+<%if(data.Poll.Isimagepoll){var i = 0%><tr><%for(var key in data.Poll.Polloption){i++;var option=data.Poll.Polloption[key]%><td valign="bottom" id="polloption_<%=option.Id%>" width="25%">
+<div class="polltd cl">
+<%if(option.Imginfo){%>
+<a href="javascript:;" title="<%=option.Imginfo.Filename%>" >
+<img id="aimg_<%=option.Imginfo.Aid%>" aid="<%=option.Imginfo.Aid%>" src="<%=webp(option.Imginfo.Src,0)%>" width="200px" onclick="zoom(this, this.getAttribute('zoomfile'), 0, 0, 0)" zoomfile="<%=webp(option.Imginfo.Src,640)%>" alt="<%=option.Imginfo.Filename%>" title="<%=option.Imginfo.Filename%>" w="640" />
+</a>
+<%}else{%>
+<a href="javascript:;" title=""><img src="<%=cache.imgdir%>/nophoto.gif" width="200px" /></a>
+<%}%>
+<p class="mtn mbn xi2">
+<%if(data.Group_status>>21&1 && !data.Poll.AllreadyPoll){%>
+<label><input class="pr" type="<%if(data.Poll.Maxchoices>1){%>checkbox<%}else{%>radio<%}%>" id="option_<%=key%>" name="pollanswers[]" value="<%=option.Id%>"  <%if(data.Poll.Maxchoices>1){%>onclick="poll_checkbox(this)"<%}else{%>onclick="$('pollsubmit').disabled = false"<%}%> /></label>
+<%}%>
+<%=option.Name%>
+</p>
+<%if(!data.Poll.Visible){%>
+<%-pollshowimgVote(data.Poll,key)%>
+
+<%}%>
+</div>
+</td>
+<%if(key+1 % 4 == 0){%></tr><tr><%}}%>
+</tr>
+
+<%}else{for(var key in data.Poll.Polloption){var option=data.Poll.Polloption[key]%><tr<%if(data.Poll.Visible){%> class="ptl"<%}%>>
+<td class="pslt">
+<%if(data.Group_status>>21&1 && !data.Poll.AllreadyPoll){%>
+<input class="pr" type="<%if(data.Poll.Maxchoices>1){%>checkbox<%}else{%>radio<%}%>" id="option_<%=key%>" name="pollanswers[]" value="<%=option.Id%>"  <%if(data.Poll.Maxchoices>1){%>onclick="poll_checkbox(this)"<%} else{%>onclick="$('pollsubmit').disabled = false"<%}%> /></td>
+<%}%>
+<td class="pvt">
+<label for="option_<%=key%>"><%=key%>. &nbsp;<%=option.Name%></label>
+</td>
+<td class="pvts"></td>
+</tr>
+
+<%if(!data.Poll.Visible){%>
+<tr>
+<%if(data.Group_status>>21&1){%>
+<td>&nbsp;</td>
+<%}%>
+<%-pollshowVote(data.Poll,key)%>
+</tr>
+<%}}}%>
+<tr>
+<%if(data.Group_status>>21&1){%><%}%>
+<td colspan="<%if(data.Poll.Isimagepoll){%>4<%} else{%>2<%}%>">
+<%if(!cache.Head.Uid){%>
+登录后才能进行投票
+<%}else if(!(data.Group_status>>21&1)){%>
+您所在的用户组没有投票权限
+<%}else if(data.Poll.AllreadyPoll){%>
+您已经投过票，谢谢您的参与
+<%}else if((data.Poll.Expiration>0 && data.Poll.Expiration>cache.Head.Timestamp) || data.Poll.Expiration==0){%>
+<button class="pollsubmit" type="submit" disabled="disabled" name="pollsubmit" id="pollsubmit" value="true"<%if(post.Invisible < 0){%> disabled="disabled"<%}%>><span>提交</span></button>
+<%if(data.Poll.Overt){%>
+(此为公开投票，其他人可看到您的投票项目)
+<%}}else{%>
+该投票已经关闭或者过期，不能投票
+<%}%>
+</td>
+</tr>
+</table>
+
+</div>
+</form>
+
+<%}else if(data.Thread.Special == 2){%>需要加载商品模板<%}else if(data.Thread.Special == 3){%>需要悬赏模板<%}else if(data.Thread.Special == 4){%>需要活动模板<%}else if(data.Thread.Special == 5){%>需要辩论模板<%}else if(data.Thread.Special == 127){%>
+<%=data.Threadplughtml%>
+<table cellspacing="0" cellpadding="0"><tr><td class="t_f" id="postmessage_<%=post.Position%>"><%-post.Message%></td></tr></table>
+<%}} else{%>
+<table cellspacing="0" cellpadding="0"><tr><td class="t_f" id="postmessage_<%=post.Position%>">
+<%if(post.Invisible != '-2' || data.Forum.Ismoderator){%><%-post.Message%><%}else{%><span class="xg1">待审核</span><%}%></td></tr></table>
+<%}%>
+<%=post.Footer%>
+<%if(post.StatusBool>>0&1 && (post.Tags) && GET('From') != 'preview'){%>
+<div class="ptg mbm mtn">
+<%for(var i in post.Tags) {var tag=post.Tags[i].split(','); if(i>0){%>, <%}%><a title="<%=tag['1']%>" href="misc.php?mod=tag&amp;id=<%=tag['0']%>" target="_blank"><%=tag['1']%></a><%}%>
+</div>
+<%}if(post.StatusBool>>0&1) { if(post.Lastmod){%><div class="modact"><a href="javascript:" title="帖子模式" onclick="showWindowEx('viewthreadmod', {Tid:<%=data.Thread.Tid%>})"><%if(post.Lastmod.Modactiontype == 'REB'){%>本主题由 <%=post.Lastmod.Modusername%> 于 <%=thread_time(post.Lastmod.Moddateline)%> <%=getModaction(post.Lastmod)%>到 <%=post.Lastmod.Reason%><%}else{%>本主题由 <%=post.Lastmod.Modusername%> 于 <%=thread_time(post.Lastmod.Moddateline)%> <%=getModaction(post.Lastmod)%><%}%></a></div><%}%>
+<%}if(post.StatusBool>>7&1 && GET('From') != 'preview'){%>
+<div class="attach_nopermission attach_tips">
+<div>
+<h3><strong>本帖子中包含更多资源</strong></h3>
+<p><%if(cache.Head.Uid){%>您所在的用户组无法下载或查看附件<%}else if(!(data.Group_status>>10&1)){%>您需要 <a href="member.php?mod=connect" class="xi2">完善帐号信息</a> 或 <a href="member.php?mod=connect&amp;ac=bind" class="xi2">绑定已有帐号</a> 后才可以下载或查看<%}else{%>您需要 <a href="/index.html?tpl=login" onclick="showWindowEx('quick_login');return false;">登录</a> 才可以下载或查看，没有帐号？<a href="javascript:tpl_load('register',WRITE_MSG_U2WS_GetHead,{})" title="注册帐号"><%=cache.reglinkname%></a></p>
+</div>
+<span class="atips_close" onclick="this.parentNode.style.display='none'">x</span>
+</div>
+<%}}else if(post.Imagelist || post.Attachlist){%>
+<div class="pattl">
+<%for(var i in post.Imagelist){var img=post.Imagelist[i]%>
+<ignore_js_op>
+
+<dl class="tattl attm">
+<dt></dt>
+<dd>
+
+<p class="mbn">
+	
+<a href="<%=img.Src%>" onmouseover="showMenu({'ctrlid':this.id,'pos':'12'})" id="aid2" class="xw1" target="_blank"><%=img.Filename%></a>
+<em class="xg1">(7.45 KB, 下载次数: 0)</em>
+</p>
+<div class="tip tip_4" id="aid2_menu" style="display: none" disautofocus="true">
+<div>
+<p>
+<a href="<%=img.Src%>" target="_blank">下载附件</a>
+</p>
+<p>
+<span class="y"><%=date("Y-m-d h:i",img.Dateline)%> 上传</span>
+<a href="javascript:;" onclick="imageRotate('aimg_2', 1)"><img src="static/image/common/rleft.gif" class="vm"></a>
+<a href="javascript:;" onclick="imageRotate('aimg_2', 2)"><img src="static/image/common/rright.gif" class="vm"></a>
+</p>
+</div>
+<div class="tip_horn"></div>
+</div>
+<p class="mbn">
+</p>
+<div class="mbn savephotop">
+<img id="aimg_2" aid="2" src="<%=webp(img.Src,240)%>" class="zoom" onclick="zoom(this, webp(this.src,0), 0, 0, 0)" width="240" alt="<%=img.Filename%>" title="<%=img.Filename%>" w="220">
+</div></dd></dl></ignore_js_op>
+<%}%>
+</div>
+<%}if(cache.allowfastreply==1 && post.StatusBool>>0&1 && cache.fastpost==1 && (data.Forum.Status != 3 || data.Group_status>>14&1) && data.Group_status>>6&1  && GET('From') != 'preview'){%>
+<form method="post" autocomplete="off" id="vfastpostform" action="" onsubmit="this.message.value = parseurl(this.message.value);ajaxpost('vfastpostform', 'return_reply', 'return_reply', 'onerror');return false;">
+<div id="vfastpost" class="fullvfastpost">				
+<table cellspacing="0" cellpadding="0" id="vfastposttb">
+<tr>
+<td id="vf_l"></td>
+<td id="vf_m"><input type="text" name="message" id="vmessage" onKeyDown="seditor_ctlent(event, '$(\'vfastpostform\').submit()');"/></td>
+<td id="vf_r"></td>						
+<td id="vf_b">
+<button type="submit" class="pn pnc" name="replysubmit" id="vreplysubmit" value="true" style="">post_newreply</button>								
+</td>						
+</tr>
+</table>				
+</div>
+<div id="vfastpostseccheck"></div>				
+</form>
+<%}%>
+</div>
+<div id="comment_<%=post.Position%>" class="cm">
+<%if(GET('From') != 'preview' && cache.commentnumber && post.Comments){%>
+<h3 class="psth xs1"><span class="icon_ring vm"></span>点评</h3>
+<%if(post.Totalcomment>0){%><div class="pstl"><%=post.Totalcomment%></div><%}for(var i in post.Comments) {var comment=post.Comments[i]%><div class="pstl xs1 cl">
+<div class="psta vm">
+<a href="/index.html?tpl=space&amp;Uid=<%=comment.Authorid%>" c="1"><%=comment.Avatar%></a>
+<%if(comment.Authorid>0){%>
+<a href="/index.html?tpl=space&amp;Uid=<%=comment.Authorid%>" class="xi2 xw1"><%=comment.Author%></a>
+<%}else{%>
+游客
+<%}%>
+</div>
+<div class="psti">
+<%=comment.Comment%>&nbsp;
+<%if(comment.Rpid>0){%>
+<a href="forum.php?mod=redirect&amp;goto=findpost&amp;pid=<%=comment.Rpid%>&amp;ptid=<%=data.Thread.Tid%>" class="xi2">详情</a>
+<a href="" class="xi2" onclick="showWindowEx('reply',{Fid:<%=data.Fid%>,Tid:<%=data.Thread.Tid%>,Position:<%=post.Position%>})">回复</a>
+<%}%>
+<span class="xg1">
+发表于 <%=date("Y-m-d h:i",comment.Dateline)%><%if(comment.Useip!=""){%>&nbsp;IP:<%=comment.Useip%><%}if(data.Forum.Ismoderator && data.Admin_status>>7&1){%>&nbsp;<a href="javascript:;" onclick="modaction('delcomment', <%=comment.Id%>)">删除</a><%}%>
+</span>
+</div>
+</div>
+<%}if(post.Commentcount > cache.commentnumber){%><div class="pgs mbm mtn cl"><div class="pg"><a href="javascript:;" class="nxt" onclick="ajaxget('forum.php?mod=misc&action=commentmore&tid=<%=data.Thread.Tid%>&pid=<%=post.Position%>&page=2', 'comment_<%=post.Position%>')">下一页</a></div></div><%}}%>
+</div>
+<%if(GET('From') != 'preview' && post.Ratelog){%>
+<h3 class="psth xs1"><span class="icon_ring vm"></span>评分</h3>
+<dl id="ratelog_<%=post.Position%>" class="rate<%if(getcookie('ratecollapse')!=''){%> rate_collapse<%}%>">
+<%if(cache.ratelogon==1){%>
+<dd style="margin:0">
+<%}else{%>
+<dt>
+<%if(post.Totalrate>0){%>
+<strong><a href="forum.php?mod=misc&amp;action=viewratings&amp;tid=<%=data.Thread.Tid%>&amp;pid=<%=post.Position%>" onclick="showWindow('viewratings', this.href)" title="已有<%=post.Totalrate%>人评分, 查看全部评分"><%=post.Totalrate%></a></strong>
+<p><a href="forum.php?mod=misc&amp;action=viewratings&amp;tid=<%=data.Thread.Tid%>&amp;pid=<%=post.Position%>" onclick="showWindow('viewratings', this.href)">查看全部评分</a></p>
+<%}%>
+</dt>
+<dd>
+<%}%>
+<div id="post_rate_<%=post.Position%>"></div>
+<%if(cache.ratelogon==1){%>
+<table class="ratl">
+<tr>
+<th class="xw1" width="120"><a href="forum.php?mod=misc&amp;action=viewratings&amp;tid=<%=data.Thread.Tid%>&amp;pid=<%=post.Position%>" onclick="showWindow('viewratings', this.href)" title="查看全部评分"> 参与人数 <span class="xi1"><%=post.Totalrate%></span></a></th><%for(var i in post.Ratelogextcredits) {var v=post.Ratelogextcredits[i]; if(v.Score > 0){%>
+<th class="xw1" width="80"><%=cache.extcredits[v.Id]['title']%> <i><span class="xi1">+<%=v.Score%></span></i></th>
+<%}else{%>
+<th class="xw1" width="80"><%=cache.extcredits[v.Id]['title']%> <i><span class="xi1"><%=v.Score%></span></i></th>
+<%}}%>
+<th>
+<a href="javascript:;" onclick="toggleRatelogCollapse('ratelog_<%=post.Position%>', this);" class="y xi2 op"><%if(getcookie('ratecollapse')!=''){%>展开<%}else{%>收起<%}%></a>
+<i class="txt_h">理由</i>
+</th>
+</tr>
+<tbody class="ratl_l"><%for(var i in post.Ratelog) {var ratelog=post.Ratelog[i]%><tr id="rate_<%=post.Position%>_<%=ratelog.Uid%>">
+<td>
+<a href="/index.html?tpl=space&amp;Uid=<%=ratelog.Uid%>" target="_blank"><%-get_avatar(ratelog.Avatar, '60')%></a> <a href="/index.html?tpl=space&amp;Uid=<%=ratelog.Uid%>" target="_blank"><%=ratelog.Username%></a>
+</td><%for(var i in post.Ratelogextcredits) {var v=post.Ratelogextcredits[i];for(var i in ratelog.Score) {var s=ratelog.Score[i];if(s.Id!=v.Id){continue};if(s.Score > 0){%>
+<td class="xi1"> + <%=s.Score%></td>
+<%}else{%>
+<td class="xg1"><%=s.Score%></td>
+<%}} }%>
+<td class="xg1"><%=ratelog.Reason%></td>
+</tr>
+<%}%>
+</tbody>
+</table>
+<p class="ratc">
+<a href="forum.php?mod=misc&amp;action=viewratings&amp;tid=<%=data.Thread.Tid%>&amp;pid=<%=post.Position%>" onclick="showWindow('viewratings', this.href)" title="查看全部评分" class="xi2">查看全部评分</a>
+</p>
+<%}else{%>
+<ul class="cl"><%for(i in post.Ratelog) {var ratelog= post.Ratelog[i]%><li>
+<p id="rate_<%=post.Position%>_<%=ratelog.Uid%>" onmouseover="showTip(this)" tip="<strong><%=ratelog.Reason%></strong>&nbsp;<%for(var i in ratelog.Score){var s=ratelog.Score[i];if(s.Score > 0){%>
+<em class='xi1'><%=cache.extcredits[s.Id]['title']%> + <%=s.Score%> <%=cache.extcredits[s.Id]['unit']%></em>
+<%}else{%>
+<span><%=cache.extcredits[s.Id]['title']%> <%=s.Score%> <%=cache.extcredits[s.Id]['unit']%></span>
+<%}}%>" class="mtn mbn"><a href="/index.html?tpl=space&amp;Uid=<%=ratelog.Uid%>" target="_blank" class="avt"><%-get_avatar(ratelog.Avatar, '60')%></a></p>
+<p><a href="/index.html?tpl=space&amp;Uid=<%=ratelog.Uid%>" target="_blank"><%=ratelog.Username%></a></p>
+</li>
+<%}%>
+</ul>
+<%}%>
+</dd>
+</dl>
+<%}else{%>
+<div id="post_rate_div_<%=post.Position%>"></div>
+<%}}%>
+</div>
+</div>
+</td></tr>
+<tr><td class="plc plm">
+<%if(post.Location!=""){%>
+<div class="mobile-location"><%=post.Location%></div>
+<%}if(post.StatusBool>>0&1) { if(post.Invisible == 0){%>
+<div class="p_btn mtw mbm hm cl xs2">
+<div class="tshare cl">
+<b>分享到:&nbsp;</b>
+<a href="javascript:share('qq');" title="分享到QQ">
+    <svg t="1575271842407" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="688" width="200" height="200"><path d="M511.09761 957.257c-80.159 0-153.737-25.019-201.11-62.386-24.057 6.702-54.831 17.489-74.252 30.864-16.617 11.439-14.546 23.106-11.55 27.816 13.15 20.689 225.583 13.211 286.912 6.767v-3.061z" fill="#FAAD08" p-id="689"></path><path d="M496.65061 957.257c80.157 0 153.737-25.019 201.11-62.386 24.057 6.702 54.83 17.489 74.253 30.864 16.616 11.439 14.543 23.106 11.55 27.816-13.15 20.689-225.584 13.211-286.914 6.767v-3.061z" fill="#FAAD08" p-id="690"></path><path d="M497.12861 474.524c131.934-0.876 237.669-25.783 273.497-35.34 8.541-2.28 13.11-6.364 13.11-6.364 0.03-1.172 0.542-20.952 0.542-31.155C784.27761 229.833 701.12561 57.173 496.64061 57.162 292.15661 57.173 209.00061 229.832 209.00061 401.665c0 10.203 0.516 29.983 0.547 31.155 0 0 3.717 3.821 10.529 5.67 33.078 8.98 140.803 35.139 276.08 36.034h0.972z" fill="#000000" p-id="691"></path><path d="M860.28261 619.782c-8.12-26.086-19.204-56.506-30.427-85.72 0 0-6.456-0.795-9.718 0.148-100.71 29.205-222.773 47.818-315.792 46.695h-0.962C410.88561 582.017 289.65061 563.617 189.27961 534.698 185.44461 533.595 177.87261 534.063 177.87261 534.063 166.64961 563.276 155.56661 593.696 147.44761 619.782 108.72961 744.168 121.27261 795.644 130.82461 796.798c20.496 2.474 79.78-93.637 79.78-93.637 0 97.66 88.324 247.617 290.576 248.996a718.01 718.01 0 0 1 5.367 0C708.80161 950.778 797.12261 800.822 797.12261 703.162c0 0 59.284 96.111 79.783 93.637 9.55-1.154 22.093-52.63-16.623-177.017" fill="#000000" p-id="692"></path><path d="M434.38261 316.917c-27.9 1.24-51.745-30.106-53.24-69.956-1.518-39.877 19.858-73.207 47.764-74.454 27.875-1.224 51.703 30.109 53.218 69.974 1.527 39.877-19.853 73.2-47.742 74.436m206.67-69.956c-1.494 39.85-25.34 71.194-53.24 69.956-27.888-1.238-49.269-34.559-47.742-74.435 1.513-39.868 25.341-71.201 53.216-69.974 27.909 1.247 49.285 34.576 47.767 74.453" fill="#FFFFFF" p-id="693"></path><path d="M683.94261 368.627c-7.323-17.609-81.062-37.227-172.353-37.227h-0.98c-91.29 0-165.031 19.618-172.352 37.227a6.244 6.244 0 0 0-0.535 2.505c0 1.269 0.393 2.414 1.006 3.386 6.168 9.765 88.054 58.018 171.882 58.018h0.98c83.827 0 165.71-48.25 171.881-58.016a6.352 6.352 0 0 0 1.002-3.395c0-0.897-0.2-1.736-0.531-2.498" fill="#FAAD08" p-id="694"></path><path d="M467.63161 256.377c1.26 15.886-7.377 30-19.266 31.542-11.907 1.544-22.569-10.083-23.836-25.978-1.243-15.895 7.381-30.008 19.25-31.538 11.927-1.549 22.607 10.088 23.852 25.974m73.097 7.935c2.533-4.118 19.827-25.77 55.62-17.886 9.401 2.07 13.75 5.116 14.668 6.316 1.355 1.77 1.726 4.29 0.352 7.684-2.722 6.725-8.338 6.542-11.454 5.226-2.01-0.85-26.94-15.889-49.905 6.553-1.579 1.545-4.405 2.074-7.085 0.242-2.678-1.834-3.786-5.553-2.196-8.135" fill="#000000" p-id="695"></path><path d="M504.33261 584.495h-0.967c-63.568 0.752-140.646-7.504-215.286-21.92-6.391 36.262-10.25 81.838-6.936 136.196 8.37 137.384 91.62 223.736 220.118 224.996H506.48461c128.498-1.26 211.748-87.612 220.12-224.996 3.314-54.362-0.547-99.938-6.94-136.203-74.654 14.423-151.745 22.684-215.332 21.927" fill="#FFFFFF" p-id="696"></path><path d="M323.27461 577.016v137.468s64.957 12.705 130.031 3.91V591.59c-41.225-2.262-85.688-7.304-130.031-14.574" fill="#EB1C26" p-id="697"></path><path d="M788.09761 432.536s-121.98 40.387-283.743 41.539h-0.962c-161.497-1.147-283.328-41.401-283.744-41.539l-40.854 106.952c102.186 32.31 228.837 53.135 324.598 51.926l0.96-0.002c95.768 1.216 222.4-19.61 324.6-51.924l-40.855-106.952z" fill="#EB1C26" p-id="698"></path></svg></a>
+<a href="javascript:share('qzone');" title="分享到QQ空间"><svg t="1575274444960" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="894" width="200" height="200"><path d="M955.728 428.224c8.385-8.785 3.76-23.536-8.073-25.753l-276.832-51.854c-4.838-0.906-9.02-3.987-11.38-8.383L525.873 93.229c-2.798-5.23-8.342-7.85-13.875-7.896-5.532 0.045-11.075 2.667-13.873 7.896L364.558 342.234c-2.36 4.396-6.543 7.477-11.381 8.383L76.345 402.471c-11.833 2.217-16.458 16.968-8.073 25.753L269.64 639.086c3.564 3.733 5.205 8.952 4.433 14.1l-46.015 282.032c-1.819 12.126 10.394 21.407 21.298 16.182L505 827.827a16.098 16.098 0 0 1 7-1.58 16.1 16.1 0 0 1 7.003 1.58L774.644 951.4c10.904 5.225 23.117-4.056 21.298-16.182l-46.88-287.298 206.666-219.696z" fill="#FFCD00" p-id="895"></path><path d="M559.42 493.63c-4.517-3.772-110.987-40.332-273.968-16-3.16 0.47-5.913-0.394-8.04-1.992-0.717 4 3.587 7.152 8.988 7.527 115.064 8.021 179.42 54.987 199.492 71.501 40.78-28.923 71.882-50.606 73.063-51.527 3.668-2.856 3.695-6.811 0.465-9.51m135.65-29.972c-41.744 35.168-160.159 116.897-201.52 148.468-4.864 3.711-3.177 9.424 2.098 11.43 17.045 6.488 36.23 11.95 56.421 16.445l159.784-152.228c12.544-13.184 5.238-29.152-10.422-32.661-1.025 3.011-3.259 5.933-6.36 8.546M817.187 640l-0.101 0.045c-70.456 29.709-241.54 79.623-451.762 72.33-25.386-0.88-50.63-3.715-64.786-6.325-2.067-0.38-3.878-1.012-5.476-1.846-10.567 12.224 2.073 21.462 47.148 30.58 131.886 26.676 286.047 38.934 415.304 30.665l-8.884-54.324c43.727-31.431 64.996-58.546 67.524-62.57 2.899-4.616 1.033-8.555 1.033-8.555" fill="#F1A308" p-id="896"></path><path d="M818.863 646.995c-53.31 5.137-215.894 3.686-311.826-33.167-5.107-1.962-6.834-7.566-2.129-11.194 40.025-30.84 154.62-110.68 195.014-145.035 7.872-6.696 9.95-15.437 0.375-22.542-18.36-13.623-83.168-36.203-158.198-36.816-107.373-0.88-212.858 29.498-259.133 54.09-10.983 5.837-4.392 21.221 6.83 19.495 164.223-25.24 271.495 12.756 276.045 16.67 3.255 2.798 3.074 6.906-0.5 9.715-3.036 2.389-199.263 143.36-258.23 193.11-9.286 7.834-6.845 24.246 8.35 27.018 14.152 2.582 39.406 5.412 64.784 6.284 210.173 7.214 381.314-42.24 451.755-71.63 0 0-2.148-7.057-13.137-5.998" fill="#FFFFFF" p-id="897"></path></svg></a>
+</div>
+<!--<a href="/index.html?tpl=spacecp&amp;ac=favorite&amp;type=thread&amp;id=<%=data.Thread.Tid%>&amp;form" id="k_favorite" onclick="showWindow(this.id, this.href, 'get', 0);" onmouseover="this.title = $('favoritenumber').innerHTML + ' 人收藏'" title="收藏本帖"><i><svg class="svg" aria-hidden="true"><use xlink:href="#icon-shoucang1"></use></svg>收藏<span id="favoritenumber"<%if(data.Thread.Favtimes==0){%> style="display:none"<%}%>><%=data.Thread.Favtimes%></span></i></a>-->
+<%if(data.Group_status>>15&1 && post.Authorid>0){%>
+<a href="javascript:;" id="ak_rate" onclick="showWindow('rate', 'forum.php?mod=misc&action=rate&tid=<%=data.Thread.Tid%>&pid=<%=post.Position%>', 'get', -1);return false;" title="评分表立场"><i><img src="<%=cache.imgdir%>/agree.gif" alt="评分" />评分</i></a>
+<%}if(!(post.StatusBool>>3&1) && post.StatusBool>>0&1 && data.Group_status>>16&1){%>
+<a class="followp" href="/index.html?tpl=spacecp&amp;ac=follow&amp;op=relay&amp;tid=<%=data.Thread.Tid%>&amp;from=forum" onclick="showWindow('relaythread', this.href, 'get', 0);" title="转播求扩散"><i><img src="<%=cache.imgdir%>/rt.png" alt="转播" />转播<%if(data.Thread.Relay){%><span id="relaynumber" style="display:none"><%=data.Thread.Relay%></span><%}%></i></a>
+<%}if(post.StatusBool>>0&1 && data.Group_status>>17&1){%>
+<a class="sharep" href="/index.html?tpl=spacecp&amp;ac=share&amp;type=thread&amp;id=<%=data.Thread.Tid%>" onclick="showWindow('sharethread', this.href, 'get', 0);" title="分享推精华"><i><img src="<%=cache.imgdir%>/oshr.png" alt="分享" />分享<%if(data.Thread.Sharetimes){%><span id="sharenumber"><%=data.Thread.Sharetimes%></span><%}%></i></a>
+<%}if(data.Forum.Disablecollect==0 && data.Group_status>>18&1){%>
+<a href="forum.php?mod=collection&amp;action=edit&amp;op=addthread&amp;tid=<%=data.Thread.Tid%>" id="k_collect" onclick="showWindow(this.id, this.href);return false;" onmouseover="this.title = $('collectionnumber').innerHTML + ' 人淘帖'" title="淘好帖进专辑"><i><img src="<%=cache.imgdir%>/collection.png" alt="分享" />淘帖<span id="collectionnumber"<%if(!post.Releatcollectionnum){%> style="display:none"<%}%>><%=post.Releatcollectionnum%></span></i></a>
+<%}if((data.Allowrecommend>0 || cache.Head.Uid==0) && cache.recommendthread['status']) { if(cache.recommendthread['addtext']!=""){%>
+<a <%if(data.Group_status>>19&1){%> class="already"<%}%>id="recommend_add" href="javascript:;" <%if(cache.Head.Uid){%>onclick="ajax_post(WRITE_MSG_U2WS_RecommendThread({Tid:<%=data.Thread.Tid%>,Status:1}));return false;"<%}else{%> onclick="showWindowEx('quick_login')"<%}%> onmouseover="this.title = $('recommendv_add').innerHTML + ' 人<%=cache.recommendthread['addtext']%>'" title="顶一下"><i><svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg"><path fill-rule="evenodd"  fill="rgb(255, 184, 79)" d="M12.154,7.985 L12.154,15.001 L4.846,15.001 L4.846,7.985 L-0.000,8.000 L8.500,-0.002 L17.000,8.000 L12.154,7.985 ZM12.000,21.000 L5.000,21.000 L5.000,17.000 L12.000,17.000 L12.000,21.000 Z"/></svg>
+<%=cache.recommendthread['addtext']%><span id="recommendv_add"<%if(!data.Thread.Recommend_add){%> style="display:none"<%}%>><%=data.Thread.Recommend_add%></span></i></a>
+<%}if(cache.recommendthread['subtracttext']!=""){%>
+<a <%if(data.Group_status>>20&1){%> class="already"<%}%>id="recommend_subtract" href="javascript:;" <%if(cache.Head.Uid){%>onclick="ajax_post(WRITE_MSG_U2WS_RecommendThread({Tid:<%=data.Thread.Tid%>,Status:0}));return false;"<%}else{%> onclick="showWindowEx('quick_login')"<%}%> onmouseover="this.title = $('recommendv_subtract').innerHTML + ' 人<%=cache.recommendthread['subtracttext']%>'" title="踩一下"><i><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg"><path fill-rule="evenodd"  fill="rgb(169, 169, 169)" d="M8.500,21.002 L-0.000,13.000 L4.846,13.015 L4.846,5.999 L12.154,5.999 L12.154,13.015 L17.000,13.000 L8.500,21.002 ZM5.000,-0.000 L12.000,-0.000 L12.000,4.000 L5.000,4.000 L5.000,-0.000 Z"/></svg>
+<%=cache.recommendthread['subtracttext']%><span id="recommendv_subtract"<%if(data.Thread.Recommend_sub==0){%> style="display:none"<%}%>><%=data.Thread.Recommend_sub%></span></i></a>
+<%}}%>
+</div>
+<%}} if(post.Relateitem){%>
+<div class="mtw mbw">
+<h3 class="pbm mbm bbda">相关帖子</h3>
+<ul class="xl xl2 cl"><%for(var i in post.Relateitem) {var item=post.Relateitem[i]%><li>&#8226; <a href="forum.php?mod=viewthread&amp;tid=<%=item.Tid%>" title="<%=item.Subject%>" target="_blank"><%=item.Subject%></a></li>
+<%}%>
+</ul>
+</div>
+<%}if(post.Signature && (cache.bannedmessages & 4 && (post.Memberstatus == '-1' || (post.Authorid>0 && post.Username=="") || (post.Groupid == 4 || post.Groupid == 5) || (post.StatusBool>>11&1)))){%>
+<div class="sign">签名被屏蔽</div>
+<%}else if(post.Signature!="" && !(post.StatusBool>>3&1) && (cache.showsettings>>0&1)==1){%>
+<div class="sign" style="max-height:<%=cache.maxsigrows%>px;maxHeightIE:<%=cache.maxsigrows%>px;"><%=post.Signature%></div>
+<%}else if(!(post.StatusBool>>3&1) && (cache.showsettings>>0&1)==1 && cache.globalsightml!=""){%>
+<div class="sign"><%=cache.globalsightml%></div>
+<%}%>
+</td>
+</tr>
+<tr id="_postposition<%=post.Position%>"></tr>
+<tr>
+<%if(getcookie('close_leftinfo')!=1){%>
+<td class="pls"><%if(!(cache.threadguestlite==1 && cache.Head.Uid==0)) { viewthread_profile_node('left', post)%><%if(post.Authorid>0 && post.Username!="" && !(post.StatusBool>>3&1) && post.Authorid != cache.Head.Uid){%>
+<div class="btda" style="display: none"><ul class="xl xl2 o cl xs2 xg0 ">
+<li class="pm2"><a href="/index.html?tpl=spacecp&amp;ac=pm&amp;op=showmsg&amp;handlekey=showmsg_<%=post.Authorid%>&amp;touid=<%=post.Authorid%>&amp;pmid=0&amp;daterange=2&amp;pid=<%=post.Position%>&amp;tid=<%=data.Thread.Tid%>" onclick="showWindow('sendpm', this.href);" title="访问" ><svg class="svg"  aria-hidden="true"><use xlink:href="#icon-fangwenfenxi"></use></svg>访问</a></li>
+<li class="pm2"><a href="/index.html?tpl=spacecp&amp;ac=pm&amp;op=showmsg&amp;handlekey=showmsg_<%=post.Authorid%>&amp;touid=<%=post.Authorid%>&amp;pmid=0&amp;daterange=2&amp;pid=<%=post.Position%>&amp;tid=<%=data.Thread.Tid%>" onclick="showWindow('sendpm', this.href);" title="加好友" ><svg class="svg"  aria-hidden="true"><use xlink:href="#icon-jiahaoyou_huaban"></use></svg>加好友</a></li>
+<li class="pm2"><a href="/index.html?tpl=spacecp&amp;ac=pm&amp;op=showmsg&amp;handlekey=showmsg_<%=post.Authorid%>&amp;touid=<%=post.Authorid%>&amp;pmid=0&amp;daterange=2&amp;pid=<%=post.Position%>&amp;tid=<%=data.Thread.Tid%>" onclick="showWindow('sendpm', this.href);" title="打招呼" ><svg class="svg"  aria-hidden="true"><use xlink:href="#icon-dazhaohu"></use></svg>打招呼</a></li>
+<li class="pm2"><a href="/index.html?tpl=spacecp&amp;ac=pm&amp;op=showmsg&amp;handlekey=showmsg_<%=post.Authorid%>&amp;touid=<%=post.Authorid%>&amp;pmid=0&amp;daterange=2&amp;pid=<%=post.Position%>&amp;tid=<%=data.Thread.Tid%>" onclick="showWindow('sendpm', this.href);" title="发消息" ><svg class="svg"  aria-hidden="true"><use xlink:href="#icon-faxinxi"></use></svg>发消息</a></li>
+</ul></div>
+
+<%}}%></td>
+<%}%>
+<td class="plc" style="overflow:visible;<%if(getcookie('close_leftinfo')==1){%>--> width:100%<%}%>">
+<div class="po hin">
+<%if(!(post.StatusBool>>0&1) && data.Modmenu>>1&1){%>
+<span class="y">
+<label for="manage<%=post.Position%>">
+<input type="checkbox" id="manage<%=post.Position%>" class="pc"onclick="pidchecked(this);modclick(this, <%=post.Position%>)" value="<%=post.Position%>" autocomplete="off" />
+管理
+</label>
+</span>
+<%}%>
+<div class="p_btn cl mtw mbw xs2" align="center">
+<em>
+<%if(post.Invisible == 0) { if(data.Group_status>>6&1 && post.StatusBool>>8&1 && (data.Thread.Closed==0 || data.Forum.Ismoderator)){%><a class="cmmnt" href="forum.php?mod=misc&amp;action=comment&amp;tid=<%=data.Thread.Tid%>&amp;pid=<%=post.Position%>&amp;extra=<%=GET('extra')%>&amp;page=<%=GET('Page')%><%if(data.Thread.Special == 127){%>&amp;special=<%}%>" onclick="showWindow('comment', this.href, 'get', 0)">点评</a><%}if((cache.Head.Uid==0 || data.Group_status>>6&1) && !needhiddenreply) { if(post.StatusBool>>0&1){%>
+<a class="fastre" href="javascript:1;" onclick="showWindowEx('reply',{Fid:<%=data.Thread.Fid%>,Subject:'<%=data.Thread.Subject%>',Position:<%=post.Position%><%if(!(post.StatusBool>>0&1)){%>,Message:'<%=encodeFastPostmsg(post.Message)%>',Author:'<%=post.Author%>',Dateline:<%=post.Dateline%><%}%>})"><i><svg style="vertical-align: -4px;width:16px;height:16px;margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><path fill-rule="evenodd"  fill="rgb(41, 178, 0)" d="M13.250,12.450 L10.344,16.000 L10.344,12.450 L-0.000,12.450 L-0.000,0.000 L16.000,0.000 L16.000,12.450 L13.250,12.450 ZM5.125,5.250 L3.575,5.250 L3.575,7.200 L5.125,7.200 L5.125,5.250 ZM8.775,5.250 L7.225,5.250 L7.225,7.200 L8.775,7.200 L8.775,5.250 ZM12.425,5.250 L10.875,5.250 L10.875,7.200 L12.425,7.200 L12.425,5.250 Z"/></svg>回复</i></a>
+<%}else{%>
+<a href="javascript:;" onclick="showWindowEx('reply',{Fid:<%=data.Thread.Fid%>,Subject:'<%=data.Thread.Subject%>',Position:<%=post.Position%><%if(!(post.StatusBool>>0&1)){%>,Message:'<%=encodeFastPostmsg(post.Message)%>',Author:'<%=post.Author%>',Dateline:<%=post.Dateline%><%}%>})"><i><svg style="vertical-align: -4px;width:16px;height:16px;margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><path fill-rule="evenodd"  fill="rgb(41, 178, 0)" d="M13.250,12.450 L10.344,16.000 L10.344,12.450 L-0.000,12.450 L-0.000,0.000 L16.000,0.000 L16.000,12.450 L13.250,12.450 ZM5.125,5.250 L3.575,5.250 L3.575,7.200 L5.125,7.200 L5.125,5.250 ZM8.775,5.250 L7.225,5.250 L7.225,7.200 L8.775,7.200 L8.775,5.250 ZM12.425,5.250 L10.875,5.250 L10.875,7.200 L12.425,7.200 L12.425,5.250 Z"/></svg>回复</i></a>
+<%}} } if(((data.Forum.Ismoderator && data.Admin_status>>24&1 && (!in_array(post.Adminid, [1, 2, 3]) || cache.Head.Adminid <= post.Adminid)) || (data.Forum.Alloweditpost==1 && cache.Head.Uid>0 && (post.Authorid == cache.Head.Uid && data.Thread.Closed == 0) && !(!(data.Admin_status>>26&1) && data.Edittimelimit>0 && cache.Head.Timestamp - post.Dateline > data.Edittimelimit)))){%>
+<a href="javascript:tpl_load('forum_newthread',WRITE_MSG_U2WS_forum_newthread,{Fid:<%=data.Fid%>,Type:1,Tid:<%=data.Thread.Tid%>,Position:<%=post.Position%>,Special:<%=data.Thread.Special%>});"><i><svg class="svg" style="margin: 0 4px 0 -3px;" aria-hidden="true"><use xlink:href="#icon-bianji"></use></svg><%if(data.Thread.Special == 2 && post.Message==""){%>添加柜台介绍<%}else{%>编辑</i></a><%}} else if(cache.Head.Uid>0 && post.Authorid == cache.Head.Uid && cache.postappend==1){%>
+<a class="appendp" href="forum.php?mod=misc&amp;action=postappend&amp;tid=<%=data.Thread.Tid%>&amp;pid=<%=post.Position%>&amp;extra=<%=GET('extra')%>&amp;page=<%=GET('Page')%>" onClick="showWindow('postappend', this.href, 'get', 0)">补充</a>
+<%}if(post.StatusBool>>0&1 && post.Invisible == -3){%>
+<!--<a class="psave" href="forum.php?mod=misc&amp;action=pubsave&amp;tid=<%=data.Thread.Tid%>">发表</a>-->
+<%}if(post.Invisible == -2 && !(post.StatusBool>>0&1)){%>
+<span class="xg1">(待审核)</span>
+<%}if(post.StatusBool>>0&1 && data.Admin_status>>25&1){%><a href="javascript:;" onclick="modaction('recommend', '<%=data.Postlist[0].Position%>', 'op=recommend&idtype=<%if(data.Thread.Isgroup==1){%>gtid<%}else{%>tid<%}%>&id=<%=data.Thread.Tid%>&pid=<%=post.Position%>', 'portal.php?mod=portalcp&ac=portalblock')"><i><svg class="svg" style="margin-right: 5px;" aria-hidden="true"><use xlink:href="#icon-tuisong"></use></svg>推送</i></a><%}if(false && data.Thread.Special==0 && !data.Thread.Rushinfo && (data.Thread.Status>>2&1)==0 && cache.repliesrank && !(post.StatusBool>>0&1) && !(post.StatusBool>>9&1 && cache.filterednovote)){%><!--
+<a class="replyadd" href="forum.php?mod=misc&amp;action=postreview&amp;do=support&amp;tid=<%=data.Thread.Tid%>&amp;pid=<%=post.Position%>&amp;" <%if(cache.Head.Uid){%>onclick="ajaxmenu(this, 3000, 1, 0, '43', '');return false;"<%}else{%> onclick="showWindow('login', this.href)"<%}%> onmouseover="this.title = ($('review_support_<%=post.Position%>').innerHTML ? $('review_support_<%=post.Position%>').innerHTML : 0) + ' 人 支持'">支持 <span id="review_support_<%=post.Position%>"><%=post.Postreview.Support%></span></a>
+<a class="replysubtract" href="forum.php?mod=misc&amp;action=postreview&amp;do=against&amp;tid=<%=data.Thread.Tid%>&amp;pid=<%=post.Position%>&amp;" <%if(cache.Head.Uid){%>onclick="ajaxmenu(this, 3000, 1, 0, '43', '');return false;"<%}else{%> onclick="showWindow('login', this.href)"<%}%> onmouseover="this.title = ($('review_against_<%=post.Position%>').innerHTML ? $('review_against_<%=post.Position%>').innerHTML : 0) + ' 人 反对'">反对 <span id="review_against_<%=post.Position%>"><%=post.Postreview.Against%></span></a>-->
+<%}%>
+</em>
+<p>
+<%if(post.Invisible == 0) {  if(data.Thread.Special == 3 && (data.Forum.Ismoderator && (!cache.rewardexpiration || cache.rewardexpiration > 0 && (cache.Head.Timestamp - data.Thread.Dateline) / 86400 > cache.rewardexpiration) || data.Thread.Authorid == cache.Head.Uid) && post.Authorid != data.Thread.Authorid && (post.StatusBool>>0&1)== 0 && cache.Head.Uid != post.Authorid && data.Thread.Price > 0){%>
+<a href="javascript:;" onclick="setanswer(<%=post.Position%>, '<%=GET('From')%>')">最佳答案</a>
+<%}if(!(post.StatusBool>>0&1) && data.Group_status>>15&1 && post.Authorid){%>
+<a href="javascript:;" onclick="showWindow('rate', 'forum.php?mod=misc&action=rate&tid=<%=data.Thread.Tid%>&pid=<%=post.Position%>', 'get', -1);return false;">评分</a>
+<%}if(post.Totalrate>0 && data.Forum.Ismoderator){%>
+<a href="forum.php?mod=misc&amp;action=removerate&amp;tid=<%=data.Thread.Tid%>&amp;pid=<%=post.Position%>&amp;page=<%=GET('Page')%>" onclick="showWindow('rate', this.href, 'get', -1)">撤销评分</a>
+<%}if(post.Authorid != cache.Head.Uid){%>
+<a href="javascript:;" style="border: none;background-color:#0000;box-shadow:none;" onclick="showWindow('miscreport<%=post.Position%>', 'misc.php?mod=report&rtype=post&rid=<%=post.Position%>&tid=<%=data.Thread.Tid%>&fid=<%=data.Fid%>', 'get', -1);return false;">举报</a>
+<%}}%>
+</p>
+</div>
+</div>
+</td>
+</tr>
+<tr class="ad">
+<td class="pls">
+<%if(getcookie('close_leftinfo')!=1){%>
+</td>
+<td class="plc">
+<%}if(post.StatusBool>>0&1 && data.Thread.Special == 5 && data.Thread.Displayorder >= 0){%>
+<ul class="ttp cl">
+<li style="display:inline;margin-left:12px"><strong class="bw0 bg0_all">按立场筛选: </strong></li>
+<li<%if(GET('Stand')==""){%> class="xw1 a"<%}%>><a href="forum.php?mod=viewthread&amp;tid=<%=data.Thread.Tid%>&amp;extra=<%=GET('extra')%>" hidefocus="true">全部</a></li>
+<li<%if(GET('stand') == 1){%> class="xw1 a"<%}%>><a href="forum.php?mod=viewthread&amp;tid=<%=data.Thread.Tid%>&amp;extra=<%=GET('extra')%>&amp;stand=1" hidefocus="true">正方</a></li>
+<li<%if(GET('stand') == 2){%> class="xw1 a"<%}%>><a href="forum.php?mod=viewthread&amp;tid=<%=data.Thread.Tid%>&amp;extra=<%=GET('extra')%>&amp;stand=2" hidefocus="true">反方</a></li>
+<li<%if(GET('stand') == 0){%> class="xw1 a"<%}%>><a href="forum.php?mod=viewthread&amp;tid=<%=data.Thread.Tid%>&amp;extra=<%=GET('extra')%>&amp;stand=0" hidefocus="true">中立</a></li>
+</ul>
+<%}if(data.Thread.Replies){%>广告<%}%>
+</td>
+</tr>
+</table>
+<% } else{%>
+<table id="pid<%=post.Position%>" summary="pid<%=post.Position%>" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<%if(getcookie('close_leftinfo')!=1){%>
+<td class="pls"></td>
+<%}%>
+<td class="plc"<%if(getcookie('close_leftinfo')==1){%> style="width:100%"<%}%>>
+<div class="pi">
+<strong><a><%if(cache.custominfo.postno[post.Number]){%><%=cache.custominfo.postno[post.Number]%><%}else{%><em><%=post.Number%></em><%=cache.custominfo.postno['0']%><%}%></a></strong>
+</div>
+<div class="pct">无效楼层，该帖已经被管理员删除(红字加底色边框)</div>
+</td>
+</tr>
+<tr class="ad">
+<%if(getcookie('close_leftinfo')!=1){%>
+<td class="pls"></td>
+<%}%>
+<td class="plc"></td>
+</tr>
+</tbody>
+</table>
+<%}%>
+</div><%postcount++%><%}%>
+</script>
+<script id="tpl_reply" type="text/html">
+	<td class="m_c" id="fwin_content_reply" fwin="reply" style=""><h3 class="flb" id="fctrl_reply" style="cursor: move;">
+<em id="return_reply" fwin="reply">回复</em>
+
+</h3>
+
+<form method="post" autocomplete="off" id="postform" action="" onsubmit="postform();return false;" fwin="reply">
+<div class="c" id="floatlayout_reply" fwin="reply">
+<div class="p_c">
+<div class="pbt cl">
+<span id="subjecthide" class="z" fwin="reply">RE: <%=data.Subject%> [<a href="javascript:;" onclick="display('subjecthide');display('subjectbox');">修改</a>]</span>
+<span id="subjectbox" style="display:none" fwin="reply"><input name="subject" id="subject" class="px" value="" tabindex="21" style="width: 25em" fwin="reply"></span>
+</div>
+<%if(data.Message){%>
+<div class="pbt cl"><div class="quote"><blockquote><font size="2"><a href="javascript:" target="_blank"><font color="#999999"><%=data.Author%> 发表于 <%=date('Y-m-d H:i',data.Dateline)%></font></a></font><br><%=decodeFastPostmsg(data.Message)%></blockquote></div></div>
+<%}%>
+<div class="tedt">
+<div class="bar">
+<span class="y">
+<a href="javascript:tpl_load('forum_newthread',WRITE_MSG_U2WS_forum_newthread,{Fid:{{data.Fid}},Type:2,Tid:{{GET('Tid')}},Position:{{data.Position}}});" onclick="switchAdvanceMode(this.href);doane(event);">高级模式</a>
+</span>
+<div class="fpd">
+<a href="javascript:;" title="文字加粗" class="fbld" onclick="seditor_insertunit('post', '[b]', '[/b]');doane(event);">B</a>
+<a href="javascript:;" title="设置文字颜色" class="fclr" id="postforecolor" onclick="showColorBox(this.id, 2, 'post');doane(event);" fwin="reply">Color</a>
+<a id="postimg" href="javascript:;" title="图片" class="fmg" onclick="seditor_menu('post', 'img');doane(event);" fwin="reply">Image</a>
+<a id="posturl" href="javascript:;" title="添加链接" class="flnk" onclick="seditor_menu('post', 'url');doane(event);" fwin="reply">Link</a>
+<a id="postquote" href="javascript:;" title="引用" class="fqt" onclick="seditor_menu('post', 'quote');doane(event);" fwin="reply">Quote</a>
+<a id="postcode" href="javascript:;" title="代码" class="fcd" onclick="seditor_menu('post', 'code');doane(event);" fwin="reply">Code</a>
+<a href="javascript:;" class="fsml" id="postsml" onclick="showMenu({'ctrlid':this.id,'evt':'click','layer':2});return false;" fwin="reply">Smilies</a>
+</div></div>
+<div class="area">
+<textarea rows="7" cols="80" name="message" id="postmessage" onkeydown="seditor_ctlent(event, '$(\'postsubmit1\').click();')" tabindex="22" class="pt" fwin="reply"></textarea>
+</div>
+</div>
+
+</div>
+</div>
+<div class="o pns" id="moreconf" fwin="reply">
+<a href="javascript:;" id="custominfo" class="y" style="margin-left:5px" fwin="reply" initialized="true"><img src="static/image/common/info_small.gif" alt="帮助"></a>
+<a href="/index.html?tpl=spacecp&amp;ac=credit&amp;op=rule&amp;fid=2" class="y" target="_blank">本版积分规则</a>
+<button type="submit" id="postsubmit1" class="pn pns z" value="true" name="replysubmit" tabindex="23" fwin="reply"><span>回复</span></button>
+</div>
+</form>
+<%-htmlDecode('&lt;')%>script type="text/javascript" reload="1">
+smilies_show('postsmiliesdiv',8,'post');
+function succeedhandle_reply(locationhref, message) {
+try {
+var pid = locationhref.lastIndexOf('#pid');
+if(pid != -1) {
+pid = locationhref.substr(pid + 4);
+
+} else {
+showDialog(message, 'notice', '', 'location.href="' + locationhref + '"');
+}
+} catch(e) {
+location.href = locationhref;
+}
+hideWindow('reply');
+}
+if(cache.sitemessage.reply.length>0){
+	showPrompt('custominfo', 'mouseover', cache.sitemessage.reply[Math.floor(Math.random()*cache.sitemessage.reply.length)], 3000);
+}
+
+setTimeout(checkfastpostfocus, 200);
+function checkfastpostfocus(){
+	if($('subjectbox')) {
+		$('postmessage').focus();
+	} else if($('subject')) {
+		$('subject').select();
+		$('subject').focus();
+	}
+}
+function postform(){
+checkseccode(scenePost,function(token){
+	var obj={}
+    obj.Tid=tpldata.Thread.Tid;
+    if($('#append_parent .quote').html()){
+    	obj.Message=html2bbcode($('.quote').parent().html())+$('#postmessage').val();
+	}else{
+		obj.Message=$('#postmessage').val();
+	}
+
+    obj.Seccode=token;
+    obj.Other=0;
+    ajax_post(WRITE_MSG_U2WS_threadfastpost(obj))
+});
+}
+<%-htmlDecode('&lt;')%>/script>
+</td>
+</script>
+<script id="tpl_viewthreadmod" type="text/html">
+	<td class="m_c" id="fwin_content_viewthreadmod" fwin="viewthreadmod" style="">
+<div class="f_c">
+<h3 class="flb" id="fctrl_viewthreadmod" style="cursor: move;">
+<em id="return_viewthreadmod" fwin="viewthreadmod">主题操作记录</em>
+
+</h3>
+<div class="c floatwrap">
+<table class="list" cellspacing="0" cellpadding="0">
+<thead>
+<tr>
+<td>操作者</td>
+<td>时间</td>
+<td>操作</td>
+<td>有效期</td>
+</tr>
+</thead><tbody id="viewthreadmod_tbody">
+</tbody></table>
+</div>
+</div>
+</td>
+<%-htmlDecode('&lt;')%>script type="text/javascript" reload="1">
+ajax_post(WRITE_MSG_U2WS_viewthreadmod({Tid:GET('Tid')}),function(res){
+
+    if(res.List){
+        var html='';
+        for(var i in res.List){
+            var mod=res.List[i];
+            html+='<tr><td><a href="/home.html?tpl=space&amp;Uid='+mod.Uid+'" target="_blank">'+mod.Modusername+'</a></td><td><span title="'+date("Y-m-d h:i",mod.Moddateline)+'">'+thread_time(mod.Moddateline)+'</span></td><td'+(mod.Status?'':' style="text-decoration: line-through"')+'>'+modactioncode[mod.Modactiontype]+(cache.stamps[mod.Stamp]?' '+cache.stamps[mod.Stamp]['text']:'')+'</td><td>'+(mod.Status?(mod.Expiration>0?date("Y-m-d h:i",mod.Expiration):''):'已失效')+'</td></tr>'
+        }
+        $('#viewthreadmod_tbody').html(html);
+    }
+})
+<%-htmlDecode('&lt;')%>/script>
+</script>
+<script id="tpl_viewwarning" type="text/html">
+	<td class="m_c" id="fwin_content_viewthreadmod" fwin="viewthreadmod" style="">
+<div class="f_c">
+<h3 class="flb" id="fctrl_viewthreadmod" style="cursor: move;">
+<em id="return_viewthreadmod" fwin="viewthreadmod"><%=data.Username%> 警告记录</em>
+
+</h3>
+<div class="c floatwrap">
+<table class="list" cellspacing="0" cellpadding="0">
+<thead>
+<tr>
+<td>操作者</td>
+<td>时间</td>
+<td>理由</td>
+</tr>
+</thead><tbody id="tpl_viewwarning_tbody">
+</tbody></table>
+</div>
+</div>
+<div class="o" id="viewwarning_tip">
+</div>
+</td>
+<%-htmlDecode('&lt;')%>script type="text/javascript" reload="1">
+ajax_post(WRITE_MSG_U2WS_GetPostWarnList({Tid:GET('Tid'),Position:<%=data.Position%>}),function(res){
+    if(res.List){
+        var html='';
+        for(var i in res.List){
+            var mod=res.List[i];
+            html+='<tr><td><a href="/home.html?tpl=space&amp;Uid='+mod.Uid+'" target="_blank">'+mod.Modusername+'</a></td><td><span title="'+date("Y-m-d h:i",mod.Moddateline)+'">'+thread_time(mod.Moddateline)+'</span></td><td>'+mod.Reason+'</td></tr>'
+        }
+        $('#tpl_viewwarning_tbody').html(html);
+        $('#viewwarning_tip').html('已被累计警告 '+res.List.length+' 次，30 天内累计被警告 3 次，将被自动禁止发帖 30 天');
+    }
+})
+<%-htmlDecode('&lt;')%>/script>
+</script>

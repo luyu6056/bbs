@@ -1,0 +1,21 @@
+<script id="tpl_misc_custommenu" type="text/html">
+	<div class="container" id="cpcontainer">
+<div class="itemtitle"><h3>编辑常用操作</h3></div><form name="cpform" method="post" autocomplete="off" action="" id="cpform"><input type="hidden" name="formhash" value="768764f9"><input type="hidden" id="formscrolltop" name="scrolltop" value=""><input type="hidden" name="anchor" value="">
+<table class="tb tb2 ">
+<tbody><tr class="header"><th></th><th>显示顺序</th><th>名称</th><th>URL</th><th>Param</th></tr>
+
+{{each data.Menus v k}}
+<tr class="hover">
+	<td class="td25"><input type="checkbox" class="checkbox" name="delete[]" value="{{v.Id}}"></td>
+	<td class="td28"><input type="text" class="txt" size="3" name="displayordernew[{{v.Id}}]" value="{{v.Displayorder}}"></td>
+	<td><input type="text" class="txt" size="25" name="titlenew[{{v.Id}}]" value="{{v.Title}}"><input type="hidden" name="langnew[{{v.Id}}]" value="{{v.Title}}"></td>
+	<td class="td26"><input type="text" class="txt" size="40" name="urlnew[{{v.Id}}]" readonly value="{{v.Url}}"></td>
+	<td class="td26"><input type="text" class="txt" size="40" name="paramnew[{{v.Id}}]" value="{{v.Param}}"></td>
+</tr>
+{{/each}} 
+
+	<tr><td></td><td colspan="3"><div><a href="javascript:void(0)"  class="addtr">点击工具栏+号添加</a></div></td></tr><tr><td class="td25"><input type="checkbox" name="chkall" id="chkallqITi" class="checkbox" onclick="checkAll('prefix', this.form, 'delete')"><label for="chkallqITi">删?</label></td><td colspan="15"><div class="fixsel"><input type="submit" class="btn" id="submit_optionsubmit" name="optionsubmit" title="按 Enter 键可随时提交您的修改" value="提交"></div></td></tr><script type="text/JavaScript">_attachEvent(document.documentElement, 'keydown', function (e) { entersubmit(e, 'optionsubmit'); });</script></tbody></table>
+</form>
+
+</div>
+</script>

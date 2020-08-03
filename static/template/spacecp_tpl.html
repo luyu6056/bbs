@@ -1,0 +1,506 @@
+
+<script id="tpl_spacecp" type="text/html">
+<div id="wp" class="wp time_wp cl">
+<div id="pt" class=" cl">
+                <div class="z"><a href="/" class="nvhm" title="首页"><svg class="svg" style="width: 17px;height: 17px;margin-top:6px;" aria-hidden="true"><use xlink:href="#icon-zhuye"></use></svg></a><em></em><span>设置</span></div>
+               <div href="javascript:void(0)" target="_blank" class="search-li" title="搜索">
+               	<input type="text" name="search" placeholder="请输入搜索内容">
+               <div style="width: 50px;height: 30px;background-color: rgb(255, 128, 1);position: absolute;margin-top: -30px;margin-left: 291px;"></div>
+               	<svg class="svg-search" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="28px" height="22px"><path fill-rule="evenodd" fill="rgb(255, 255, 255)" d="M26.570,20.965 C25.811,22.054 24.302,22.328 23.204,21.572 L14.000,15.000 C13.296,14.518 15.194,15.479 15.221,14.689 C13.940,16.052 12.258,16.967 10.374,17.307 C8.059,17.726 5.722,17.225 3.792,15.900 C1.862,14.575 0.566,12.583 0.145,10.288 C-0.278,7.992 0.226,5.671 1.562,3.755 C4.323,-0.201 9.814,-1.193 13.803,1.545 C17.424,4.032 18.581,8.752 16.699,12.561 C17.434,12.254 16.293,10.515 17.000,11.000 L25.959,17.625 C27.057,18.381 27.331,19.875 26.570,20.965 ZM14.830,7.633 C14.537,6.033 13.634,4.643 12.288,3.720 C9.508,1.809 5.678,2.500 3.751,5.259 C1.827,8.021 2.524,11.819 5.305,13.727 C8.086,15.637 11.915,14.947 13.841,12.187 C14.773,10.852 15.124,9.234 14.830,7.633 Z"></path></svg>
+
+</div>
+</div>
+
+<div id="ct" class="ct2_a wp cl mtw">
+
+<div class="mn">
+	<div class="appl"><div class="tbn">
+<h2 class="mt">设置</h2>
+<ul>
+<li <%if(GET('Ac')=="avatar"){%>class="a"<%}%>><a href="javascript:;" name="avatar"><svg width="12px" height="10px">
+<image  x="0px" y="0px" width="6px" height="10px"  xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAKBAMAAABlIDIAAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAGFBMVEVKl+P///9Kl+NKl+NKl+NKl+NKl+P////oVLfhAAAABnRSTlMAAAECBwSdsuZEAAAAAWJLR0QB/wIt3gAAAAd0SU1FB+MMCQ4mI4/bvlsAAAAtSURBVAjXDcaxEQAgCACxZ4RvrKmoWUlO919BU4UJqRZP4Gp0MO5/4gSVsvUBVQAEOd1JoOcAAAAASUVORK5CYII=" /></svg>修改头像</a></li>
+<li <%if(GET('Ac')=="profile" || GET('Ac')==""){%>class="a"<%}%>><a href="javascript:;" name="profile"><svg width="12px" height="10px">
+<image  x="0px" y="0px" width="6px" height="10px"  xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAKBAMAAABlIDIAAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAGFBMVEVKl+P///9Kl+NKl+NKl+NKl+NKl+P////oVLfhAAAABnRSTlMAAAECBwSdsuZEAAAAAWJLR0QB/wIt3gAAAAd0SU1FB+MMCQ4mI4/bvlsAAAAtSURBVAjXDcaxEQAgCACxZ4RvrKmoWUlO919BU4UJqRZP4Gp0MO5/4gSVsvUBVQAEOd1JoOcAAAAASUVORK5CYII=" /></svg>个人签名</a></li>
+<li <%if(GET('Ac')=="usergroup"){%>class="a"<%}%>><a href="javascript:;" name="usergroup"><svg width="12px" height="10px">
+<image  x="0px" y="0px" width="6px" height="10px"  xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAKBAMAAABlIDIAAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAGFBMVEVKl+P///9Kl+NKl+NKl+NKl+NKl+P////oVLfhAAAABnRSTlMAAAECBwSdsuZEAAAAAWJLR0QB/wIt3gAAAAd0SU1FB+MMCQ4mI4/bvlsAAAAtSURBVAjXDcaxEQAgCACxZ4RvrKmoWUlO919BU4UJqRZP4Gp0MO5/4gSVsvUBVQAEOd1JoOcAAAAASUVORK5CYII=" /></svg>用户组</a></li>
+<li <%if(GET('Ac')=="forum"){%>class="a"<%}%>><a href="javascript:;" name="forum"><svg width="12px" height="10px">
+<image  x="0px" y="0px" width="6px" height="10px"  xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAKBAMAAABlIDIAAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAGFBMVEVKl+P///9Kl+NKl+NKl+NKl+NKl+P////oVLfhAAAABnRSTlMAAAECBwSdsuZEAAAAAWJLR0QB/wIt3gAAAAd0SU1FB+MMCQ4mI4/bvlsAAAAtSURBVAjXDcaxEQAgCACxZ4RvrKmoWUlO919BU4UJqRZP4Gp0MO5/4gSVsvUBVQAEOd1JoOcAAAAASUVORK5CYII=" /></svg>论坛权限</a></li>
+<li <%if(GET('Ac')=="password"){%>class="a"<%}%>><a href="javascript:;" name="password"><svg width="12px" height="10px">
+<image  x="0px" y="0px" width="6px" height="10px"  xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAKBAMAAABlIDIAAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAGFBMVEVKl+P///9Kl+NKl+NKl+NKl+NKl+P////oVLfhAAAABnRSTlMAAAECBwSdsuZEAAAAAWJLR0QB/wIt3gAAAAd0SU1FB+MMCQ4mI4/bvlsAAAAtSURBVAjXDcaxEQAgCACxZ4RvrKmoWUlO919BU4UJqRZP4Gp0MO5/4gSVsvUBVQAEOd1JoOcAAAAASUVORK5CYII=" /></svg>修改密码</a></li>
+<li <%if(GET('Ac')=="email"){%>class="a"<%}%>><a href="javascript:;" name="email"><svg width="12px" height="10px">
+<image  x="0px" y="0px" width="6px" height="10px"  xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAKBAMAAABlIDIAAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAGFBMVEVKl+P///9Kl+NKl+NKl+NKl+NKl+P////oVLfhAAAABnRSTlMAAAECBwSdsuZEAAAAAWJLR0QB/wIt3gAAAAd0SU1FB+MMCQ4mI4/bvlsAAAAtSURBVAjXDcaxEQAgCACxZ4RvrKmoWUlO919BU4UJqRZP4Gp0MO5/4gSVsvUBVQAEOd1JoOcAAAAASUVORK5CYII=" /></svg>修改邮箱</a></li>
+<li <%if(GET('Ac')=="phone"){%>class="a"<%}%>><a href="javascript:;" name="phone"><svg width="12px" height="10px">
+<image  x="0px" y="0px" width="6px" height="10px"  xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAKBAMAAABlIDIAAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAGFBMVEVKl+P///9Kl+NKl+NKl+NKl+NKl+P////oVLfhAAAABnRSTlMAAAECBwSdsuZEAAAAAWJLR0QB/wIt3gAAAAd0SU1FB+MMCQ4mI4/bvlsAAAAtSURBVAjXDcaxEQAgCACxZ4RvrKmoWUlO919BU4UJqRZP4Gp0MO5/4gSVsvUBVQAEOd1JoOcAAAAASUVORK5CYII=" /></svg>修改手机</a></li>
+<li <%if(GET('Ac')=="thread"){%>class="a"<%}%>><a href="javascript:;" name="thread"><svg width="12px" height="10px">
+<image  x="0px" y="0px" width="6px" height="10px"  xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAKBAMAAABlIDIAAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAGFBMVEVKl+P///9Kl+NKl+NKl+NKl+NKl+P////oVLfhAAAABnRSTlMAAAECBwSdsuZEAAAAAWJLR0QB/wIt3gAAAAd0SU1FB+MMCQ4mI4/bvlsAAAAtSURBVAjXDcaxEQAgCACxZ4RvrKmoWUlO919BU4UJqRZP4Gp0MO5/4gSVsvUBVQAEOd1JoOcAAAAASUVORK5CYII=" /></svg>修改第三方登录</a></li>
+</ul>
+</div></div>
+<div id="profile" class="right" <%if(GET('Ac')!="" && GET('Ac')!="profile"){%>style="display: none;"<%}%>>
+
+<!--don't close the div here-->
+
+<form action="" method=""  autocomplete="off" id="form_profile" class="ptw">
+
+<table cellspacing="0" cellpadding="0" class="tfm" id="profilelist">
+<tr>
+<th>用户名:</th>
+<td><%=data.Name%></td>
+
+</tr>
+
+<%if(data.Allow>>0&1){%>
+<tr>
+<th id="th_customstatus">自定义头衔:</th>
+<td id="td_customstatus">
+<input type="text" value="<%=data.Customstatus%>" name="customstatus"  class="px" />
+<div class="rq mtn" id="showerror_customstatus"></div>
+</td>
+<td>&nbsp;</td>
+</tr>
+<%}if(data.Allow>>1&1){%>
+<tr>
+<th id="th_sightml">个人签名:</th>
+<td id="td_sightml">
+<div class="tedt">
+<div class="bar">
+<span class="y"><a href="javascript:;" onclick="$('signhtmlpreview').innerHTML = bbcode2html($('sightmlmessage').value)">预览</a></span>
+<%if(data.Allow>>2&1){if(data.Allow>>3&1){var seditor = ['sightml', ['bold', 'color', 'img', 'link', 'smilies']];%><%}else {var seditor=['sightml', ['bold', 'color', 'link', 'smilies']]%><%}%>
+<div class="fpd">
+<%if(in_array('bold', seditor[1])){%>
+<a href="javascript:;" title="文字加粗" class="fbld" onclick="seditor_insertunit('<%=seditor[0]%>', '[b]', '[/b]');doane(event);">B</a>
+<%}if(in_array('color', seditor[1])){%>
+<a href="javascript:;" title="设置文字颜色" class="fclr" id="<%=seditor[0]%>forecolor" onclick="showColorBox(this.id, 2, '<%=seditor[0]%>');doane(event);">Color</a>
+<%}if(in_array('img', seditor[1])){%>
+<a id="<%=seditor[0]%>img" href="javascript:;" title="图片" class="fmg" onclick="seditor_menu('<%=seditor[0]%>', 'img');doane(event);">Image</a>
+<%}if(in_array('link', seditor[1])){%>
+<a id="<%=seditor[0]%>url" href="javascript:;" title="添加链接" class="flnk" onclick="seditor_menu('<%=seditor[0]%>', 'url');doane(event);">Link</a>
+<%}if(in_array('quote', seditor[1])){%>
+<a id="<%=seditor[0]%>quote" href="javascript:;" title="引用" class="fqt" onclick="seditor_menu('<%=seditor[0]%>', 'quote');doane(event);">Quote</a>
+<%}if(in_array('code', seditor[1])){%>
+<a id="<%=seditor[0]%>code" href="javascript:;" title="代码" class="fcd" onclick="seditor_menu('<%=seditor[0]%>', 'code');doane(event);">Code</a>
+<%}if(in_array('smilies', seditor[1])){%>
+<a href="javascript:;" class="fsml" id="<%=seditor[0]%>sml" onclick="showMenu({'ctrlid':this.id,'evt':'click','layer':2});return false;">Smilies</a>
+
+<%-htmlDecode('&lt;')%>script type="text/javascript" reload="1">smilies_show('<%=seditor[0]%>smiliesdiv', <%=cache.smcols%>, '<%=seditor[0]%>');<%-htmlDecode('&lt;')%>/script>
+<%}%>
+
+</div><%}%>
+</div>
+<div class="area">
+<textarea rows="3" cols="80" name="sightml" id="sightmlmessage" class="pt" onkeydown="ctrlEnter(event, 'profilesubmitbtn');"><%=data.Sightml%></textarea>
+</div>
+</div>
+<div id="signhtmlpreview"></div>
+<div id="showerror_sightml" class="rq mtn"></div>
+</td>
+<td>&nbsp;</td>
+</tr>
+<%}%>
+<tr>
+<th>&nbsp;</th>
+<td colspan="2">
+<button type="submit" name="profilesubmitbtn" id="profilesubmitbtn" value="true" class="pn pns"><strong>保存</strong></button>
+<span id="submit_result" class="rq"></span>
+</td>
+</tr>
+
+</table>
+</form>
+</div>
+<div id="avatar" class="right" <%if(GET('Ac')!="avatar"){%>style="display: none;"<%}%>>
+<h1 class="mt">修改头像
+</h1>
+<!--don't close the div here-->
+
+<table cellspacing="0" cellpadding="0" class="tfm">
+<caption>
+<span id="retpre" class="y xi2"></span>
+<h2 class="xs2">当前头像</h2>
+<p>如果您还没有设置自己的头像，系统会显示为默认头像，您需要自己上传一张新照片来作为自己的个人头像 </p>
+</caption>
+<tbody><tr>
+<td id="myavatar"><%-get_avatar(cache.Head.Avatar,240)%></td>
+</tr>
+</tbody></table>
+
+<table cellspacing="0" cellpadding="0" class="tfm">
+<caption>
+<h2 class="xs2">设置我的新头像</h2>
+<p>请选择一个新照片进行上传编辑。</p>
+</caption>
+<tbody><tr>
+<td>
+<div id="avatardesigner" style="width: 430px; height: 228px;">
+<div id="avatarfileselector" style="width: 430px; height: 228px;">
+<input type="file" name="Filedata" id="avatarfile" accept="image/*" style="width: 430px; height: 228px;">
+</div>
+<div id="avataradjuster">
+<img id="avatarimage" style="visibility: hidden;" onload="forceSelectorInsideAvatar();">
+<canvas id="avatarcanvas" style="position: absolute; top: 0px; left: 0px;" width="300" height="228"></canvas>
+<div id="widgetparent" style="position: absolute; left: 0px; top: 0px; width: 300px; height: 228px;">
+<div id="selector" class="ui-widget-content ui-draggable ui-draggable-handle ui-resizable" style="position: absolute; width: 150px; height: 150px; overflow: hidden; cursor: move; border: 1px solid lightgrey; background-color: transparent; background-image: none;">
+<div class="ui-resizable-handle ui-resizable-e" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90;"></div></div>
+</div>
+
+<div class="backfileselectiondiv">
+<input type="button" name="backfileselection" class="backfileselection" value="Select File" onclick="showAvatarFileSelector();">
+</div>
+
+<div id="slider" style="height: 0px; position: absolute; right: 9px; top: 105px; width: 100px;" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"><span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0" style="left: 50%;"></span><div style="position: absolute; top: -2px; left: 0px; width: 3px; height: 6px; background-color: black;">&nbsp;</div><div style="position: absolute; top: -2px; left: 50px; width: 3px; height: 6px; background-color: black;">&nbsp;</div><div style="position: absolute; top: -2px; left: 100px; width: 3px; height: 6px; background-color: black;">&nbsp;</div></div>
+
+<div class="saveAvatardiv">
+<input type="submit" name="confirm" value="确定" class="saveAvatar" style="" onclick="saveAvatar();">
+</div>
+</div>
+<div id="avatardisplayer">
+<canvas id="avatardisplaycanvas" width="430" height="228"></canvas>
+
+<div class="finishbuttondiv">
+<input type="button" value="完成" class="finishbutton" onclick="location.reload(true);">
+</div>
+</div>
+</div>														
+
+<link rel="stylesheet" href="static/avatar/avatar.css?zKK">							
+						
+</td>
+</tr>
+</tbody></table>
+   		
+
+
+<%-htmlDecode('&lt;')%>script src="/static/avatar/jquery-ui.min.js" type="text/javascript"><%-htmlDecode('&lt;')%>/script>
+<%-htmlDecode('&lt;')%>script src="/static/avatar/avatar.js" type="text/javascript" reload="1"><%-htmlDecode('&lt;')%>/script>
+</div>
+<div id="usergroup" class="right" <%if(GET('Ac')!="usergroup"){%>style="display: none;"<%}%>>
+<!--don't close the div here--><ul class="tb cl">
+<li class="y a showmenu" id="gmy" onmouseover="showMenu(this.id)" ><a href="javascript:get_mygroup();">我的用户组</a></li>
+<li class="y showmenu" id="guser" onmouseover="showMenu(this.id)" ><a>普通用户组</a></li>
+<li class="y showmenu" id="gadmin" onmouseover="showMenu(this.id)"><a>站点管理组</a></li>
+<li class="a"><a href="javascript:get_mygroup();">我的用户组</a></li>
+</ul><div class="tdats">
+<table cellpadding="0" cellspacing="0" class="tdat">
+<tbody><tr><th class="c0">&nbsp;</th></tr>
+</tbody><tbody class="ca">
+<tr>
+<td class="alt">阅读权限</td>
+</tr>
+<tr >
+<td>自定义头衔</td>
+</tr>
+</tbody>
+
+<tbody><tr class="alt h">
+<th>帖子相关</th>
+</tr>
+</tbody><tbody class="cb">
+<tr>
+<td>发新话题</td>
+</tr>
+<tr class="alt">
+<td>发表回复</td>
+</tr>
+<tr>
+<td>发起投票</td>
+</tr>
+<tr class="alt">
+<td>参与投票</td>
+<!--</tr>
+<tr class="alt">
+<td>允许设置回帖奖励</td>
+</tr>-->
+<tr>
+<td>允许使用标签</td>
+</tr>
+<tr class="alt">
+<td>最大签名长度</td>
+</tr>
+<tr>
+<td>主题评价影响值</td>
+</tr>
+<!--<tr class="alt">
+<td>允许参与评分</td>
+</tr>
+<tr>
+<td>允许参与点评</td>
+</tr>
+<tr class="alt">
+<td>允许使用多媒体代码</td>
+</tr>-->
+</tbody>
+
+
+
+
+<tbody><tr class="alt h">
+<th>附件相关</th>
+</tr>
+</tbody><tbody class="cd"><tr>
+<td>下载附件</td>
+</tr>
+<tr class="alt">
+<td>上传附件</td>
+</tr>
+<tr>
+<td>上传图片</td>
+</tr>
+<tr class="alt">
+<td>单个最大附件尺寸</td>
+</tr>
+<tr>
+<td>每天最大附件总尺寸</td>
+</tr>
+<tr class="alt">
+<td>每天最大附件数量</td>
+</tr>
+<tr>
+<td>附件类型</td>
+</tr>
+<!--<tr class="alt">
+<td>允许设置附件权限</td>
+</tr>-->
+</tbody>
+</table>
+<table cellpadding="0" cellspacing="0" class="tdat tfxf" id="my_group">
+</table>
+<ul id="tba" class="tb c3" style="display: none;">
+<li id="c3"></li>
+</ul>
+<div class="tscr" style="display: none;">
+<table cellpadding="0" cellspacing="0" class="tdat" id="other_group">
+</table>
+</div>
+</div>
+<%-getTrueFalseImg(true)%> 表示有权操作&nbsp;
+<%-getTrueFalseImg(false)%> 表示无权操作
+<div id="gmy_menu" class="p_pop" style="display: none;" ><a href="javascript:get_mygroup()"><%=data.GroupTitle%></a></div>
+<div id="guser_menu" class="p_pop" style=" display: none;">
+	<%for(var i in data.CommonGroups){%><a href="javascript:get_group(<%=data.CommonGroups[i].Id%>)"><%=data.CommonGroups[i].Name%></a><%}%>
+</div>
+<div id="gadmin_menu" class="p_pop" style="display:none">
+	<%for(var i in data.SiteGroups){%><a href="javascript:get_group(<%=data.SiteGroups[i].Id%>)"><%=data.SiteGroups[i].Name%></a><%}%>
+</div>
+</div>
+<div id="forum" class="right" <%if(GET('Ac')!="forum"){%>style="display: none"<%}%>>
+<!--don't close the div here--><ul class="tb cl">
+<li class="a"><a href="javascript:;">我的论坛权限</a></li>
+</ul><table cellpadding="0" cellspacing="0" class="tdat ftb mtm mbm">
+<tbody id="forum_tbody"></tbody></table>
+<img src="static/image/common/data_valid.gif" alt="data_valid" class="vm"> 表示有权操作&nbsp;
+<img src="static/image/common/data_invalid.gif" alt="data_invalid" class="vm"> 表示无权操作&nbsp;
+</div>
+<div id="password" class="right" <%if(GET('Ac')!="password"){%>style="display: none"<%}%>>
+<!--don't close the div here-->
+
+<form action="" id="password_form" autocomplete="off">
+
+<table  cellspacing="0" cellpadding="0" class="tfm">
+<tbody>
+	<tr><th></th><td><p class="pbm mbm">您必须填写原密码才能修改下面的资料</p></td></tr>
+<tr>
+<th><span class="rq" title="必填">*</span>旧密码:</th>
+<td><input type="password" name="oldpassword" id="oldpassword" class="px"></td>
+</tr>
+<tr>
+<th>新密码:</th>
+<td>
+<input type="password" name="newpassword" id="newpassword" class="px">
+<p class="d" id="chk_newpassword"></p>
+</td>
+</tr>
+<tr>
+<th>确认新密码:</th>
+<td>
+<input type="password" name="newpassword2" id="newpassword2" class="px">
+<p class="d" id="chk_newpassword2"></p>
+</td>
+</tr>
+
+</tbody></table>
+<table  cellspacing="0" cellpadding="0" class="tfm">
+<tbody><tr>
+<th>&nbsp;</th>
+<td><button type="submit" name="pwdsubmit" value="true" class="pn pns"><strong>保存</strong></button></td>
+</tr>
+</tbody></table>
+</form>
+
+</div>
+<div id="email" class="right" <%if(GET('Ac')!="email"){%>style="display: none"<%}%>>
+<!--don't close the div here-->
+
+<form action="" id="email_form" autocomplete="off">
+
+<table  cellspacing="0" cellpadding="0" class="tfm">
+<tbody>
+  <tr><th></th><td><p class="pbm mbm">您必须填写原密码才能修改下面的资料</p></td></tr>
+<tr>
+<th><span class="rq" title="必填">*</span>旧密码:</th>
+<td><input type="password" name="emailpassword" id="emailpassword" class="px"></td>
+</tr>
+
+<tr id="contact">
+<th>Email:</th>
+<td>
+<input type="text" name="emailnew" id="emailnew" value="<%=data.Email%>" class="px">
+<p class="d">
+<%if(!(data.Allow>>4&1)){%>
+<svg t="1575448989052" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="17738" width="15" height="15" style="vertical-align: -2px;"><path d="M512 1.024C230.968889 1.024 1.024 230.968889 1.024 512c0 281.031111 229.944889 510.976 510.976 510.976 281.031111 0 510.976-229.944889 510.976-510.976C1022.976 230.968889 793.031111 1.024 512 1.024M512 959.146667A444.359111 444.359111 0 0 1 64.853333 512c0-249.116444 198.030222-447.146667 447.146667-447.146667 249.116444 0 447.146667 198.030222 447.146667 447.146667 0 249.116444-198.030222 447.146667-447.146667 447.146667" fill="#FFB13E" p-id="17739"></path><path d="M512 682.666667c-17.066667 0-28.444444 5.688889-39.822222 17.066666-11.377778 11.377778-17.066667 22.755556-17.066667 39.822223 0 17.066667 5.688889 28.444444 17.066667 39.822222 11.377778 11.377778 22.755556 17.066667 39.822222 17.066666 17.066667 0 28.444444-5.688889 39.822222-17.066666 11.377778-11.377778 17.066667-22.755556 17.066667-39.822222 0-17.066667-5.688889-28.444444-17.066667-39.822223-11.377778-11.377778-22.755556-17.066667-39.822222-17.066666zM455.111111 170.666667l18.944 455.111111h69.575111L568.888889 170.666667H455.111111z" fill="#FFB13E" p-id="17740"></path></svg> <span class="xi1">新邮箱(<%=data.EmailNew%>)等待验证中...</span><br>系统已经向该邮箱发送了一封验证激活邮件，请查收邮件，进行验证激活。<br>如果没有收到验证邮件，您可以更换一个邮箱，或者<a href="home.php?mod=spacecp&amp;ac=profile&amp;op=password&amp;resend=1" class="xi2">重新接收验证邮件</a><br><%}%>请不要操作太频繁，如操作失败请<%=cache.sendmailinterval%>分钟后再试
+</p>
+</td>
+</tr>
+</tbody></table>
+<table  cellspacing="0" cellpadding="0" class="tfm">
+<tbody><tr>
+<th>&nbsp;</th>
+<td><button type="submit" name="pwdsubmit" value="true" class="pn pns"><strong>保存</strong></button></td>
+</tr>
+</tbody></table>
+</form>
+
+</div>
+<div id="thread" class="right" <%if(GET('Ac')!="thread"){%>style="display: none"<%}%>>
+<!--don't close the div here-->
+
+
+<table  cellspacing="0" cellpadding="0" class="tfm">
+<tbody>
+  <tr><th></th><td><p class="pbm mbm">填写原密码后，点击图标修改绑定</p></td></tr>
+<tr>
+<th><span class="rq" title="必填">*</span>旧密码:</th>
+<td><input type="password" name="threadpassword" class="px"></td>
+</tr>
+
+
+</tbody></table>
+<table  cellspacing="0" cellpadding="0" class="tfm">
+<tbody><tr>
+<th>&nbsp;</th>
+<td class="bind"><a href="javascript:changeQQbind()"><i class="icon-modal icon-login-qq"></i></a><a href="javascript:changeWXbind()" class="js-login-switch"><i class="icon-modal icon-login-wx"></i></a></td>
+</tr>
+</tbody></table>
+
+</div>
+</div>
+
+
+
+</div>
+</div>
+</script>
+<script id="tpl_spacecp_usergroup" type="text/html">
+<tbody><tr>
+<th class="c0"><h4></h4></th>
+</tr>
+
+
+</tbody><tbody class="ca">
+<tr>
+<td name="阅读权限" class="alt"><%if(data.Readaccess>0){%><%=data.Readaccess%><%}else{%><%=data.Readaccess&255%><%}%></td>
+</tr>
+<tr >
+<td name="自定义头衔"><%-getTrueFalseImg(data.Allow>>0)%></td></tr>
+</tbody>
+<tbody><tr class="alt h">
+<th></th>
+</tr>
+</tbody><tbody class="cb">
+<tr>
+<td name="发新话题"><%-getTrueFalseImg(data.Allow>>1&1)%></td>
+</tr>
+<tr class="alt">
+<td name="发表回复"><%-getTrueFalseImg(data.Allow>>2&1)%></td>
+</tr>
+<tr>
+<td name="发起投票"><%-getTrueFalseImg(data.Allow>>3&1)%></td>
+</tr>
+<tr class="alt">
+<td name="参与投票"><%-getTrueFalseImg(data.Allow>>4&1)%></td>
+</tr>
+<!--<tr class="alt">
+<td name="允许设置回帖奖励"><img src="static/image/common/data_valid.gif" alt="data_valid"></td>
+</tr>-->
+<tr>
+<td name="允许使用标签"><%-getTrueFalseImg(data.Allow>>5&1)%></td>
+</tr>
+<tr class="alt">
+<td name="最大签名长度"><%=data.Maxsigsize%> 字节</td>
+</tr>
+<tr>
+<td name="主题评价影响值">+<%=data.Allowrecommend%></td>
+</tr>
+<!--<tr class="alt">
+<td name="允许参与评分"><img src="static/image/common/data_invalid.gif" alt="data_invalid"></td>
+</tr>
+<tr>
+<td name="允许参与点评"><img src="static/image/common/data_valid.gif" alt="data_valid"></td>
+</tr>
+<tr class="alt">
+<td>
+<img src="static/image/common/data_valid.gif" alt="data_valid"></td>
+</tr>-->
+</tbody>
+
+
+
+<tbody><tr class="alt h">
+<th></th>
+</tr>
+</tbody><tbody class="cd"><tr>
+<td name="下载附件"><%-getTrueFalseImg(data.Allow>>6&1)%></td>
+</tr>
+<tr class="alt">
+<td name="上传附件"><%-getTrueFalseImg(data.Allow>>7&1)%></td>
+</tr>
+<tr>
+<td name="上传图片"><%-getTrueFalseImg(data.Allow>>8&1)%></td>
+</tr>
+<tr class="alt">
+<td name="单个最大附件尺寸"><%if(data.Maxattachsize>-1){%><%=size_kb2mb(data.Maxattachsize)%><%}else{%><%-getTrueFalseImg(false)%><%}%></td>
+</tr>
+<tr>
+<td name="每天最大附件总尺寸"><%if(data.Maxsizeperday>-1){%><%=size_kb2mb(data.Maxsizeperday)%><%}else{%><%-getTrueFalseImg(false)%><%}%></td>
+</tr>
+<tr class="alt">
+<td name="每天最大附件数量"><%if(data.Maxattachnum>-1){%><%=size_kb2mb(data.Maxattachnum)%><%}else{%><%-getTrueFalseImg(false)%><%}%></td>
+</tr>
+<tr>
+<td name="附件类型"><%if(data.Attachextensions==""){%>无限制<%}else{%><%=data.Attachextensions%><%}%></td>
+</tr>
+<!--<tr class="alt">
+<td name="附件权限"><img src="static/image/common/data_valid.gif" alt="data_valid"></td>
+</tr>-->
+</tbody>
+</script>
+<script id="tpl_spacecp_forum" type="text/html">
+<tr class="alt">
+<th class="xw1">版块名称</th>
+<td class="xw1">浏览版块</td>
+<td class="xw1">发新话题</td>
+<td class="xw1">发表回复</td>
+<td class="xw1">下载附件</td>
+</tr>
+<%var index=0%>
+<%for(var i in data.Catlist){var forum=data.Catlist[i];%>
+<tr<%if(index%2==1){%> class="alt"<%}%>>
+<th><a href="/index.html?tpl=forum_index&Gid=<%=forum.Fid%>" target="_blank"><%=forum.Name%></a></th>
+<td><%-getTrueFalseImg(forum.Allow>>0&1)%></td>
+<td><%-getTrueFalseImg(forum.Allow>>1&1)%></td>
+<td><%-getTrueFalseImg(forum.Allow>>2&1)%></td>
+<td><%-getTrueFalseImg(forum.Allow>>3&1)%></td>
+</tr>
+<%index++;%>
+<%for(var i in forum.Child){var child=forum.Child[i];%>
+<tr<%if(index%2==1){%> class="alt"<%}%>>
+<th><a href="/index.html?tpl=forum_index&Gid=<%=child.Fid%>" target="_blank"><%=child.Name%></a></th>
+<td><%-getTrueFalseImg(child.Allow>>0&1)%></td>
+<td><%-getTrueFalseImg(child.Allow>>1&1)%></td>
+<td><%-getTrueFalseImg(child.Allow>>2&1)%></td>
+<td><%-getTrueFalseImg(child.Allow>>3&1)%></td>
+</tr>
+<%index++;}%>
+<%}%>
+
+
+</tr>
+</script>

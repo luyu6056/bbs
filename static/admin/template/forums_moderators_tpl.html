@@ -1,0 +1,21 @@
+<script id="tpl_main" type="text/html">
+<div id="ajaxwaitid"></div>
+<div class="container" id="cpcontainer"><div class="itemtitle"><h3>编辑版主 - {{data.Name}}</h3></div>
+<table class="tb tb2 " id="tips">
+<tbody><tr><th class="partition">技巧提示</th></tr>
+<tr><td class="tipsblock" s="1"><ul id="tipslis"><li>“由上级版块继承”表示该版主是由上级版块或分类继承而来，而不是针对本版块独立设置的设置的版主，不能单独删除。</li><li>“将本版块或分类版主的权力继承到下级版块”在当前论坛是分类时，默认为选定状态；在当前版块是子版块时，默认为不选状态。</li></ul></td></tr></tbody></table>
+<form name="cpform" method="post" autocomplete="off" action="" id="cpform">
+	<input type="hidden" name="Fid" value="{{data.Fid}}">
+<table class="tb tb2 fixpadding">
+<tbody><tr class="header"><th></th><th>显示顺序</th><th>用户名</th><th>用户组</th></tr>
+	{{each data.Moderators m}}
+<tr class="hover"><td class="td25"><input type="checkbox" class="checkbox" name="delete[]" value="{{m.Uid}}"></td><td class="td28"><input type="text" class="txt" name="displayordernew[{{m.Uid}}]" value="{{m.Displayorder}}" size="2"></td><td><a href="javascript:" target="_blank">{{m.Name}}</a></td><td><select name="newgroup[{{m.Uid}}]">{{each data.Groups g}}<option value="{{g.Groupid}}" {{if m.Groupid==g.Groupid}}selected="selected"{{/if}}>{{g.Groupname}}</option>{{/each}}</select></td></tr>
+{{/each}}
+
+<tr class="hover"><td class="td25">新增</td><td class="td28"><input type="text" class="txt" name="newdisplayorder" value="0" size="2"></td><td><input type="text" class="txt" name="newmoderator" value="" size="20"></td><td><select name="newgroup">{{each data.Groups g}}<option value="{{g.Groupid}}">{{g.Groupname}}</option>{{/each}}</select></td><td></td></tr><tr><td class="td25"><input type="checkbox" name="chkall" id="chkallu1mN" class="checkbox" onclick="checkAll('prefix', this.form, 'delete')"><label for="chkallu1mN">删?</label></td><td colspan="15"><div class="fixsel"><input type="submit" class="btn" id="submit_modsubmit" name="modsubmit" title="按 Enter 键可随时提交您的修改" value="提交"> &nbsp;<input class="checkbox" type="checkbox" name="inheritedmodnew" value="1" id="inheritedmodnew"><label for="inheritedmodnew">将本版块或分类版主的权力继承到下级版块</label></div></td></tr><script type="text/JavaScript">_attachEvent(document.documentElement, 'keydown', function (e) { entersubmit(e, 'modsubmit'); });</script></tbody></table>
+</form>
+
+</div>
+
+
+</script>

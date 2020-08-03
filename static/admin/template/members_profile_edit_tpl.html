@@ -1,0 +1,66 @@
+<div class="container" id="cpcontainer"><div class="floattop"><div class="itemtitle"><h3>用户栏目-自定义字段12</h3><ul class="tab1"><li><a href="admin.php?action=members&amp;operation=profile"><span>栏目列表</span></a></li><li class="current"><a href="admin.php?action=members&amp;operation=profile&amp;fieldid=field1"><span>编辑</span></a></li></ul></div></div><div class="floattopempty"></div><form name="cpform" method="post" autocomplete="off" action="admin.php?action=members&amp;operation=profile&amp;fieldid=field1" id="cpform"><input type="hidden" name="formhash" value="768764f9"><input type="hidden" id="formscrolltop" name="scrolltop" value=""><input type="hidden" name="anchor" value="">
+<table class="tb tb2 ">
+<tbody><tr><td colspan="2" class="td27" s="1">栏目名称:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq1fd9')"><td class="vtop rowform">
+<input name="title" value="自定义字段12" type="text" class="txt"></td><td class="vtop tips2" s="1"></td></tr>
+<tr><td colspan="2" class="td27" s="1">栏目介绍:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq9c7e')"><td class="vtop rowform">
+<input name="description" value="" type="text" class="txt"></td><td class="vtop tips2" s="1"></td></tr>
+<tr><td colspan="2" class="td27" s="1">表单类型:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqae43')"><td class="vtop rowform">
+<ul class="nofloat" onmouseover="altStyle(this);"><li class="checked"><input class="radio" type="radio" name="formtype" value="text" checked="" onclick="$('valuenumber').style.display = '';$('fieldchoices').style.display = 'none';$('fieldvalidate').style.display = '';">&nbsp;单行文本框</li><li><input class="radio" type="radio" name="formtype" value="textarea" onclick="$('valuenumber').style.display = '';$('fieldchoices').style.display = 'none';$('fieldvalidate').style.display = '';">&nbsp;多行文本框</li><li><input class="radio" type="radio" name="formtype" value="radio" onclick="$('valuenumber').style.display = 'none';$('fieldchoices').style.display = '';$('fieldvalidate').style.display = 'none';">&nbsp;单选框</li><li><input class="radio" type="radio" name="formtype" value="checkbox" onclick="$('valuenumber').style.display = '';$('fieldchoices').style.display = '';$('fieldvalidate').style.display = 'none';">&nbsp;复选框</li><li><input class="radio" type="radio" name="formtype" value="select" onclick="$('valuenumber').style.display = 'none';$('fieldchoices').style.display = '';$('fieldvalidate').style.display = 'none';">&nbsp;下拉菜单</li><li><input class="radio" type="radio" name="formtype" value="list" onclick="$('valuenumber').style.display = '';$('fieldchoices').style.display = '';">&nbsp;多选列表框</li><li><input class="radio" type="radio" name="formtype" value="file" onclick="$('valuenumber').style.display = '';$('fieldchoices').style.display = 'none';$('fieldvalidate').style.display = 'none';">&nbsp;上传图片</li></ul></td><td class="vtop tips2" s="1"></td></tr></tbody><tbody class="sub" id="valuenumber">
+<tr><td colspan="2" class="td27" s="1">大小限定:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq2d8d')"><td class="vtop rowform">
+<input name="size" value="0" type="text" class="txt"></td><td class="vtop tips2" s="1">最多可填写的字符数或最多可选择的项数,图片类型时限制了上传图片大小(单位:KB)</td></tr></tbody><tbody class="sub" id="fieldchoices" style="display: none">
+<tr><td colspan="2" class="td27" s="1">可选值:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqcc40')"><td class="vtop rowform">
+<textarea rows="6" ondblclick="textareasize(this, 1)" onkeyup="textareasize(this, 0)" onkeydown="textareakey(this, event)" name="choices" id="choices" cols="50" class="tarea"></textarea></td><td class="vtop tips2" s="1">每行一个值，例如输入:<br>北京<br>上海<br>双击输入框可扩大/缩小</td></tr></tbody><tbody class="sub" id="fieldvalidate">
+<tr><td colspan="2" class="td27" s="1">正则验证:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq6609')"><td class="vtop rowform">
+<input name="validate" value="" type="text" class="txt"></td><td class="vtop tips2" s="1">检验输入数据的正则表达式，请慎重修改</td></tr></tbody>
+<tbody><tr><td colspan="2" class="td27" s="1">是否启用:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq277f')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li><input class="radio" type="radio" name="available" value="1">&nbsp;是</li><li class="checked"><input class="radio" type="radio" name="available" value="0" checked="">&nbsp;否</li></ul></td><td class="vtop tips2" s="1"></td></tr>
+<tr><td colspan="2" class="td27" s="1">提交后不可修改:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqe93a')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li><input class="radio" type="radio" name="unchangeable" value="1">&nbsp;是</li><li class="checked"><input class="radio" type="radio" name="unchangeable" value="0" checked="">&nbsp;否</li></ul></td><td class="vtop tips2" s="1"></td></tr>
+<tr><td colspan="2" class="td27" s="1">修改后需要审核:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq4cbd')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li><input class="radio" type="radio" name="needverify" value="1">&nbsp;是</li><li class="checked"><input class="radio" type="radio" name="needverify" value="0" checked="">&nbsp;否</li></ul></td><td class="vtop tips2" s="1"></td></tr>
+<tr><td colspan="2" class="td27" s="1">是否必填:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqbf7d')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li><input class="radio" type="radio" name="required" value="1">&nbsp;是</li><li class="checked"><input class="radio" type="radio" name="required" value="0" checked="">&nbsp;否</li></ul></td><td class="vtop tips2" s="1"></td></tr>
+<tr><td colspan="2" class="td27" s="1">资料页面隐藏:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq9ac7')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li class="checked"><input class="radio" type="radio" name="invisible" value="1" checked="">&nbsp;是</li><li><input class="radio" type="radio" name="invisible" value="0">&nbsp;否</li></ul></td><td class="vtop tips2" s="1">如果设为是，则不论个人隐私如何设定都不会在个人空间资料页面显示</td></tr>
+<tr><td colspan="2" class="td27" s="1">默认隐私:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq2f99')"><td class="vtop rowform">
+<select name="privacy"><option value="0" selected="selected">公开</option>
+<option value="1">好友可见</option>
+<option value="3">保密</option>
+</select></td><td class="vtop tips2" s="1"></td></tr>
+<tr><td colspan="2" class="td27" s="1">是否在名片中显示:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqacc3')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li><input class="radio" type="radio" name="showincard" value="1">&nbsp;是</li><li class="checked"><input class="radio" type="radio" name="showincard" value="0" checked="">&nbsp;否</li></ul></td><td class="vtop tips2" s="1"></td></tr>
+<tr><td colspan="2" class="td27" s="1">是否在注册页面显示:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq9d5c')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li><input class="radio" type="radio" name="showinregister" value="1">&nbsp;是</li><li class="checked"><input class="radio" type="radio" name="showinregister" value="0" checked="">&nbsp;否</li></ul></td><td class="vtop tips2" s="1"></td></tr>
+<tr><td colspan="2" class="td27" s="1">允许搜索:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq178c')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li><input class="radio" type="radio" name="allowsearch" value="1">&nbsp;是</li><li class="checked"><input class="radio" type="radio" name="allowsearch" value="0" checked="">&nbsp;否</li></ul></td><td class="vtop tips2" s="1"></td></tr>						<tr>
+							<td class="td27" colspan="2">用户栏目分组:</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<ul class="dblist" onmouseover="altStyle(this);">
+									<li style="width: 100%;"><input type="checkbox" name="chkall" onclick="checkAll('prefix', this.form, 'profilegroup')" class="checkbox">&nbsp;全选</li>
+									<li class="checked" style="float: left; width: 10%;"><input type="checkbox" value="base" name="profilegroup[base]" class="checkbox" checked="checked">&nbsp;基本资料</li><li style="float: left; width: 10%;"><input type="checkbox" value="contact" name="profilegroup[contact]" class="checkbox">&nbsp;联系方式</li><li style="float: left; width: 10%;"><input type="checkbox" value="edu" name="profilegroup[edu]" class="checkbox">&nbsp;教育情况</li><li style="float: left; width: 10%;"><input type="checkbox" value="work" name="profilegroup[work]" class="checkbox">&nbsp;工作情况</li><li style="float: left; width: 10%;"><input type="checkbox" value="info" name="profilegroup[info]" class="checkbox">&nbsp;个人信息</li>
+								</ul>
+							</td>
+						</tr>
+<tr><td colspan="2" class="td27" s="1">显示顺序:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq0e86')"><td class="vtop rowform">
+<input name="displayorder" value="0" type="text" class="txt"></td><td class="vtop tips2" s="1">值越大显示越靠后</td></tr><tr><td colspan="15"><div class="fixsel"><input type="submit" class="btn" id="submit_editsubmit" name="editsubmit" title="按 Enter 键可随时提交您的修改" value="提交"></div></td></tr><script type="text/JavaScript">_attachEvent(document.documentElement, 'keydown', function (e) { entersubmit(e, 'editsubmit'); });</script></tbody></table>
+</form>
+
+</div>

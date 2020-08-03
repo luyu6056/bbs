@@ -1,0 +1,226 @@
+<script id="tpl_main" type="text/html">
+<div id="ajaxwaitid"></div>
+<div class="container" id="cpcontainer"><div class="floattop"><div class="itemtitle"><h3>站点功能</h3><ul class="tab1"><li class="current"><a href="javascript:void(0)" data="curscript"><span>功能模块</span></a></li><li><a href="javascript:void(0)" data="mod"><span>管理相关</span></a></li><li><a href="javascript:void(0)" data="heatthread"><span>主题热度</span></a></li><li><a href="javascript:void(0)" data="recommend"><span>主题评价</span></a></li><li><a href="javascript:void(0)" data="comment"><span>帖子点评</span></a></li><li><a href="javascript:void(0)" data="guide"><span>导读设置</span></a></li><li><a href="javascript:void(0)" data="activity"><span>活动主题</span></a></li><li><a href="javascript:void(0)" data="threadexp"><span>帖子阅读</span></a></li><li><a href="javascript:void(0)" data="other"><span>其他</span></a></li></ul></div></div><div class="floattopempty"></div><form name="cpform" method="post" autocomplete="off" action="admin.php?action=setting&amp;edit=yes" id="cpform" enctype="multipart/form-data">
+<table class="tb tb2 nobdb" id="curscript">
+<tbody><tr><th colspan="15" class="partition">功能列表</th></tr>
+	<tr><td class="td25"><img src="/static/image/feed/portal_b.png"></td><td class="td23">门户</td><td width="370">通过门户，网站可以将最热门的帖子、文章、活动等信息展现给用户</td><td class="td30"><img class="vm" src="/static/image/common/{{if data.Setting_curscript.Portalstatus==1}}data_valid.gif{{else}}data_invalid.gif{{/if}}"></td><td><a href="javascript:void(0);" data="Portalstatus" value="{{data.Setting_curscript.Portalstatus}}">{{if data.Setting_curscript.Portalstatus==1}}关闭{{else}}开启{{/if}}</a></td></tr>
+	<tr><td class="td25"><img src="/static/image/feed/group_b.png"></td><td class="td23">群组</td><td width="370">志同道合者的聚集地，更加专业更加隐秘的交流乐园</td><td class="td30"><img class="vm" src="/static/image/common/{{if data.Setting_curscript.Groupstatus==1}}data_valid.gif{{else}}data_invalid.gif{{/if}}"></td><td><a href="javascript:void(0);" data="Groupstatus" value="{{data.Setting_curscript.Groupstatus}}">{{if data.Setting_curscript.Groupstatus==1}}关闭{{else}}开启{{/if}}</a></td></tr>
+	<tr><td class="td25"><img src="/static/image/feed/follow_b.png"></td><td class="td23">广播</td><td width="370">收听感兴趣的人，分享有趣的事儿，信息快速传播的利器</td><td class="td30"><img class="vm" src="/static/image/common/{{if data.Setting_curscript.Followstatus==1}}data_valid.gif{{else}}data_invalid.gif{{/if}}"></td><td><a href="javascript:void(0);" data="Followstatus" value="{{data.Setting_curscript.Followstatus}}">{{if data.Setting_curscript.Followstatus==1}}关闭{{else}}开启{{/if}}</a></td></tr>
+	<tr><td class="td25"><img src="/static/image/feed/collection_b.png"></td><td class="td23">淘帖</td><td width="370">网站优质内容的收集与分类，网站内容运营必不可少的好帮手</td><td class="td30"><img class="vm" src="/static/image/common/{{if data.Setting_curscript.Collectionstatus==1}}data_valid.gif{{else}}data_invalid.gif{{/if}}"></td><td><a href="javascript:void(0);" data="Collectionstatus" value="{{data.Setting_curscript.Collectionstatus}}">{{if data.Setting_curscript.Collectionstatus==1}}关闭{{else}}开启{{/if}}</a></td></tr>
+	<tr><td class="td25"><img src="/static/image/feed/guide_b.png"></td><td class="td23">导读</td><td width="370">自动聚合网站最具争议、最热门、最精华、最新发布等“最”主题</td><td class="td30"><img class="vm" src="/static/image/common/{{if data.Setting_curscript.Guidestatus==1}}data_valid.gif{{else}}data_invalid.gif{{/if}}"></td><td><a href="javascript:void(0);" data="Guidestatus" value="{{data.Setting_curscript.Guidestatus}}">{{if data.Setting_curscript.Guidestatus==1}}关闭{{else}}开启{{/if}}</a></td></tr>
+	<tr><td class="td25"><img src="/static/image/feed/feed_b.png"></td><td class="td23">动态</td><td width="370">了解网站关注好友网站动向的直接渠道，让用户不再感觉孤独</td><td class="td30"><img class="vm" src="/static/image/common/{{if data.Setting_curscript.Feedstatus==1}}data_valid.gif{{else}}data_invalid.gif{{/if}}"></td><td><a href="javascript:void(0);" data="Feedstatus" value="{{data.Setting_curscript.Feedstatus}}">{{if data.Setting_curscript.Feedstatus==1}}关闭{{else}}开启{{/if}}</a></td></tr>
+	<tr><td class="td25"><img src="/static/image/feed/blog_b.png"></td><td class="td23">日志</td><td width="370">记录每日见闻，分享人生感悟，用户感情宣泄的家园</td><td class="td30"><img class="vm" src="/static/image/common/{{if data.Setting_curscript.Blogstatus==1}}data_valid.gif{{else}}data_invalid.gif{{/if}}"></td><td><a href="javascript:void(0);" data="Blogstatus" value="{{data.Setting_curscript.Blogstatus}}">{{if data.Setting_curscript.Blogstatus==1}}关闭{{else}}开启{{/if}}</a></td></tr>
+	<tr><td class="td25"><img src="/static/image/feed/album_b.png"></td><td class="td23">相册</td><td width="370">自己的美丽容颜，祖国的大好河山，各种美图的影像档案</td><td class="td30"><img class="vm" src="/static/image/common/{{if data.Setting_curscript.Albumstatus==1}}data_valid.gif{{else}}data_invalid.gif{{/if}}"></td><td><a href="javascript:void(0);" data="Albumstatus" value="{{data.Setting_curscript.Albumstatus}}">{{if data.Setting_curscript.Albumstatus==1}}关闭{{else}}开启{{/if}}</a></td></tr>
+	<tr><td class="td25"><img src="/static/image/feed/share_b.png"></td><td class="td23">分享</td><td width="370">将网站精华内容推荐给其他网友，形成良好的共享氛围</td><td class="td30"><img class="vm" src="/static/image/common/{{if data.Setting_curscript.Sharestatus==1}}data_valid.gif{{else}}data_invalid.gif{{/if}}"></td><td><a href="javascript:void(0);" data="Sharestatus" value="{{data.Setting_curscript.Sharestatus}}">{{if data.Setting_curscript.Sharestatus==1}}关闭{{else}}开启{{/if}}</a></td></tr>
+	<tr><td class="td25"><img src="/static/image/feed/doing_b.png"></td><td class="td23">记录</td><td width="370">分享灵感，表达心情，记录随时想到的人和事儿</td><td class="td30"><img class="vm" src="/static/image/common/{{if data.Setting_curscript.Doingstatus==1}}data_valid.gif{{else}}data_invalid.gif{{/if}}"></td><td><a href="javascript:void(0);" data="Doingstatus" value="{{data.Setting_curscript.Doingstatus}}">{{if data.Setting_curscript.Doingstatus==1}}关闭{{else}}开启{{/if}}</a></td></tr>
+	<tr><td class="td25"><img src="/static/image/feed/wall_b.png"></td><td class="td23">留言板</td><td width="370">通过留言，可以让其他用户不会错过你的互动</td><td class="td30"><img class="vm" src="/static/image/common/{{if data.Setting_curscript.Wallstatus==1}}data_valid.gif{{else}}data_invalid.gif{{/if}}"></td><td><a href="javascript:void(0);" data="Wallstatus" value="{{data.Setting_curscript.Wallstatus}}">{{if data.Setting_curscript.Wallstatus==1}}关闭{{else}}开启{{/if}}</a></td></tr>
+	<tr><td class="td25"><img src="/static/image/feed/ranklist_b.png"></td><td class="td23">排行榜</td><td width="370">通过排行榜，可以查看本站的相关排行内容</td><td class="td30"><img class="vm" src="/static/image/common/{{if data.Setting_curscript.Rankliststatus==1}}data_valid.gif{{else}}data_invalid.gif{{/if}}"></td><td><a href="javascript:void(0);" data="Rankliststatus" value="{{data.Setting_curscript.Rankliststatus}}">{{if data.Setting_curscript.Rankliststatus==1}}关闭{{else}}开启{{/if}}</a></td></tr></tbody></table>
+
+<table class="tb tb2 " id="mod_tips" style="display: none;">
+<tbody><tr><th class="partition">技巧提示</th></tr>
+<tr><td class="tipsblock" s="1"><ul id="mod_tipslis"><li>以红色虚线标示的选项，表示该选项和系统效率、负载能力与资源消耗有关(提高效率、或降低效率)，建议依据自身服务器情况进行调整。</li></ul></td></tr></tbody></table>
+
+<table class="tb tb2 nobdb" id="mod" style="display: none">
+<tbody><tr><td colspan="2" class="td27" s="1"><span class="spectitle">开启站点趋势统计</span>:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq41bd')">{{@showsetting('settingnew[updatestat]',data.Setting_mod.Updatestat, 'radio')}}<td class="vtop tips2" s="1">站点趋势统计可以使站长了解到站点的运作状况。注意: 本功能会轻微加重系统负担</td></tr>
+<tr><td colspan="2" class="td27" s="1"><span class="spectitle">开启论坛管理工作统计</span>:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq65c3')">{{@showsetting('settingnew[modworkstatus]',data.Setting_mod.Modworkstatus, 'radio')}}<td class="vtop tips2" s="1">论坛管理工作统计可以使版主、管理员了解论坛版主等管理人员的工作状况。注意: 本功能会轻微加重系统负担</td></tr>
+<!--<tr><td colspan="2" class="td27" s="1">开启论坛 Archiver 功能:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqaa98')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li class="checked"><input class="radio" type="radio" name="settingnew[archiver]" value="1" checked="" onclick="$('hidden_setting_functions_archiver').style.display = '';">&nbsp;是</li><li><input class="radio" type="radio" name="settingnew[archiver]" value="0" onclick="$('hidden_setting_functions_archiver').style.display = 'none';">&nbsp;否</li></ul></td><td class="vtop tips2" s="1">论坛 Archiver 能够将论坛公开的内容模拟成静态页面，以便搜索引擎获取其中的内容</td></tr></tbody><tbody class="sub" id="hidden_setting_functions_archiver">
+<tr><td colspan="2" class="td27" s="1">禁止用户访问 Archiver:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq3b7f')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li><input class="radio" type="radio" name="settingnew[archiverredirect]" value="1">&nbsp;是</li><li class="checked"><input class="radio" type="radio" name="settingnew[archiverredirect]" value="0" checked="">&nbsp;否</li></ul></td><td class="vtop tips2" s="1">选择“是”，当用户通过搜索引擎中的链接访问 Archiver 页时将自动跳转到原始内容页</td></tr></tbody>-->
+<tbody><tr><td colspan="2" class="td27" s="1"><span class="spectitle">管理记录保留时间(月)</span>:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqc878')">{{@showsetting('settingnew[maxmodworksmonths]',data.Setting_mod.Maxmodworksmonths, 'number')}}<td class="vtop tips2" s="1">系统中保留管理记录的时间，默认为 3 个月，建议在 3～6 个月的范围内取值</td></tr>
+<tr><td colspan="2" class="td27" s="1">删帖不减积分时间期限(天):</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq0a49')">{{@showsetting('settingnew[losslessdel]',data.Setting_mod.Losslessdel, 'number')}}<td class="vtop tips2" s="1">设置版主或管理员从前台删除发表于多少天以前的帖子时，不更新用户的扩展积分，可用于清理老帖子而不对作者的扩展积分造成损失。0 为不使用此功能，始终更新用户积分</td></tr>
+<tr><td colspan="2" class="td27" s="1">管理操作理由选项:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq396d')">{{@showsetting('settingnew[modreasons]',data.Setting_mod.Modreasons, 'textarea')}}<td class="vtop tips2" s="1">本设定将在用户执行部分管理操作时显示，每个理由一行，如果空行则显示一行分隔符“--------”，用户可选择本设定中预置的理由选项或自行输入<br>双击输入框可扩大/缩小</td></tr>
+<tr><td colspan="2" class="td27" s="1">用户评分理由选项:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq818a')">{{@showsetting('settingnew[userreasons]',data.Setting_mod.Userreasons, 'textarea')}}<td class="vtop tips2" s="1">本设定将在用户执行评分时显示，每个理由一行，如果空行则显示一行分隔符“--------”，用户可选择本设定中预置的理由选项或自行输入<br>双击输入框可扩大/缩小</td></tr>
+<tr><td colspan="2" class="td27" s="1">隐藏敏感帖子内容:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq75fc')">{{@showsetting('settingnew[bannedmessages]',data.Setting_mod.Bannedmessages, 'checkbox',['帖子内容','用户头像','用户签名'])}}<td class="vtop tips2" s="1">选择相应项目将隐藏被删除或被禁止的用户的相关资料，在相关资料处显示被屏蔽的字样</td></tr>
+<tr><td colspan="2" class="td27" s="1">用户被警告多少次自动禁言:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqfd44')">{{@showsetting('settingnew[warninglimit]',data.Setting_mod.Warninglimit, 'number')}}<td class="vtop tips2" s="1">警告有效期结束自动解除禁言</td></tr>
+<tr><td colspan="2" class="td27" s="1">警告有效期(天):</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqd74c')">{{@showsetting('settingnew[warningexpiration]',data.Setting_mod.Warningexpiration, 'number')}}<td class="vtop tips2" s="1">默认为 30 天</td></tr>
+<tr><td colspan="2" class="td27" s="1">悬赏主题有效期:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq4013')">{{@showsetting('settingnew[rewardexpiration]',data.Setting_mod.Rewardexpiration, 'number')}}<td class="vtop tips2" s="1">设置悬赏主题的有效天数，当悬赏主题超过有效期后依然未发放悬赏，版主或管理员有权代为主题作者发放悬赏。0 表示不允许版主或管理员进行此操作</td></tr>
+<tr><td colspan="2" class="td27" s="1"><span class="spectitle">版主面板显示审核数目</span>:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq38e2')">{{@showsetting('settingnew[moddetail]',data.Setting_mod.Moddetail, 'radio')}}<td class="vtop tips2" s="1">设置版主面板是否详细显示待审核主题、帖子及用户的具体数目</td></tr></tbody></table>
+
+<table class="tb tb2 " id="heatthread_tips" style="display: none;">
+<tbody><tr><th class="partition">技巧提示</th></tr>
+<tr><td class="tipsblock" s="1"><ul id="heatthread_tipslis">主题热度将按参与人次计算，包括回帖，点评，收藏，分享，评分，推荐</ul></td></tr></tbody></table>
+
+<table class="tb tb2 nobdb" id="heatthread" style="display: none">
+<tbody><tr><td colspan="2" class="td27" s="1">用户热度值周期(天):</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq99b2')">{{@showsetting('settingnew[heatthread_period]',data.Setting_heatthread.Heatthread_period, 'number')}}<td class="vtop tips2" s="1">以天为单位，一个周期内某用户多次参与主题，只加一次热度。0代表不设置周期，只要参与一次，热度就加1。为避免用户刷热度，建议不要设置为0。(回复、点评、评论、收藏、分享等都算作参与主题的动作)</td></tr>
+<tr><td colspan="2" class="td27" s="1">热门主题显示级别:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqf5f4')"><td class="vtop rowform">
+<input name="settingnew[heatthread_iconlevels]" class="txt" type="text" value="{{data.Setting_heatthread.Heatthread_iconlevels}}"><br><img src="/static/image/common/hot_1.gif"> <img src="/static/image/common/hot_2.gif"> <img src="/static/image/common/hot_3.gif"> </td><td class="vtop tips2" s="1">设置主题列表页主题图标每一级别对应的热度指数，默认为 3 个级别，请用逗号分隔，如：“50,100,200”表示当主题的热度大于 50 时为 1 级，大于 100 时为 2 级，大于 200 时为 3 级。留空表示不显示图标</td></tr></tbody></table>
+
+<table class="tb tb2 " id="recommend_tips" style="display: none;">
+<tbody><tr><th class="partition">技巧提示</th></tr>
+<tr><td class="tipsblock" s="1"><ul id="recommend_tipslis"><li>不同用户组会员的主题评价影响值不同，您可以在”用户组”设置的“帖子相关”中设置。</li></ul></td></tr></tbody></table>
+
+<table class="tb tb2 nobdb" id="recommend" style="display: none">
+<tbody><tr><td colspan="2" class="td27" s="1">启用主题评价:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq5b0b')">{{@showsetting('settingnew[recommendthread_status]',data.Setting_recommend.Recommendthread_status, 'radio')}}<td class="vtop tips2" s="1">主题评价是让用户参与主题热度的重要指标，您可以设定用户在每天允许执行的评价次数</td></tr></tbody><tbody class="sub" id="hidden_setting_functions_recommend_status" {{if data.Setting_recommend.Recommendthread_status==0}}style="display: none"{{/if}}>
+<tr><td colspan="2" class="td27" s="1">加分操作文字:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq7a56')"><td class="vtop rowform">
+<input name="settingnew[recommendthread_addtext]" value="{{data.Setting_recommend.Recommendthread_addtext}}" type="text" class="txt"></td><td class="vtop tips2" s="1">设置评价加分的文字，不宜过长。建议使用“顶”、“支持”</td></tr>
+<tr><td colspan="2" class="td27" s="1">减分操作文字:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq0ed7')"><td class="vtop rowform">
+<input name="settingnew[recommendthread_subtracttext]" value="{{data.Setting_recommend.Recommendthread_subtracttext}}" type="text" class="txt"></td><td class="vtop tips2" s="1">设置评价减分的文字，不宜过长。建议使用“踩”、“反对”</td></tr>
+<tr><td colspan="2" class="td27" s="1">每 24 小时评价主题次数:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqf118')">{{@showsetting('settingnew[recommendthread_daycount]',data.Setting_recommend.Recommendthread_daycount, 'number')}}<td class="vtop tips2" s="1">设置用户每 24 小时可以评价多少篇主题，0 或留空为不限制</td></tr>
+<tr><td colspan="2" class="td27" s="1">是否允许评价自己的帖子:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq3c74')">{{@showsetting('settingnew[recommendthread_ownthread]',data.Setting_recommend.Recommendthread_ownthread, 'radio')}}<td class="vtop tips2" s="1">设置是否允许评价自己的主题。评价自己的主题无积分奖励</td></tr>
+<tr><td colspan="2" class="td27" s="1">评价图标显示级别:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq65d0')"><td class="vtop rowform">
+<input name="settingnew[recommendthread_iconlevels]" class="txt" type="text" value="{{data.Setting_recommend.Recommendthread_iconlevels}}"><br><img src="/static/image/common/recommend_1.gif"> <img src="/static/image/common/recommend_2.gif"> <img src="/static/image/common/recommend_3.gif"> </td><td class="vtop tips2" s="1">设置主题列表页评价图标每一级别对应的评价指数。建议为 3 个级别，请用逗号分隔，如：“0,100,200”表示当主题的评价指数大于 0 时为 1 级，大于 100 时为 2 级，大于 200 时为 3 级。1 级及以上级别的主题会在主题列表页“查看好评主题”中列出。留空或者 0 表示不显示图标</td></tr></tbody></table>
+
+<table class="tb tb2 nobdb" id="comment" style="display: none">
+<tbody><tr><td colspan="2" class="td27" s="1">点评方式:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq1ded')">
+	{{@showsetting('settingnew[allowpostcomment]',data.Setting_comment.Allowpostcomment, 'checkbox',["直接点评","楼层回复"],["$('commentextra').style.display = $('commentextra').style.display == 'none' ? '' : 'none';",""])}}
+	<td class="vtop tips2" s="1">设置点评的发表方式，如不选择表示不启用点评功能。开启任意一种点评方式都需要在用户组中设置点评权限<br>“直接点评”即通过帖子每楼层中的“点评”链接发表点评<br>“楼层回复”即通过帖子每楼层中的“回复”链接发表回帖时，自动对该楼层产生点评<br>注意：点击主题中的“回复”链接，不会对主题产生点评</td></tr>
+<tr><td colspan="2" class="td27" s="1">点评条目数:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq27d0')">{{@showsetting('settingnew[commentnumber]',data.Setting_comment.Commentnumber, 'number')}}<td class="vtop tips2" s="1">在帖子中显示点评的条目数</td></tr>
+<tr><td colspan="2" class="td27" s="1">允许点评自己的帖子:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqa3d2')">{{@showsetting('settingnew[commentpostself]',data.Setting_comment.Commentpostself, 'radio')}}<td class="vtop tips2" s="1">设置是否发帖作者能点评自己的帖子</td></tr></tbody><tbody id="commentextra" {{if (data.Setting_comment.Allowpostcomment>>0&1)==0}}style="display: none"{{/if}}>
+
+<tr><td colspan="2" class="td27" s="1">允许点评楼主帖:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqa2e3')">{{@showsetting('settingnew[commentfirstpost]',data.Setting_comment.Commentfirstpost, 'radio')}}<td class="vtop tips2" s="1">设置是否允许直接点评楼主帖，关闭表示只能点评回帖</td></tr>
+<tr><td colspan="2" class="td27" s="1">普通主题点评预置观点:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq30dc')">{{@showsetting('settingnew[commentitem_0]',data.Setting_comment.Commentitem_0, 'textarea')}}<td class="vtop tips2" s="1">每个观点一行。如存在空行，空行下方的内容将显示在下拉菜单中作为备选观点<br>双击输入框可扩大/缩小</td></tr>
+<tr><td colspan="2" class="td27" s="1">投票主题点评预置观点:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq9d54')">{{@showsetting('settingnew[commentitem_1]',data.Setting_comment.Commentitem_1, 'textarea')}}<td class="vtop tips2" s="1">每个观点一行。如存在空行，空行下方的内容将显示在下拉菜单中作为备选观点<br>双击输入框可扩大/缩小</td></tr>
+<tr><td colspan="2" class="td27" s="1">商品主题点评预置观点:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq3d69')">{{@showsetting('settingnew[commentitem_2]',data.Setting_comment.Commentitem_2, 'textarea')}}<td class="vtop tips2" s="1">每个观点一行。如存在空行，空行下方的内容将显示在下拉菜单中作为备选观点<br>双击输入框可扩大/缩小</td></tr>
+<tr><td colspan="2" class="td27" s="1">悬赏主题点评预置观点:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqe6af')">{{@showsetting('settingnew[commentitem_3]',data.Setting_comment.Commentitem_3, 'textarea')}}<td class="vtop tips2" s="1">每个观点一行。如存在空行，空行下方的内容将显示在下拉菜单中作为备选观点<br>双击输入框可扩大/缩小</td></tr>
+<tr><td colspan="2" class="td27" s="1">活动主题点评预置观点:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq469b')">{{@showsetting('settingnew[commentitem_4]',data.Setting_comment.Commentitem_4, 'textarea')}}<td class="vtop tips2" s="1">每个观点一行。如存在空行，空行下方的内容将显示在下拉菜单中作为备选观点<br>双击输入框可扩大/缩小</td></tr>
+<tr><td colspan="2" class="td27" s="1">辩论主题点评预置观点:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq0e95')">{{@showsetting('settingnew[commentitem_5]',data.Setting_comment.Commentitem_5, 'textarea')}}<td class="vtop tips2" s="1">每个观点一行。如存在空行，空行下方的内容将显示在下拉菜单中作为备选观点<br>双击输入框可扩大/缩小</td></tr></tbody></table>
+
+<table class="tb tb2 nobdb" id="threadexp" style="display: none">
+<tbody><tr><td colspan="2" class="td27" s="1">启用回帖投票:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq6cdf')">{{@showsetting('settingnew[repliesrank]',data.Setting_threadexp.Repliesrank, 'radio')}}<td class="vtop tips2" s="1">开启后，用户可对回帖进行“支持”、“反对”操作。</td></tr>
+<tr><td colspan="2" class="td27" s="1">启用用户黑名单隐藏:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqc36e')">{{@showsetting('settingnew[threadblacklist]',data.Setting_threadexp.Threadblacklist, 'radio')}}<td class="vtop tips2" s="1">开启后，用户可以通过将其他用户加入黑名单的方法，隐藏指定用户的帖子。</td></tr>
+<tr><td colspan="2" class="td27" s="1">推荐回复数:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq2d27')">{{@showsetting('settingnew[threadhotreplies]',data.Setting_threadexp.Threadhotreplies, 'number')}}<td class="vtop tips2" s="1">系统根据回帖评价和水帖情况，在主题第一页推荐回帖，0 为不显示。</td></tr>
+<tr><td colspan="2" class="td27" s="1">水帖字数:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq6d5a')">{{@showsetting('settingnew[threadfilternum]',data.Setting_threadexp.Threadfilternum, 'number')}}<td class="vtop tips2" s="1">系统判断水帖的条件，小于此数值的帖子会被判断为水帖，0 为不过滤水帖。</td></tr>
+<tr><td colspan="2" class="td27" s="1">推荐回复时推荐非水帖:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq1fcb')">{{@showsetting('settingnew[nofilteredpost]',data.Setting_threadexp.Nofilteredpost, 'radio')}}<td class="vtop tips2" s="1">启用后会在第一页推荐回复处推荐相应一定的非水帖。</td></tr>
+<tr><td colspan="2" class="td27" s="1">启用隐藏水帖:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq8da1')">{{@showsetting('settingnew[hidefilteredpost]',data.Setting_threadexp.Hidefilteredpost, 'radio')}}<td class="vtop tips2" s="1">开启后系统判断为水帖的帖子会被自动隐藏。</td></tr>
+<tr><td colspan="2" class="td27" s="1">水帖不能参与回帖投票:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqa147')">{{@showsetting('settingnew[filterednovote]',data.Setting_threadexp.Filterednovote, 'radio')}}<td class="vtop tips2" s="1">开启后系统判断为水帖的帖子将不能参与回帖投票。</td></tr></tbody></table>
+
+<table class="tb tb2 " id="other_tips" style="display: none;">
+<tbody><tr><th class="partition">技巧提示</th></tr>
+<tr><td class="tipsblock" s="1"><ul id="other_tipslis"><li>以红色虚线标示的选项，表示该选项和系统效率、负载能力与资源消耗有关(提高效率、或降低效率)，建议依据自身服务器情况进行调整。</li></ul></td></tr></tbody></table>
+
+<table class="tb tb2 nobdb" id="other" style="display: none">
+<tbody>
+	<!--<tr><td colspan="2" class="td27" s="1">启用登录密码加密:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqdf79')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li><input class="radio" type="radio" name="settingnew[pwdsafety]" value="1">&nbsp;是</li><li class="checked"><input class="radio" type="radio" name="settingnew[pwdsafety]" value="0" checked="">&nbsp;否</li></ul></td><td class="vtop tips2" s="1">选择“是”，站点登录时的密码将进行加密后再传输</td>
+</tr>-->
+<tr><td colspan="2" class="td27" s="1">启用UID登录:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq9dbc')">{{@showsetting('settingnew[uidlogin]',data.Setting_other.Uidlogin, 'radio')}}<td class="vtop tips2" s="1">选择“是”，站点登录时允许通过 UID的方式登录验证</td></tr>
+<tr><td colspan="2" class="td27" s="1">启用登录自动选择帐号:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq14a2')">{{@showsetting('settingnew[autoidselect]',data.Setting_other.Autoidselect, 'radio')}}<td class="vtop tips2" s="1">选择“是”，站点登录时的将自动按 UID、E-mail、用户名的顺序逐一去匹配，其中UID验证只有UID登录方式被启用后才有效</td></tr>
+<!--<tr><td colspan="2" class="td27" s="1"><span class="spectitle">启用 RSS</span>:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqadd7')"><td class="vtop rowform">
+<ul onmouseover="altStyle(this);"><li class="checked"><input class="radio" type="radio" name="settingnew[rssstatus]" value="1" checked="">&nbsp;是</li><li><input class="radio" type="radio" name="settingnew[rssstatus]" value="0">&nbsp;否</li></ul></td><td class="vtop tips2" s="1">选择“是”，将允许用户使用 RSS 客户端软件接收最新的帖子、文章更新。注意: 在分类很多的情况下，本功能可能会加重服务器负担</td></tr>
+<tr><td colspan="2" class="td27" s="1"><span class="spectitle">RSS TTL(分钟)</span>:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq7856')"><td class="vtop rowform">
+<input name="settingnew[rssttl]" value="60" type="text" class="txt"></td><td class="vtop tips2" s="1">TTL(Time to Live) 是 RSS 2.0 的一项属性，用于控制订阅内容的自动刷新时间，时间越短则资料实时性就越高，但会加重服务器负担，通常可设置为 30～180 范围内的数值</td></tr>-->
+<tr><td colspan="2" class="td27" s="1"><span class="spectitle">用户在线时间更新时长(分钟)</span>:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqd31d')">{{@showsetting('settingnew[oltimespan]',data.Setting_other.Oltimespan, 'number')}}<td class="vtop tips2" s="1">Discuz! 可统计每个用户总共和当月的在线时间，本设置用以设定更新用户在线时间的时间频率。例如设置为 10，则用户每在线 10 分钟更新一次记录。本设置值越小，则统计越精确，但消耗资源越大。建议设置为 5～30 范围内，0 为不记录用户在线时间</td></tr>
+
+<tr><td colspan="2" class="td27" s="1">全站是否默认只接受好友短消息:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq9c7d')">{{@showsetting('settingnew[onlyacceptfriendpm]',data.Setting_other.Onlyacceptfriendpm, 'radio')}}<td class="vtop tips2" s="1">选择“是”将在个人短消息设置中，默认只接收好友的短消息</td></tr>
+<tr><td colspan="2" class="td27" s="1">接收短消息举报人(UID，多人使用英文逗号分隔):</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq0e48')">{{@showsetting('settingnew[pmreportuser]',data.Setting_other.Pmreportuser, 'text')}}<td class="vtop tips2" s="1">根据接收的短消息举报提醒用户，可及时处理发送垃圾短信的用户，留空表示不启用短消息举报功能</td></tr>
+<tr><td colspan="2" class="td27" s="1">发帖时可@任何人:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqeb0d')">{{@showsetting('settingnew[at_anyone]',data.Setting_other.At_anyone, 'radio')}}<td class="vtop tips2" s="1">选择否表示，只有被@人在用户的收听列表和好友中时才有效</td></tr>
+<tr><td colspan="2" class="td27" s="1">群聊消息内容自动刷新间隔(秒):</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq5972')">{{@showsetting('settingnew[chatpmrefreshtime]',data.Setting_other.Chatpmrefreshtime, 'number')}}<td class="vtop tips2" s="1">用于群聊消息内容刷新, 间隔时间越短对服务器压力越大, 0为不刷新</td></tr>
+<tr><td colspan="2" class="td27" s="1">淘帖专辑允许共同维护的人数:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq9fd3')">{{@showsetting('settingnew[collectionteamworkernum]',data.Setting_other.Collectionteamworkernum, 'number')}}<td class="vtop tips2" s="1">每个淘帖专辑可以共同参与维护的人数。</td></tr>
+<!--<tr><td colspan="2" class="td27" s="1">提醒添加桌面快捷的积分下限:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq3cd1')"><td class="vtop rowform">
+<input name="settingnew[shortcut]" value="" type="text" class="txt"></td><td class="vtop tips2" s="1">大于等于设置积分的用户将看到添加桌面快捷的顶部提醒，0或不填为关闭此功能</td></tr>-->
+<tr><td colspan="2" class="td27" s="1">关闭主题列表页排序功能:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq4013')">{{@showsetting('settingnew[closeforumorderby]',data.Setting_other.Closeforumorderby, 'radio')}}<td class="vtop tips2" s="1">选择“是”用户将只能按默认排序查看。</td></tr>
+<tr><td colspan="2" class="td27" s="1">关闭登录安全提醒:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq3978')">{{@showsetting('settingnew[disableipnotice]',data.Setting_other.Disableipnotice, 'radio')}}<td class="vtop tips2" s="1">选择“是”将关闭用户登录地区异常安全提醒功能</td></tr>
+<tr><td colspan="2" class="td27" s="1">开启小黑屋:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq9fd0')">{{@showsetting('settingnew[darkroom]',data.Setting_other.Darkroom, 'radio')}}<td class="vtop tips2" s="1">选择“是”将开启小黑屋，用户可以在右下角导航中进入小黑屋，查看被禁言禁止访问用户</td></tr>
+<tr><td colspan="2" class="td27" s="1">全局签名内容:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq62bb')">{{@showsetting('settingnew[globalsightml]',data.Setting_other.Globalsightml, 'textarea')}}<td class="vtop tips2" s="1">该设置必须开启签名后有效，如果用户没有设置签名就显示该签名内容<br>双击输入框可扩大/缩小</td></tr></tbody></table>
+
+<table class="tb tb2 nobdb" id="guide" style="display: none">
+<tbody><tr><td colspan="2" class="td27" s="1">热度值聚合下限:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq41cc')">{{@showsetting('settingnew[heatthread_guidelimit]',data.Setting_guide.Heatthread_guidelimit, 'number')}}<td class="vtop tips2" s="1">导读功能中收集热门主题时的热度值下限,默认值“3”</td></tr>
+<tr><td colspan="2" class="td27" s="1">热帖聚合时间范围:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq7f0b')"><td class="vtop rowform">
+<select name="settingnew[guide_hotdt]">
+	<option value="604800" {{if data.Setting_guide.Guide_hotdt==604800}}selected="selected"{{/if}}>一周</option>
+	<option value="1209600" {{if data.Setting_guide.Guide_hotdt==1209600}}selected="selected"{{/if}}>两周</option>
+	<option value="2592000" {{if data.Setting_guide.Guide_hotdt==2592000}}selected="selected"{{/if}}>一个月</option>
+	<option value="7776000" {{if data.Setting_guide.Guide_hotdt==7776000}}selected="selected"{{/if}}>三个月</option>
+</select></td><td class="vtop tips2" s="1"></td></tr>
+<tr><td colspan="2" class="td27" s="1">精华聚合时间范围:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq5611')"><td class="vtop rowform">
+<select name="settingnew[guide_digestdt]">
+	<option value="604800" {{if data.Setting_guide.Guide_digestdt==604800}}selected="selected"{{/if}}>一周</option>
+	<option value="1209600" {{if data.Setting_guide.Guide_digestdt==1209600}}selected="selected"{{/if}}>两周</option>
+	<option value="2592000" {{if data.Setting_guide.Guide_digestdt==2592000}}selected="selected"{{/if}}>一个月</option>
+	<option value="7776000" {{if data.Setting_guide.Guide_digestdt==7776000}}selected="selected"{{/if}}>三个月</option>
+</select></td><td class="vtop tips2" s="1"></td></tr></tbody></table>
+
+<table class="tb tb2 nobdb" id="activity" style="display: none">
+<tbody><tr><td colspan="2" class="td27" s="1">内置类别:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqef3f')">{{@showsetting('settingnew[activitytype]',data.Setting_activity.Activitytype, 'textarea')}}<td class="vtop tips2" s="1">本设定将在用户发起活动时显示活动类别，每个类别一行<br>双击输入框可扩大/缩小</td></tr>
+<tr><td colspan="2" class="td27" s="1"><em class="right">(<a href="javascript:showDialog('待完善')">点此新增资料项</a>)</em>活动发起者可选的必填资料项:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq1bc6')"><td colspan="2" class="vtop rowform">
+<ul onmouseover="altStyle(this);" class="ckbox" style="width: 790px">
+	{{each data.Setting_activity.Activityfield profile}}
+	{{if !in_array(profile.Fieldid,['constellation', 'zodiac', 'birthyear', 'birthmonth', 'resideprovince', 'birthprovince', 'residedist', 'residecommunity'])}} 
+		<li {{if profile.Checked==1}}class="checked"{{/if}} style="float: left; width: 18%"><input class="checkbox" type="checkbox" name="settingnew[activityfield]" value="{{profile.Fieldid}}" {{if profile.Checked==1}}checked{{/if}} title="{{profile.Title}}">&nbsp;{{profile.Title}}</li>
+	{{/if}}
+	{{/each}}
+</ul></td></tr>
+<tr><td colspan="2" class="td27" s="1">扩展资料项数量:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq292e')">{{@showsetting('settingnew[activityextnum]',data.Setting_activity.Activityextnum, 'number')}}<td class="vtop tips2" s="1">用户发起活动时自定义资料项数量，0为不允许自定义资料项</td></tr>
+<tr><td colspan="2" class="td27" s="1">使用积分:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faqe8ae')"><td class="vtop rowform">
+<select name="settingnew[activitycredit]">
+	<option value="0" {{if data.Setting_activity.Activitycredit==0}}selected{{/if}}>无</option>
+	<option value="1" {{if data.Setting_activity.Activitycredit==1}}selected{{/if}}>extcredits1(威望)</option>
+	<option value="2" {{if data.Setting_activity.Activitycredit==2}}selected{{/if}}>extcredits2(金钱)</option>
+	<option value="3" {{if data.Setting_activity.Activitycredit==3}}selected{{/if}}>extcredits3(贡献)</option>
+	<option value="4" {{if data.Setting_activity.Activitycredit==4}}selected{{/if}}>extcredits4</option>
+	<option value="5" {{if data.Setting_activity.Activitycredit==5}}selected{{/if}}>extcredits5</option>
+	<option value="6" {{if data.Setting_activity.Activitycredit==6}}selected{{/if}}>extcredits6</option>
+	<option value="7" {{if data.Setting_activity.Activitycredit==7}}selected{{/if}}>extcredits7</option>
+	<option value="8" {{if data.Setting_activity.Activitycredit==8}}selected{{/if}}>extcredits8</option>
+</select></td><td class="vtop tips2" s="1">参与消耗积分的活动时使用的积分</td></tr>
+<tr><td colspan="2" class="td27" s="1">列表用户数:</td></tr>
+<tr class="noborder" onmouseover="setfaq(this, 'faq2307')">{{@showsetting('settingnew[activitypp]',data.Setting_activity.Activitypp, 'number')}}<td class="vtop tips2" s="1">用户列表每页显示参与活动的人数</td></tr></tbody></table>
+
+<table class="tb tb2 nobdt" style="display: none" id="submit"><tbody><tr><td colspan="15"><div class="fixsel"><input type="submit" class="btn" id="submit_settingsubmit" name="settingsubmit" title="按 Enter 键可随时提交您的修改" value="提交"></div></td></tr><script type="text/JavaScript">_attachEvent(document.documentElement, 'keydown', function (e) { entersubmit(e, 'settingsubmit'); });</script></tbody></table>
+</form>
+
+</div>
+
+</script>

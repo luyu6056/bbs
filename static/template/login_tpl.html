@@ -1,0 +1,108 @@
+<script id="tpl_login" type="text/html">
+	<div id="wp" class="wp time_wp cl">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+
+
+
+<div id="background" class="">
+		<div class="filter"></div>
+</div>
+<div style="width: 1000px; margin: 0 auto;">
+<div id="ct" class="wp cl" style="padding: 100px 0 60px 0;">
+<div class="nfl" id="login_succeed" style="display: none;">
+<div class="f_c altw" style="margin: 0 auto;">
+<div class="alert_right">
+<p>登录成功</p>
+<p id="loginsucceedlocation" class="alert_btnleft"></p>
+<p class="alert_btnleft"><a href="/index.html" id="login_succeedmessage">如果您的浏览器没有自动跳转，请点击此链接</a></p>
+</div>
+</div>
+</div>
+
+<div class="mn" style="border: 1px solid #cdcdcd;">
+<div class="comForm cl" style="border: 0;" id="main_login">
+
+<div class="bm_h"  style="padding-left: 20px; height: 60px; line-height: 50px; border-bottom: 0; background: none;">
+<h3 id="layer_reginfo_t" style="height: 50px; line-height: 50px; padding-top: 10px; font-size: 24px; font-weight: bold;text-align: center;">
+登录账号</h3>
+</div>
+
+<p id="returnmessage4"></p>
+<%if(GET('Type')==''){%>
+<form method="post" autocomplete="off" name="login" id="loginform2" class="cl" action="">
+<div class="pg_login c cl" style="overflow: hidden;">
+
+<div class="rfm">
+<table>
+<tbody><tr>
+<th><label for="loginusername">用户名:</label></th>
+<td><input type="text" id="loginusername" name="loginusername" class="px" tabindex="1" value="" autocomplete="off" size="25" maxlength="15" required="" placeholder="邮箱或账号"></td>
+<td class="tipcol"></td>
+</tr>
+</tbody></table>
+</div>
+<div class="rfm">
+<table>
+<tbody><tr>
+<th><label for="passwd">密码:</label></th>
+<td><input type="password" id="loginpasswd" name="loginpasswd" size="25" tabindex="1" class="px" required=""></td>
+<td class="tipcol"></td>
+</tr>
+</tbody></table>
+</div>
+
+
+
+								
+<div class="rfm bw0 cl">
+<div class="login_btn cl" style="text-align: center;">
+<button class="pn pns" type="submit" name="loginsubmit" value="true" tabindex="1">提交</button>
+</div>
+<div style="display: none;">
+<a href="javascript:;" onclick="ajaxget('member.php?mod=clearcookies&amp;formhash=cd132af8', 'returnmessage_LFxE3', 'returnmessage_LFxE3');return false;" title="清除痕迹" class="y">清除痕迹</a></div>
+</div>
+								
+<div class="rfm" style="padding: 5px 0 0 0; text-align: center;">
+	 <a href="javascript:tpl_load('register')" style="float: none; height: 44px; line-height: 44px; color: #333333; font-size: 16px;">极速注册</a>
+</div>
+<div class="third-box">
+	 <div class="tits"><span>第三方登录</span></div>
+	 <a href="javascript:qqlogin();"><i class="icon-modal icon-login-qq"></i></a>
+	 <a href="plugin.php?id=wechat:login" class="js-login-switch" style="display: none;"><i class="icon-modal icon-login-wx"></i></a>
+	 <a href="#" style="display: none;"><i class="icon-modal icon-login-wb"></i></a>
+	 <a href="#" style="display: none;"><i class="icon-modal icon-login-zfb"></i></a>
+</div>
+<div class="other_login">
+									 </div>
+</div>
+</form>
+<%}%>
+<%if(GET('Type')=='QQ'){%>
+<div class="rfm">
+<table>
+<tbody><tr>
+<th></th>
+<td><div style="display: inline;"><i class="icon-modal icon-login-qq"></i></div><div class="seccode" style="display: inline;float: right;width: 280px;">
+	<div id="regseccodeverify" style="height: 48px;text-align: center;line-height: 48px;">
+		<div class="vaptcha-init-main">
+			<div class="vaptcha-init-loading">
+				<a href="/" target="_blank">
+					<img src="https://r.vaptcha.com/public/img/vaptcha-loading.gif">
+				</a>
+				<span class="vaptcha-text">qq登录中...</span>
+			</div>
+		</div>
+	</div>
+</div></td>
+<td class="tipcol"></td>
+</tr>
+</tbody></table>
+</div>
+
+<%}%>
+</div>
+</div>
+</div>
+</div></div>
+</script>
