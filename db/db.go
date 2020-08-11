@@ -532,7 +532,7 @@ type Common_member_count struct { //放一些经常变动的
 	Lastip          string    `db:"not null;type:varchar(21)"`
 	Lastpost        int32     `db:"not null;default(0)"`
 	SpaceView       sync.Map  `db:"-"`
-	Timestamp       time.Time `db:"default('current_timestamp()');extra('on update current_timestamp()')"`
+	Timestamp       time.Time `db:"default(current_timestamp());extra('on update current_timestamp()')"`
 }
 
 type Common_member_field_forum struct {
@@ -916,7 +916,7 @@ type Forum_forum struct {
 	Disablecollect   int32                        `db:"not null;default(0)"`
 	Field            *Forum_forumfield            `db:"-"`
 	Moderators       []*Forum_moderator
-	Timestamp        time.Time `db:"default('current_timestamp()');extra('on update current_timestamp()')"`
+	Timestamp        time.Time `db:"default(current_timestamp());extra('on update current_timestamp()')"`
 }
 type Forum_forumfield struct {
 	Fid                int32                         `db:"not null;default(0);pk"`
@@ -971,7 +971,7 @@ type Forum_forumfield struct {
 	Noforumrecommend int32                            `db:"not null;default(0)"`
 	Livetid          int32                            `db:"not null;default(0)"`
 	Price            int32                            `db:"not null;default(0)"`
-	Timestamp        time.Time                        `db:"default('current_timestamp()');extra('on update current_timestamp()')"`
+	Timestamp        time.Time                        `db:"default(current_timestamp());extra('on update current_timestamp()')"`
 }
 type Forum_groupuser struct {
 	Fid          int32  `db:"not null;default(0);pk;index"`
@@ -1113,7 +1113,7 @@ type Forum_thread struct {
 	Replycredit  int16     `db:"not null;default(0)"`
 	Sticks       []int32   //被置顶的帖子
 	Redirect     int32     //镜像主题真实ID
-	Timestamp    time.Time `db:"default('current_timestamp()');extra('on update current_timestamp()')";index`
+	Timestamp    time.Time `db:"default(current_timestamp());extra('on update current_timestamp()')";index`
 }
 
 //存放一些经常变动的
@@ -1128,7 +1128,7 @@ type Forum_thread_data struct {
 	Recommend_sub int32     `db:"not null;default(0)"`
 	Heats         int32     `db:"not null;default(0)"`
 	CutMessage    string    //简短消息预览
-	Timestamp     time.Time `db:"default('current_timestamp()');extra('on update current_timestamp()')";index`
+	Timestamp     time.Time `db:"default(current_timestamp());extra('on update current_timestamp()')";index`
 }
 type Forum_thread_moderate struct {
 	Id       int32 `db:"not null;default(0);pk"`
@@ -1160,7 +1160,7 @@ type Forum_threadtype struct {
 	Btemplate    string `db:"not null;type:text"`
 	Ismoderator  bool
 	Enable       bool
-	Timestamp    time.Time `db:"default('current_timestamp()');extra('on update current_timestamp()')"`
+	Timestamp    time.Time `db:"default(current_timestamp());extra('on update current_timestamp()')"`
 }
 
 type Home_notification struct {

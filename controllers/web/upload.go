@@ -99,7 +99,7 @@ func upload_image(data *protocol.MSG_U2WS_upload_image, c *server.Context) {
 		c.Out_common(protocol.Err_db, "")
 		return
 	}
-	if code, err := saveUpload("", filename, data.Data); code != protocol.Success || err != nil {
+	if code, err := models.SaveUpload("", filename, data.Data, false); code != protocol.Success || err != nil {
 		c.Out_common(code, "")
 		model_attach.Rollback()
 		c.Adderr(err, nil)
@@ -203,7 +203,7 @@ func upload_avatar(data *protocol.MSG_U2WS_upload_avatar, c *server.Context) {
 	avatar := strconv.Itoa(int(user.Uid)) + "_" + strconv.Itoa(int(time.Now().Unix())) + "." + ext
 	oldfilename := dir + "/" + user.Avatar
 	newfilename := dir + "/" + avatar
-	if code, err := saveUpload(oldfilename, newfilename, data.Imgdata); code != protocol.Success || err != nil {
+	if code, err := models.SaveUpload(oldfilename, newfilename, data.Imgdata, false); code != protocol.Success || err != nil {
 		c.Out_common(code, "")
 		c.Adderr(err, nil)
 		return
@@ -215,38 +215,6 @@ func upload_avatar(data *protocol.MSG_U2WS_upload_avatar, c *server.Context) {
 	msg.Put()
 	user.Avatar = avatar
 	user.UpdateDB()
-}
-func saveUpload(oldfilename, newfilename string, imgdata []byte) (int16, error) {
-	f_new := strings.Replace(newfilename, "./static", "", 1)
-	f_old := strings.Replace(oldfilename, "./static", "", 1)
-	if config.Server.OssEndpoint == "" {
-		tmp_f, err := os.OpenFile(newfilename, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0666)
-		if err != nil {
-			libraries.DEBUG("新建文件失败" + newfilename)
-			return protocol.Fail, err
-		}
-		tmp_f.Write(imgdata)
-		tmp_f.Close()
-		if oldfilename != "" {
-			os.Remove(oldfilename)
-		}
-
-	} else {
-		oss, err := libraries.NewOSS(config.Server.OssEndpoint, config.Server.OssAccessKeyId, config.Server.OssAccessKeySecret, config.Server.OssBucketName)
-		if err != nil {
-			libraries.DEBUG("oss打开失败")
-			return protocol.Fail, err
-		}
-		err = oss.UploadByte(f_new, imgdata)
-		if err != nil {
-			libraries.DEBUG("oss上传失败" + f_new)
-			return protocol.Fail, err
-		}
-		if oldfilename != "" {
-			oss.Delete(f_old)
-		}
-	}
-	return protocol.Success, nil
 }
 
 var tmpno uint32

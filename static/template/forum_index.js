@@ -33,6 +33,7 @@ $(".g-scrolling-carousel a").on("mousedown",function(){
 });
 $(".g-scrolling-carousel a").on("mouseup",function(){
     //根据是否发生移动状态来模拟click事件和拖拽后释放鼠标事件
+
     if(!g_scrolling_hasMove) tpl_click(this.href);
     g_scrolling_hasMove=false;  //还原标识，以便下一次使用
 });

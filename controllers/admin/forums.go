@@ -1,7 +1,6 @@
 package admin
 
 import (
-	"bbs/config"
 	"bbs/controllers/public"
 	"bbs/db"
 	"bbs/libraries"
@@ -103,7 +102,6 @@ func edit_forum_menu(data *protocol.MSG_U2WS_Admin_menu_forums_edit, c *server.C
 	if user.Adminid != 1 {
 		return
 	}
-
 	if forum := models.GetForumByFid(data.Fid); forum != nil {
 		msg := protocol.Pool_MSG_WS2U_Admin_menu_forums_edit.Get().(*protocol.MSG_WS2U_Admin_menu_forums_edit)
 		msg.Base = protocol.Pool_MSG_admin_forum_edit_base.Get().(*protocol.MSG_admin_forum_edit_base)
@@ -235,7 +233,6 @@ func edit_forum_base(data *protocol.MSG_admin_forum_edit_base, c *server.Context
 	if user.Adminid != 1 {
 		return
 	}
-
 	model_forum := &models.Model_Forum_forum{}
 	model_forum.Ctx = c
 	if forum := models.GetForumByFid(data.Fid); forum != nil {
@@ -252,25 +249,20 @@ func edit_forum_base(data *protocol.MSG_admin_forum_edit_base, c *server.Context
 		if len(data.File) > 0 {
 			var outbyte []byte
 			var err error
-			if config.Server.Webp {
-				err, outbyte = libraries.ConvertImgB(data.File, "webp", 263, 0, 70)
-			} else {
-				err, outbyte = libraries.ConvertImgB(data.File, "jpeg", 263, 0, 70)
-			}
+
+			err, outbyte = libraries.ConvertImgB(data.File, "png", 256, 0, 100)
 
 			if err != nil {
-				c.Out_common(protocol.Fail, err.Error())
+				c.Adderr(err, nil)
+				c.Out_common(protocol.Fail, "")
 				return
 			}
-			filename := "/static/image/forum/" + strconv.Itoa(int(forum.Fid))
-			if config.Server.Webp {
-				filename += ".webp"
-			} else {
-				filename += ".jpg"
-			}
-			err = models.UploadStatic(filename, outbyte)
-			if err != nil {
-				c.Out_common(protocol.Fail, err.Error())
+			filename := "/static/image/forum/" + strconv.Itoa(int(forum.Fid)) + ".png"
+
+			code, err := models.SaveUpload("", "./static"+filename, outbyte, true)
+			if code != protocol.Success || err != nil {
+				c.Adderr(err, nil)
+				c.Out_common(code, "")
 				return
 			}
 			forum.Field.Icon = filename + "?t=" + libraries.Timestamp()

@@ -36,7 +36,7 @@ func edit_setting_basic(data *protocol.MSG_U2WS_Admin_edit_setting_basic, c *ser
 	}
 	model_setting := new(models.Model_Setting)
 	model_setting.Ctx = c
-	c.Adderr(model_setting.SettingSet("Aitename", data.Setting_sitename), nil)
+	c.Adderr(model_setting.SettingSet("Sitename", data.Setting_sitename), nil)
 	c.Adderr(model_setting.SettingSet("Adminemail", data.Setting_adminemail), nil)
 	c.Adderr(model_setting.SettingSet("Siteurl", data.Setting_siteurl), nil)
 	c.Adderr(model_setting.SettingSet("Bbname", data.Setting_bbname), nil)

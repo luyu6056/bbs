@@ -928,7 +928,7 @@
 <li<%if(GET('stand') == 2){%> class="xw1 a"<%}%>><a href="forum.php?mod=viewthread&amp;tid=<%=data.Thread.Tid%>&amp;extra=<%=GET('extra')%>&amp;stand=2" hidefocus="true">反方</a></li>
 <li<%if(GET('stand') == 0){%> class="xw1 a"<%}%>><a href="forum.php?mod=viewthread&amp;tid=<%=data.Thread.Tid%>&amp;extra=<%=GET('extra')%>&amp;stand=0" hidefocus="true">中立</a></li>
 </ul>
-<%}if(data.Thread.Replies){%>广告<%}%>
+<%}if(data.Thread.Replies){%><%}%>
 </td>
 </tr>
 </table>

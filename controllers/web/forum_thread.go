@@ -770,7 +770,7 @@ func forum_newthread_submit(data *protocol.MSG_U2WS_Forum_newthread_submit, c *s
 							}
 
 							option.Aid = aid
-							if code, err := saveUpload("", img.attach.Filename, img.data); code != protocol.Success || err != nil {
+							if code, err := models.SaveUpload("", img.attach.Filename, img.data, false); code != protocol.Success || err != nil {
 								msg.Result = code
 								model_attach.Rollback()
 								libraries.DEBUG(err, c)
@@ -1426,8 +1426,8 @@ func forum_viewthread(data *protocol.MSG_U2WS_forum_viewthread, c *server.Contex
 	}
 	//msg.Thread.Favtimes = thread.Favtimes
 	msg.Thread.Views = thread_cache.Views.Views
-	msg.Thread.Recommend_add = thread.Recommend_add
-	msg.Thread.Recommend_sub = thread.Recommend_sub
+	msg.Thread.Recommend_add = thread_cache.Views.Recommend_add
+	msg.Thread.Recommend_sub = thread_cache.Views.Recommend_sub
 	msg.Thread.Recommends = thread_cache.Views.Recommends
 	msg.Thread.Relay = 0
 	msg.Thread.Stamp = thread.Stamp

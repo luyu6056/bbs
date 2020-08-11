@@ -729,6 +729,8 @@ func (mysql *Mysql) Sync2(i ...interface{}) (errs []error) {
 						default_str = " DEFAULT '" + sc[0][1] + "'"
 					} else if sc, _ := Preg_match_result(`default\('([^']*)'\)`, tag, 1); len(sc) > 0 {
 						default_str = " DEFAULT '" + sc[0][1] + "'"
+					} else if sc, _ := Preg_match_result(`default\(current_timestamp\(\)\)`, tag, 1); len(sc) > 0 {
+						default_str = " DEFAULT current_timestamp()"
 					}
 					if sc, _ := Preg_match_result(`extra\('([^']*)'\)`, tag, 1); len(sc) > 0 {
 						extra_str = sc[0][1]

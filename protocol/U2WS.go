@@ -4522,6 +4522,7 @@ type MSG_U2WS_threadmod struct {
 	Param int8
 	Param1 int32
 	Reason string
+	Sendreasonpm int8
 }
 
 var Pool_MSG_U2WS_threadmod = sync.Pool{New: func() interface{} { return &MSG_U2WS_threadmod{} }}
@@ -4546,6 +4547,7 @@ func WRITE_MSG_U2WS_threadmod(data *MSG_U2WS_threadmod, buf *libraries.MsgBuffer
 	WRITE_int8(data.Param, buf)
 	WRITE_int32(data.Param1, buf)
 	WRITE_string(data.Reason, buf)
+	WRITE_int8(data.Sendreasonpm, buf)
 }
 
 func READ_MSG_U2WS_threadmod(buf *libraries.MsgBuffer) (data *MSG_U2WS_threadmod) {
@@ -4560,6 +4562,7 @@ func READ_MSG_U2WS_threadmod(buf *libraries.MsgBuffer) (data *MSG_U2WS_threadmod
 	data.Param = READ_int8(buf)
 	data.Param1 = READ_int32(buf)
 	data.Reason = READ_string(buf)
+	data.Sendreasonpm = READ_int8(buf)
 	return
 }
 
@@ -5386,6 +5389,7 @@ func READ_MSG_searchThread(buf *libraries.MsgBuffer) (data *MSG_searchThread) {
 }
 
 type MSG_WS2U_threadmod struct {
+	Result int16
 }
 
 var Pool_MSG_WS2U_threadmod = sync.Pool{New: func() interface{} { return &MSG_WS2U_threadmod{} }}
@@ -5401,10 +5405,12 @@ func (data *MSG_WS2U_threadmod) WRITE(buf *libraries.MsgBuffer) {
 }
 
 func WRITE_MSG_WS2U_threadmod(data *MSG_WS2U_threadmod, buf *libraries.MsgBuffer) {
+	WRITE_int16(data.Result, buf)
 }
 
 func READ_MSG_WS2U_threadmod(buf *libraries.MsgBuffer) (data *MSG_WS2U_threadmod) {
 	data = Pool_MSG_WS2U_threadmod.Get().(*MSG_WS2U_threadmod)
+	data.Result = READ_int16(buf)
 	return
 }
 

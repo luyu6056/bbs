@@ -508,7 +508,7 @@ func (m *Model_Setting) SettingSet(field_name string, value interface{}) error {
 	}
 	v := reflect.ValueOf(value)
 	if field.Kind() != v.Kind() {
-		return errors.New("配置名:" + field_name + "类型不一致,期望类型 " + ref.Kind().String() + " ,传入类型 " + v.Kind().String())
+		return errors.New("配置名:" + field_name + "类型不一致,期望类型 " + field.Kind().String() + " ,传入类型 " + v.Kind().String())
 	}
 	field.Set(v)
 	svalue := ""
@@ -685,4 +685,6 @@ type model_setting struct {
 	Activityfield         []*Activityfield //活动发起者可选的必填资料项:
 	Heatthread            *Setting_Heatthread
 	Heatthread_iconlevels []int32
+	Boardlicensed         int8   //显示授权信息，默认0
+	Statcode              string //统计代码，无用
 }

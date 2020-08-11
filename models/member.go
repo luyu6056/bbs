@@ -249,7 +249,7 @@ func memberinfo_init() {
 		member_info, code := model.AddMember(&protocol.MSG_U2WS_Register{
 			Username: "admin",
 			Email:    "admin@admin.com",
-			Passwd:   "admin",
+			Passwd:   "123456",
 		})
 		if member_info != nil {
 			member_info.Allowadmincp = 1

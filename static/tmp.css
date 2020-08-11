@@ -9850,11 +9850,11 @@ dl.nums {
 	text-align:center;
 }
 .g-scrolling-carousel .img,.g-scrolling-carousel .itemtext {
-	width:263px;
+	width:256px;
 	display:inline-block;
 }
 .g-scrolling-carousel .itemtext {
-	margin-left:-263px;
+	margin-left:-256px;
 	color:#fff;
 	background-color:#00000078;
 	-moz-border-radius:0px 0px 12px 12px;
@@ -9865,8 +9865,8 @@ dl.nums {
 	line-height:28px;
 }
 .g-scrolling-carousel .img img,.fl_icn_g img {
-	width:263px;
-	height:150px;
+	width:256;
+	height:144px;
 	-moz-border-radius:12px;
 	-webkit-border-radius:12px;
 	border-radius:12px;

@@ -1059,16 +1059,16 @@ func (m *Model_Forum_thread) CheckRecommend(uid, tid int32) (result *db.Forum_me
 
 //threadview专用查询
 type Forum_threadView struct {
-	Isadd         string
-	Sticks        []int32
-	Closed        bool
-	Recommend_add int32
-	Recommend_sub int32
-	Stamp         int8
+	Isadd  string
+	Sticks []int32
+	Closed bool
+	//Recommend_add int32
+	//Recommend_sub int32
+	Stamp int8
 }
 
 func (m *Model_Forum_thread) GetForumThreadViewByTid(tid int32, uid int32) (result *Forum_threadView) {
-	err := m.Table("Forum_thread").Field("Isadd,Sticks,Closed,Recommend_add,Recommend_sub,Stamp").LeftJoin("Forum_memberRecommend").On("Forum_memberRecommend.Tid=Forum_thread.Tid and Forum_memberRecommend.Recommenduid = " + strconv.Itoa(int(uid))).Where("Forum_thread.Tid = " + strconv.Itoa(int(tid))).Find(&result)
+	err := m.Table("Forum_thread").Field("Isadd,Sticks,Closed,Stamp").LeftJoin("Forum_memberRecommend").On("Forum_memberRecommend.Tid=Forum_thread.Tid and Forum_memberRecommend.Recommenduid = " + strconv.Itoa(int(uid))).Where("Forum_thread.Tid = " + strconv.Itoa(int(tid))).Find(&result)
 	if err != nil {
 		m.Ctx.Adderr(err, map[string]interface{}{"tid": tid})
 	}

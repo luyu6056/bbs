@@ -352,7 +352,7 @@ type MSG_WS2U_Admin_menu_setting_basic struct {
 	Setting_adminemail string
 	Setting_site_qq string
 	Setting_icp string
-	Setting_boardlicensed string
+	Setting_boardlicensed int8
 	Setting_statcode string
 }
 
@@ -375,7 +375,7 @@ func WRITE_MSG_WS2U_Admin_menu_setting_basic(data *MSG_WS2U_Admin_menu_setting_b
 	WRITE_string(data.Setting_adminemail, buf)
 	WRITE_string(data.Setting_site_qq, buf)
 	WRITE_string(data.Setting_icp, buf)
-	WRITE_string(data.Setting_boardlicensed, buf)
+	WRITE_int8(data.Setting_boardlicensed, buf)
 	WRITE_string(data.Setting_statcode, buf)
 }
 
@@ -387,7 +387,7 @@ func READ_MSG_WS2U_Admin_menu_setting_basic(buf *libraries.MsgBuffer) (data *MSG
 	data.Setting_adminemail = READ_string(buf)
 	data.Setting_site_qq = READ_string(buf)
 	data.Setting_icp = READ_string(buf)
-	data.Setting_boardlicensed = READ_string(buf)
+	data.Setting_boardlicensed = READ_int8(buf)
 	data.Setting_statcode = READ_string(buf)
 	return
 }
@@ -399,7 +399,7 @@ type MSG_U2WS_Admin_edit_setting_basic struct {
 	Setting_adminemail string
 	Setting_site_qq string
 	Setting_icp string
-	Setting_boardlicensed string
+	Setting_boardlicensed int8
 	Setting_statcode string
 }
 
@@ -422,7 +422,7 @@ func WRITE_MSG_U2WS_Admin_edit_setting_basic(data *MSG_U2WS_Admin_edit_setting_b
 	WRITE_string(data.Setting_adminemail, buf)
 	WRITE_string(data.Setting_site_qq, buf)
 	WRITE_string(data.Setting_icp, buf)
-	WRITE_string(data.Setting_boardlicensed, buf)
+	WRITE_int8(data.Setting_boardlicensed, buf)
 	WRITE_string(data.Setting_statcode, buf)
 }
 
@@ -434,7 +434,7 @@ func READ_MSG_U2WS_Admin_edit_setting_basic(buf *libraries.MsgBuffer) (data *MSG
 	data.Setting_adminemail = READ_string(buf)
 	data.Setting_site_qq = READ_string(buf)
 	data.Setting_icp = READ_string(buf)
-	data.Setting_boardlicensed = READ_string(buf)
+	data.Setting_boardlicensed = READ_int8(buf)
 	data.Setting_statcode = READ_string(buf)
 	return
 }

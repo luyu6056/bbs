@@ -26,7 +26,7 @@ func forum_index(data *protocol.MSG_U2WS_forum_index, c *server.Context) {
 
 	msg.Threads = 0
 	msg.Posts = 0
-	msg.Catlist = msg.Catlist[:0]
+
 	userinfo := public.Getuserinfo(c)
 	var forum_history []int32
 	if userinfo.Uid == 0 {
@@ -116,6 +116,7 @@ func forum_index(data *protocol.MSG_U2WS_forum_index, c *server.Context) {
 			}
 		}
 	}
+	msg.Catlist = msg.Catlist[:0]
 	for _, catid := range one_ids {
 		category := catlist[catid]
 		if category.Forumscount != 0 {
@@ -131,6 +132,7 @@ func forum_index(data *protocol.MSG_U2WS_forum_index, c *server.Context) {
 			}
 		}
 	}
+	msg.Recommend = msg.Recommend[:0]
 	if data.Gid == 0 {
 		libraries.SortInt32(two_ids)
 		for i := len(two_ids) - 1; i > -1; i-- {

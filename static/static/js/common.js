@@ -3374,8 +3374,8 @@ function tpl_load(name,fn,data,callback) {
 }
 
 function maintpl(data, u,replace) {
-	var load_end=new Date().getTime()/1000;
-	$('.time_info').html('msg ok '+(load_end-load_start).toFixed(3)+"(s)")
+	//var load_end=new Date().getTime()/1000;
+	//$('.time_info').html('msg ok '+(load_end-load_start).toFixed(3)+"(s)")
 	$('.shade').hide();
 	tpldata = data;
 	if(replace){
@@ -3386,17 +3386,17 @@ function maintpl(data, u,replace) {
 		data: data,
 		cache:cache,
 	});
-	var load_end=new Date().getTime()/1000;
-	$('.time_info').append('<br>tpl ok '+(load_end-load_start).toFixed(3)+"(s)")
+	//var load_end=new Date().getTime()/1000;
+	//$('.time_info').append('<br>tpl ok '+(load_end-load_start).toFixed(3)+"(s)")
 	document.getElementById("tpl_content").innerHTML=html
-	var load_end=new Date().getTime()/1000;
-	$('.time_info').append('<br>html ok '+(load_end-load_start).toFixed(3)+"(s)")
+	//var load_end=new Date().getTime()/1000;
+	//$('.time_info').append('<br>html ok '+(load_end-load_start).toFixed(3)+"(s)")
 	$('#tpl_content').append(h5state.j);
 	window.scrollTo(0, 0);
 	tpl=false;
 	js=false;
 	var load_end=new Date().getTime()/1000;
-	$('.time_info').append('<br>GMT'+(time_zone>=0?"+":"-")+time_zone+","+date("Y-m-d H:i",load_end-timestamp_offset+(time_zone-8)*3600)+"，Processed in "+(load_end-load_start).toFixed(3)+"(s)")
+	$('.time_info').html('GMT'+(time_zone>=0?"+":"-")+time_zone+","+date("Y-m-d H:i",load_end-timestamp_offset+(time_zone-8)*3600)+"，Processed in "+(load_end-load_start).toFixed(3)+"(s)")
 	load_start=0;
 	if(typeof editorisfull != "undefined" && editorisfull===0){
 		editorisfull=1

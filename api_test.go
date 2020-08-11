@@ -1511,7 +1511,6 @@ func Test_MSG_U2WS_SpaceThread(t *testing.T) {
 			}
 		})
 		ctxpool.Put(ctx)
-		unsafe.Point()
 	}
 }
 func Test_MSG_U2WS_searchThread(t *testing.T) {

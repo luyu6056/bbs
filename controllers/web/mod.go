@@ -52,6 +52,11 @@ func threadmod(data *protocol.MSG_U2WS_threadmod, c *server.Context) {
 		c.Out_common(protocol.Err_param, "")
 		return
 	}
+	if len(data.Tids) > 0 {
+		model := &models.Model_Forum_thread{}
+		model.Ctx = c
+		model.Build_thread_index(map[string]interface{}{"Tid": data.Tids}, false)
+	}
 
 }
 func viewthreadmod(data *protocol.MSG_U2WS_viewthreadmod, c *server.Context) {
