@@ -5,11 +5,13 @@ import (
 	"bytes"
 	"crypto/tls"
 	"crypto/x509"
+	"encoding/binary"
 	"encoding/hex"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
+	"math"
 	"net/url"
 	"reflect"
 	"strconv"
@@ -51,11 +53,6 @@ type Mysql_columns struct {
 	Autoinc     bool
 }
 
-type Field_struct struct {
-	Offset  uintptr
-	Kind    reflect.Kind
-	Field_t reflect.Type
-}
 type SliceHeader struct {
 	Data unsafe.Pointer
 	Len  int
@@ -76,7 +73,7 @@ func (t *Transaction) EndTransaction() {
 		t.conn = nil
 		//rollback
 		conn.Exec([]byte{114, 111, 108, 108, 98, 97, 99, 107})
-		conn.DB.EndTransaction(conn)
+		db[0].EndTransaction(conn)
 	}
 }
 
@@ -93,38 +90,37 @@ func (t *Transaction) Rollback() error {
 /*执行select专用
  *返回数据结构模式[]map[string]string
  */
-func QueryString(format string, i ...interface{}) (maps []map[string]string, err error) {
-	if len(i) == 0 {
-		return QueryMap(Str2bytes(format), 0, &Transaction{})
-	}
-	for k, v := range i {
-		i[k] = Getvalue(v)
-	}
-	sql := fmt.Sprintf(strings.Replace(format, "?", `%s`, -1), i...)
-	return QueryMap(Str2bytes(sql), 0, &Transaction{})
+func QueryString(format string, args ...interface{}) (maps []map[string]string, err error) {
+	return QueryMap(Str2bytes(format), 0, args, &Transaction{})
 }
-func QueryMap(select_sql []byte, master int, t *Transaction) (maps []map[string]string, err error) {
-	rows := rows_pool.Get().(*MysqlRows)
-	defer rows_pool.Put(rows)
 
-	var columns [][]byte
+func QueryMap(sql []byte, master int, prepare_arg []interface{}, t *Transaction) (maps []map[string]string, err error) {
+	row := rows_pool.Get().(*MysqlRows)
+	defer rows_pool.Put(row)
+
+	var columns []MysqlColumn
 	var ts *Mysql_Conn
 	if t != nil {
 		ts = t.GetTransaction()
 	}
-	if ts != nil {
-		ts.Lock.Lock()
-		defer ts.Lock.Unlock()
-	}
 
 Retry:
 	if ts != nil {
-		columns, err = ts.Query(select_sql, rows)
+		if prepare_arg != nil {
+			stmt, err := ts.Prepare(sql)
+			if err != nil {
+				return nil, err
+			}
+			columns, err = stmt.Query(prepare_arg, row)
+		} else {
+			columns, err = ts.Query(sql, row)
+		}
+
 		if err != nil {
 			return
 		}
 	} else {
-		columns, err = db[master].Query(select_sql, rows)
+		columns, err = db[master].Query(sql, row, prepare_arg)
 		if err != nil {
 			if strings.Contains(err.Error(), "EOF") {
 				goto Retry
@@ -135,29 +131,58 @@ Retry:
 			}
 		}
 	}
-	if rows.result_len == 0 {
+	if row.result_len == 0 {
 		return
 	}
-	maps = make([]map[string]string, rows.result_len)
-	for index, msglen := range rows.msg_len {
-		rows.Buffer2.Reset()
-		rows.Buffer2.Write(rows.Buffer.Next(msglen))
+	maps = make([]map[string]string, row.result_len)
 
-		//将行数据保存到record字典
-		record := make(map[string]string, len(columns))
-		for _, key := range columns {
-			rows.buffer, err = ReadLength_Coded_Byte(rows.Buffer2)
-			if err != nil {
-				return
+	if !row.IsBinary {
+		for index, msglen := range row.msg_len {
+			row.Buffer2.Reset()
+			row.Buffer2.Write(row.Buffer.Next(msglen))
+
+			//将行数据保存到record字典
+			record := make(map[string]string, len(columns))
+			for _, column := range columns {
+				row.buffer, err = ReadLength_Coded_Byte(row.Buffer2)
+				if err != nil {
+					return
+				}
+				record[string(column.name)] = string(row.buffer)
 			}
-			record[string(key)] = string(rows.buffer)
+			maps[index] = record
 		}
-		maps[index] = record
+	} else {
+		nulllen := (len(columns) + 7 + 2) / 8
+		for index, msglen := range row.msg_len {
+			data := row.Buffer.Next(msglen)
+			if data[0] != 0 {
+				return nil, errors.New("返回协议错误，返回的内容不是Binary Protocol")
+			}
+			pos := 1 + nulllen
+			nullMask := data[1 : 1+pos]
+			record := make(map[string]string, len(columns))
+
+			for i, column := range columns {
+				key := string(column.name)
+				if nullMask[i/8]>>(uint(i)&7) == 1 {
+					record[key] = "NULL"
+					continue
+				}
+
+				record[key], err = binaryToStr(columns[i], data, &pos, row)
+				if err != nil {
+					return
+				}
+			}
+			maps[index] = record
+		}
 	}
+
 	return maps, nil
 }
-func Query(select_sql []byte, master int, t *Transaction, r interface{}) (err error) {
-	var is_struct, is_slice, is_ptr bool
+func Query(sql []byte, master int, prepare_arg []interface{}, t *Transaction, r interface{}) (err error) {
+	var is_struct, is_ptr bool
 	var obj_t, type_struct reflect.Type
 	var field_m map[string]*Field_struct
 	var header *SliceHeader
@@ -177,14 +202,19 @@ func Query(select_sql []byte, master int, t *Transaction, r interface{}) (err er
 		header = (*SliceHeader)(ref_ptr)
 		header.Len = 0
 		type_struct = obj_t.Elem()
-		if type_struct.Kind() == reflect.Struct {
-			is_slice = true
-		} else if type_struct.Kind() == reflect.Ptr {
+		switch type_struct.Kind() {
+		case reflect.Struct:
+		case reflect.Ptr:
 			type_struct = type_struct.Elem()
 			if type_struct.Kind() == reflect.Struct {
-				is_slice = true
 				is_ptr = true
+			} else {
+				err = errors.New("不支持的反射类型,只能对“[]结构体”进行反射")
+				return
 			}
+		default:
+			err = errors.New("不支持的反射类型,只能对“[]结构体”进行反射")
+			return
 		}
 
 	case reflect.Struct:
@@ -204,31 +234,36 @@ func Query(select_sql []byte, master int, t *Transaction, r interface{}) (err er
 			return
 		}
 	default:
-		err = errors.New("只能对slice进行反射赋值")
+		err = errors.New("只能对slice和结构体进行反射赋值")
 		return
 	}
 
-	rows := rows_pool.Get().(*MysqlRows)
-	defer rows_pool.Put(rows)
+	row := rows_pool.Get().(*MysqlRows)
+	defer rows_pool.Put(row)
 
-	var columns [][]byte
+	var columns []MysqlColumn
 	var ts *Mysql_Conn
 	if t != nil {
 		ts = t.GetTransaction()
 	}
-	if ts != nil {
-		ts.Lock.Lock()
-		defer ts.Lock.Unlock()
-	}
 
 Retry:
 	if ts != nil {
-		columns, err = ts.Query(select_sql, rows)
+		if prepare_arg != nil {
+			stmt, err := ts.Prepare(sql)
+			if err != nil {
+				return err
+			}
+			columns, err = stmt.Query(prepare_arg, row)
+		} else {
+			columns, err = ts.Query(sql, row)
+		}
+
 		if err != nil {
 			return
 		}
 	} else {
-		columns, err = db[master].Query(select_sql, rows)
+		columns, err = db[master].Query(sql, row, prepare_arg)
 		if err != nil {
 
 			if strings.Contains(err.Error(), "EOF") {
@@ -241,160 +276,408 @@ Retry:
 		}
 	}
 
-	if rows.result_len == 0 {
+	if row.result_len == 0 {
 		return nil
 	}
-	if rows.field_m[type_struct.Name()] == nil {
-		rows.field_m[type_struct.Name()] = make(map[string]*Field_struct)
+	if row.field_m[type_struct.Name()] == nil {
+		row.field_m[type_struct.Name()] = make(map[string]*Field_struct)
 	}
-	field_m = rows.field_m[type_struct.Name()]
+	field_m = row.field_m[type_struct.Name()]
 
-	if is_slice {
-		if header.Len < rows.result_len {
-			if header.Cap < rows.result_len {
+	var field_struct *Field_struct
+	var uint_ptr, offset uintptr
+
+	if is_struct {
+		offset = 0
+		if is_ptr {
+			if reflect2.IsNil(*(*interface{})(unsafe.Pointer(ref_ptr))) {
+				*(*uintptr)(ref_ptr) = reflect.New(type_struct).Pointer()
+			}
+		}
+		row.msg_len = row.msg_len[:1]
+	} else {
+		if header.Len < row.result_len {
+			if header.Cap < row.result_len {
 				valType := reflect2.TypeOf(r)
 				var elemType = valType.(*reflect2.UnsafePtrType).Elem()
 
-				elemType.(*reflect2.UnsafeSliceType).UnsafeGrow(ref_ptr, rows.result_len)
+				elemType.(*reflect2.UnsafeSliceType).UnsafeGrow(ref_ptr, row.result_len)
 			} else {
-				header.Len = rows.result_len
+				header.Len = row.result_len
 			}
 		}
-	}
-
-	var field_struct *Field_struct
-	var uint_ptr uintptr
-	for index, mglen := range rows.msg_len {
-		rows.Buffer2.Reset()
-		rows.Buffer2.Write(rows.Buffer.Next(mglen))
-
-		if is_struct {
-			if is_ptr {
-				if reflect2.IsNil(*(*interface{})(unsafe.Pointer(ref_ptr))) {
-					*(*uintptr)(ref_ptr) = reflect.New(type_struct).Pointer()
-				}
-				uint_ptr = *(*uintptr)(ref_ptr)
-			} else {
-				uint_ptr = uintptr(ref_ptr)
-			}
-
+		ref_ptr = header.Data
+		if is_ptr {
+			offset = Uintptr_offset
 		} else {
+			offset = type_struct.Size()
+		}
+
+	}
+	if !row.IsBinary {
+		for index, mglen := range row.msg_len {
+			uint_ptr = uintptr(ref_ptr) + offset*uintptr(index)
 			if is_ptr {
-				uint_ptr = uintptr(header.Data) + Uintptr_offset*uintptr(index)
 				if reflect2.IsNil(*(*interface{})(unsafe.Pointer(uint_ptr))) {
 					//obj_v.Index(index).Set(reflect.New(obj_v.Type().Elem()))
 					*((*uintptr)(unsafe.Pointer(uint_ptr))) = reflect.New(type_struct).Pointer()
 				}
 				uint_ptr = *(*uintptr)(unsafe.Pointer(uint_ptr)) //获取指针真正的地址
-			} else {
-				uint_ptr = uintptr(header.Data) + type_struct.Size()*uintptr(index)
 			}
 
-		}
+			row.Buffer2.Reset()
+			row.Buffer2.Write(row.Buffer.Next(mglen))
 
-		for _, key := range columns {
-			rows.buffer, err = ReadLength_Coded_Byte(rows.Buffer2)
-			if err != nil {
-				return err
-			}
+			for _, column := range columns {
 
-			if v, ok := field_m[*(*string)(unsafe.Pointer(&key))]; ok {
-				if v.Kind == reflect.Invalid {
-					continue
-				}
-				field_struct = v
-			} else {
-				real_key := string(key)
-				key[0] = bytes.ToUpper(key[:1])[0]
-				field, ok := type_struct.FieldByName(real_key)
-
-				if !ok {
-
-					field_m[real_key] = &Field_struct{Kind: reflect.Invalid}
-					continue
-				}
-				field_struct = &Field_struct{Offset: field.Offset, Kind: field.Type.Kind(), Field_t: field.Type}
-				field_m[real_key] = field_struct
-			}
-
-			switch field_struct.Kind {
-			case reflect.Int:
-				ii, _ := strconv.Atoi(*(*string)(unsafe.Pointer(&rows.buffer)))
-				*((*int)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = ii
-			case reflect.Int8:
-				ii, _ := strconv.Atoi(*(*string)(unsafe.Pointer(&rows.buffer)))
-				*((*int8)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = int8(ii)
-			case reflect.Int16:
-				ii, _ := strconv.Atoi(*(*string)(unsafe.Pointer(&rows.buffer)))
-				*((*int16)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = int16(ii)
-			case reflect.Int32:
-				ii, _ := strconv.Atoi(*(*string)(unsafe.Pointer(&rows.buffer)))
-				*((*int32)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = int32(ii)
-			case reflect.Int64:
-				ii, _ := strconv.Atoi(*(*string)(unsafe.Pointer(&rows.buffer)))
-				*((*int64)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = int64(ii)
-			case reflect.Uint:
-				ii, _ := strconv.Atoi(*(*string)(unsafe.Pointer(&rows.buffer)))
-				*((*uint8)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = uint8(ii)
-			case reflect.Uint8:
-				ii, _ := strconv.Atoi(*(*string)(unsafe.Pointer(&rows.buffer)))
-				*((*uint8)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = uint8(ii)
-			case reflect.Uint16:
-				ii, _ := strconv.Atoi(*(*string)(unsafe.Pointer(&rows.buffer)))
-				*((*uint16)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = uint16(ii)
-			case reflect.Uint32:
-				ii, _ := strconv.Atoi(*(*string)(unsafe.Pointer(&rows.buffer)))
-				*((*uint32)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = uint32(ii)
-			case reflect.Uint64:
-				ii, _ := strconv.ParseUint(*(*string)(unsafe.Pointer(&rows.buffer)), 10, 64)
-				*((*uint64)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = uint64(ii)
-			case reflect.Float32:
-				f, _ := strconv.ParseFloat(*(*string)(unsafe.Pointer(&rows.buffer)), 32)
-				*((*float32)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = float32(f)
-			case reflect.Float64:
-				f, _ := strconv.ParseFloat(*(*string)(unsafe.Pointer(&rows.buffer)), 64)
-				*((*float64)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = f
-			case reflect.String:
-				if str := string(rows.buffer); str != "NULL" {
-					*((*string)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = string(rows.buffer)
+				row.buffer, err = ReadLength_Coded_Byte(row.Buffer2)
+				if err != nil {
+					return err
 				}
 
-			case reflect.Bool:
-				*((*bool)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = rows.buffer[0] == 49
-			case reflect.Struct:
-				switch field_struct.Field_t.String() {
-				case "time.Time":
-					*((*time.Time)(unsafe.Pointer(uint_ptr + field_struct.Offset))), _ = time.ParseInLocation("2006-01-02 15:04:05", string(rows.buffer), time.Local)
-				default:
-					field := reflect.NewAt(field_struct.Field_t, unsafe.Pointer(uint_ptr+field_struct.Offset))
-					jsoniter.Unmarshal(rows.buffer, field.Interface())
-
-				}
-
-			case reflect.Slice, reflect.Map:
-				field := reflect.NewAt(field_struct.Field_t, unsafe.Pointer(uint_ptr+field_struct.Offset))
-				jsoniter.Unmarshal(rows.buffer, field.Interface())
-			case reflect.Ptr:
-				if *(*string)(unsafe.Pointer(&rows.buffer)) != "NULL" {
-					if len(rows.buffer) == 0 || (len(rows.buffer) == 1 && rows.buffer[0] == 0xC0) {
+				if v, ok := field_m[*(*string)(unsafe.Pointer(&column.name))]; ok {
+					if v.Kind == reflect.Invalid {
 						continue
 					}
-					field := reflect.New(field_struct.Field_t.Elem())
-					err := jsoniter.Unmarshal(rows.buffer, field.Interface())
-					if err == nil {
-						*((*uintptr)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = field.Pointer()
+					field_struct = v
+				} else {
+					real_key := string(column.name)
+
+					field, ok := type_struct.FieldByName(real_key)
+					if !ok {
+						field_m[real_key] = &Field_struct{Kind: reflect.Invalid}
+						continue
+					}
+					field_struct = &Field_struct{Offset: field.Offset, Kind: field.Type.Kind(), Field_t: field.Type}
+					if err := checkKind(field.Type.Kind()); err != nil {
+						return errors.New("不支持的类型，字段名称" + string(column.name) + "预计类型" + field_struct.Kind.String())
+					}
+					field_m[real_key] = field_struct
+
+				}
+
+				switch field_struct.Kind {
+				case reflect.Int:
+					ii, _ := strconv.Atoi(*(*string)(unsafe.Pointer(&row.buffer)))
+					*((*int)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = ii
+				case reflect.Int8:
+					ii, _ := strconv.Atoi(*(*string)(unsafe.Pointer(&row.buffer)))
+					*((*int8)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = int8(ii)
+				case reflect.Int16:
+					ii, _ := strconv.Atoi(*(*string)(unsafe.Pointer(&row.buffer)))
+					*((*int16)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = int16(ii)
+				case reflect.Int32:
+					ii, _ := strconv.Atoi(*(*string)(unsafe.Pointer(&row.buffer)))
+					*((*int32)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = int32(ii)
+				case reflect.Int64:
+					ii, _ := strconv.Atoi(*(*string)(unsafe.Pointer(&row.buffer)))
+					*((*int64)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = int64(ii)
+				case reflect.Uint:
+					ii, _ := strconv.Atoi(*(*string)(unsafe.Pointer(&row.buffer)))
+					*((*uint)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = uint(ii)
+				case reflect.Uint8:
+					ii, _ := strconv.Atoi(*(*string)(unsafe.Pointer(&row.buffer)))
+					*((*uint8)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = uint8(ii)
+				case reflect.Uint16:
+					ii, _ := strconv.Atoi(*(*string)(unsafe.Pointer(&row.buffer)))
+					*((*uint16)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = uint16(ii)
+				case reflect.Uint32:
+					ii, _ := strconv.Atoi(*(*string)(unsafe.Pointer(&row.buffer)))
+					*((*uint32)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = uint32(ii)
+				case reflect.Uint64:
+					ii, _ := strconv.ParseUint(*(*string)(unsafe.Pointer(&row.buffer)), 10, 64)
+					*((*uint64)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = uint64(ii)
+				case reflect.Float32:
+					f, _ := strconv.ParseFloat(*(*string)(unsafe.Pointer(&row.buffer)), 32)
+					*((*float32)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = float32(f)
+				case reflect.Float64:
+					f, _ := strconv.ParseFloat(*(*string)(unsafe.Pointer(&row.buffer)), 64)
+					*((*float64)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = f
+				case reflect.String:
+					if str := string(row.buffer); str != "NULL" {
+						*((*string)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = string(row.buffer)
+					}
+
+				case reflect.Bool:
+					*((*bool)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = row.buffer[0] == 49
+				case reflect.Struct:
+					switch field_struct.Field_t.String() {
+					case "time.Time":
+						*((*time.Time)(unsafe.Pointer(uint_ptr + field_struct.Offset))), _ = time.ParseInLocation("2006-01-02 15:04:05", string(row.buffer), time.Local)
+					default:
+						field := reflect.NewAt(field_struct.Field_t, unsafe.Pointer(uint_ptr+field_struct.Offset))
+						jsoniter.Unmarshal(row.buffer, field.Interface())
+
+					}
+
+				case reflect.Slice, reflect.Map:
+					field := reflect.NewAt(field_struct.Field_t, unsafe.Pointer(uint_ptr+field_struct.Offset))
+					jsoniter.Unmarshal(row.buffer, field.Interface())
+				case reflect.Ptr:
+					if *(*string)(unsafe.Pointer(&row.buffer)) != "NULL" {
+						if len(row.buffer) == 0 || (len(row.buffer) == 1 && row.buffer[0] == 0xC0) {
+							continue
+						}
+						field := reflect.New(field_struct.Field_t.Elem())
+						err := jsoniter.Unmarshal(row.buffer, field.Interface())
+						if err == nil {
+							*((*uintptr)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = field.Pointer()
+						}
 					}
 				}
-			default:
-				DEBUG("mysql.Select()反射struct写入需要处理,字段名称", string(key), "预计类型", field_struct.Kind)
+
 			}
 
 		}
-		if is_struct {
-			break
+	} else {
+		nulllen := (len(columns) + 7 + 2) / 8
+		for index, msglen := range row.msg_len {
+			uint_ptr = uintptr(ref_ptr) + offset*uintptr(index)
+			if is_ptr {
+				if reflect2.IsNil(*(*interface{})(unsafe.Pointer(uint_ptr))) {
+					//obj_v.Index(index).Set(reflect.New(obj_v.Type().Elem()))
+					*((*uintptr)(unsafe.Pointer(uint_ptr))) = reflect.New(type_struct).Pointer()
+				}
+				uint_ptr = *(*uintptr)(unsafe.Pointer(uint_ptr)) //获取指针真正的地址
+			}
+
+			data := row.Buffer.Next(msglen)
+			if data[0] != 0 {
+				return errors.New("返回协议错误，返回的内容不是Binary Protocol")
+			}
+			pos := 1 + nulllen
+			nullMask := data[1:pos]
+			for i, column := range columns {
+
+				if ((nullMask[(i+2)>>3] >> uint((i+2)&7)) & 1) == 1 {
+					continue
+				}
+				if v, ok := field_m[*(*string)(unsafe.Pointer(&column.name))]; ok {
+					if v.Kind == reflect.Invalid {
+						binaryToStr(column, data, &pos, row) //跳过这段pos
+						continue
+					}
+					field_struct = v
+				} else {
+					real_key := string(column.name)
+
+					field, ok := type_struct.FieldByName(real_key)
+					if !ok {
+						field_m[real_key] = &Field_struct{Kind: reflect.Invalid}
+						binaryToStr(column, data, &pos, row) //跳过这段pos
+						continue
+					}
+					field_struct = &Field_struct{Offset: field.Offset, Kind: field.Type.Kind(), Field_t: field.Type}
+					if err := checkKind(field.Type.Kind()); err != nil {
+						return err
+					}
+					field_m[real_key] = field_struct
+				}
+				switch field_struct.Kind {
+				case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64, reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Bool:
+					var u64 uint64
+					switch column.fieldtype {
+					case fieldTypeTiny:
+						if column.fleldflag&flagUnsigned != 0 {
+							u64 = uint64(data[pos])
+						} else {
+							u64 = uint64(int8(data[pos]))
+						}
+						pos++
+					case fieldTypeShort, fieldTypeYear:
+						if column.fleldflag&flagUnsigned != 0 {
+							u64 = uint64(binary.LittleEndian.Uint16(data[pos : pos+2]))
+						} else {
+							u64 = uint64(int16(binary.LittleEndian.Uint16(data[pos : pos+2])))
+						}
+						pos += 2
+					case fieldTypeInt24, fieldTypeLong:
+						if column.fleldflag&flagUnsigned != 0 {
+							u64 = uint64(binary.LittleEndian.Uint32(data[pos : pos+4]))
+						} else {
+							u64 = uint64(int32(binary.LittleEndian.Uint32(data[pos : pos+4])))
+						}
+						pos += 4
+
+					case fieldTypeLongLong:
+						if column.fleldflag&flagUnsigned != 0 {
+							val := binary.LittleEndian.Uint64(data[pos : pos+8])
+							if val > math.MaxUint64 {
+								return errors.New("字段" + string(column.name) + "为整数，但是结果大于MaxUint64无法赋值")
+							} else {
+								u64 = uint64(val)
+							}
+						} else {
+							u64 = uint64(binary.LittleEndian.Uint64(data[pos : pos+8]))
+						}
+						pos += 8
+
+					case fieldTypeFloat, fieldTypeDouble:
+
+						return errors.New("字段" + string(column.name) + "为整数，但是返回结果为小数浮点，无法赋值")
+
+					// Length coded Binary Strings
+					case fieldTypeDecimal, fieldTypeNewDecimal, fieldTypeVarChar,
+						fieldTypeBit, fieldTypeEnum, fieldTypeSet, fieldTypeTinyBLOB,
+						fieldTypeMediumBLOB, fieldTypeLongBLOB, fieldTypeBLOB,
+						fieldTypeVarString, fieldTypeString, fieldTypeGeometry, fieldTypeJSON:
+
+						msglen, err := ReadLength_Coded_Slice(data[pos:], &pos)
+						if err != nil {
+							return errors.New("字段" + string(column.name) + "赋值错误:" + err.Error())
+						}
+						u64, err = strconv.ParseUint(string(data[pos:pos+msglen]), 10, 64)
+						if err != nil {
+							return errors.New("字段" + string(column.name) + ",原始值:" + string(data[pos:pos+msglen]) + ",赋值错误:" + err.Error())
+						}
+						pos += msglen
+					case
+						fieldTypeDate, fieldTypeNewDate, // Date YYYY-MM-DD
+						fieldTypeTime,                         // Time [-][H]HH:MM:SS[.fractal]
+						fieldTypeTimestamp, fieldTypeDateTime: // Timestamp YYYY-MM-DD HH:MM:SS[.fractal]
+						return errors.New("字段" + string(column.name) + "为整数，但是返回结果为日期，无法赋值")
+					// Please report if this happens!
+					default:
+						return fmt.Errorf("unknown field type %d", columns[i].fieldtype)
+					}
+					switch field_struct.Kind {
+					case reflect.Int:
+						*((*int)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = int(u64)
+					case reflect.Int8:
+						*((*int8)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = int8(u64)
+					case reflect.Int16:
+						*((*int16)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = int16(u64)
+					case reflect.Int32:
+						*((*int32)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = int32(u64)
+					case reflect.Int64:
+						*((*int64)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = int64(u64)
+					case reflect.Uint:
+						*((*uint)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = uint(u64)
+					case reflect.Uint8:
+						*((*uint8)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = uint8(u64)
+					case reflect.Uint16:
+						*((*uint16)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = uint16(u64)
+					case reflect.Uint32:
+						*((*uint32)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = uint32(u64)
+					case reflect.Uint64:
+						*((*uint64)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = u64
+					case reflect.Bool:
+						*((*bool)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = u64 == 1
+					}
+				case reflect.Float32, reflect.Float64:
+					var f float64
+					switch column.fieldtype {
+					case fieldTypeTiny:
+						if column.fleldflag&flagUnsigned != 0 {
+							f = float64(data[pos])
+						} else {
+							f = float64(int8(data[pos]))
+						}
+						pos++
+					case fieldTypeShort, fieldTypeYear:
+						if column.fleldflag&flagUnsigned != 0 {
+							f = float64(binary.LittleEndian.Uint16(data[pos : pos+2]))
+						} else {
+							f = float64(int16(binary.LittleEndian.Uint16(data[pos : pos+2])))
+						}
+						pos += 2
+					case fieldTypeInt24, fieldTypeLong:
+						if column.fleldflag&flagUnsigned != 0 {
+							f = float64(binary.LittleEndian.Uint32(data[pos : pos+4]))
+						} else {
+							f = float64(int32(binary.LittleEndian.Uint32(data[pos : pos+4])))
+						}
+						pos += 4
+
+					case fieldTypeLongLong:
+						if column.fleldflag&flagUnsigned != 0 {
+							val := binary.LittleEndian.Uint64(data[pos : pos+8])
+							if val > math.MaxInt64 {
+								f, err = strconv.ParseFloat(string(uint64ToString(val)), 64)
+								if err != nil {
+									return errors.New("字段" + string(column.name) + ",原始值:" + string(uint64ToString(val)) + ",赋值错误:" + err.Error())
+								}
+							} else {
+								f = float64(val)
+							}
+						} else {
+							f = float64(binary.LittleEndian.Uint64(data[pos : pos+8]))
+						}
+						pos += 8
+
+					case fieldTypeFloat:
+						f = float64(math.Float32frombits(binary.LittleEndian.Uint32(data[pos : pos+4])))
+						pos += 4
+					case fieldTypeDouble:
+						f = math.Float64frombits(binary.LittleEndian.Uint64(data[pos : pos+8]))
+						pos += 8
+					// Length coded Binary Strings
+					case fieldTypeDecimal, fieldTypeNewDecimal, fieldTypeVarChar,
+						fieldTypeBit, fieldTypeEnum, fieldTypeSet, fieldTypeTinyBLOB,
+						fieldTypeMediumBLOB, fieldTypeLongBLOB, fieldTypeBLOB,
+						fieldTypeVarString, fieldTypeString, fieldTypeGeometry, fieldTypeJSON:
+
+						msglen, err := ReadLength_Coded_Slice(data[pos:], &pos)
+						if err != nil {
+							return errors.New("字段" + string(column.name) + "赋值错误:" + err.Error())
+						}
+						f, err = strconv.ParseFloat(string(data[pos:pos+msglen]), 64)
+						if err != nil {
+							return errors.New("字段" + string(column.name) + ",原始值:" + string(data[pos:pos+msglen]) + ",赋值错误:" + err.Error())
+						}
+						pos += msglen
+					case
+						fieldTypeDate, fieldTypeNewDate, // Date YYYY-MM-DD
+						fieldTypeTime,                         // Time [-][H]HH:MM:SS[.fractal]
+						fieldTypeTimestamp, fieldTypeDateTime: // Timestamp YYYY-MM-DD HH:MM:SS[.fractal]
+						return errors.New("字段" + string(column.name) + "为浮点，但是返回结果为日期，无法赋值")
+					// Please report if this happens!
+					default:
+						return fmt.Errorf("unknown field type %d", columns[i].fieldtype)
+					}
+					if field_struct.Kind == reflect.Float32 {
+						*((*float32)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = float32(f)
+					} else {
+						*((*float64)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = f
+					}
+				case reflect.String, reflect.Struct, reflect.Slice, reflect.Map:
+					str, err := binaryToStr(column, data, &pos, row)
+					if err != nil {
+						return errors.New("字段" + string(column.name) + "读取错误1" + err.Error())
+					}
+					if field_struct.Kind == reflect.String {
+						*((*string)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = str
+						continue
+					}
+					if str == "" || str == "NULL" {
+						continue
+					}
+					switch {
+					case field_struct.Kind == reflect.Struct && field_struct.Field_t.String() == "time.Time":
+						*((*time.Time)(unsafe.Pointer(uint_ptr + field_struct.Offset))), _ = time.ParseInLocation("2006-01-02 15:04:05", str, row.conn.loc)
+					case field_struct.Kind == reflect.Ptr:
+						if *(*string)(unsafe.Pointer(&row.buffer)) != "NULL" {
+							if len(row.buffer) == 0 || (len(row.buffer) == 1 && row.buffer[0] == 0xC0) {
+								continue
+							}
+							field := reflect.New(field_struct.Field_t.Elem())
+							err = jsoniter.Unmarshal(row.buffer, field.Interface())
+							if err == nil {
+								*((*uintptr)(unsafe.Pointer(uint_ptr + field_struct.Offset))) = field.Pointer()
+							}
+						}
+					default:
+						field := reflect.NewAt(field_struct.Field_t, unsafe.Pointer(uint_ptr+field_struct.Offset))
+						err = jsoniter.Unmarshal([]byte(str), field.Interface())
+					}
+					if err != nil {
+						return errors.New("字段" + string(column.name) + ",原始值:" + str + "   json解析错误:" + err.Error())
+					}
+				}
+
+			}
 		}
 	}
-
 	return
 }
 
@@ -402,19 +685,30 @@ Retry:
  *返回新增ID和error
  *
  */
-func Insert(insert_sql []byte, master int, t *Transaction) (LastInsertId, rowsAffected int64, err error) {
+func Insert(insert_sql []byte, master int, prepare_arg []interface{}, t *Transaction) (LastInsertId, rowsAffected int64, err error) {
 
 	var ts *Mysql_Conn
 	if t != nil {
 		ts = t.GetTransaction()
 	}
 	if ts != nil {
-		ts.Lock.Lock()
-		defer ts.Lock.Unlock()
-		LastInsertId, rowsAffected, err = ts.Exec(insert_sql)
+		if prepare_arg != nil {
+
+			stmt, err := ts.Prepare(insert_sql)
+			if err != nil {
+				return 0, 0, err
+			}
+			err = stmt.Exec(prepare_arg)
+			return stmt.lastInsertId, stmt.rowsAffected, err
+		} else {
+			LastInsertId, rowsAffected, err = ts.Exec(insert_sql)
+
+		}
+
 	} else {
 	Retry:
-		LastInsertId, rowsAffected, err = db[master].Exec(insert_sql)
+		LastInsertId, rowsAffected, err = db[master].Exec(insert_sql, prepare_arg)
+
 		if err != nil {
 			if strings.Contains(err.Error(), "EOF") {
 				goto Retry
@@ -432,51 +726,60 @@ func Insert(insert_sql []byte, master int, t *Transaction) (LastInsertId, rowsAf
  *返回error
  *
  */
-func Exec(query_sql []byte, master int, t *Transaction) (result bool, err error) {
+func Exec(query_sql []byte, master int, prepare_arg []interface{}, t *Transaction) (err error) {
 	var ts *Mysql_Conn
 	if t != nil {
 		ts = t.GetTransaction()
 	}
 	if ts != nil {
-		ts.Lock.Lock()
-		defer ts.Lock.Unlock()
-		_, _, err = ts.Exec(query_sql)
-
+		if prepare_arg != nil {
+			stmt, err := ts.Prepare(query_sql)
+			if err != nil {
+				return err
+			}
+			err = stmt.Exec(prepare_arg)
+			return err
+		} else {
+			_, _, err = ts.Exec(query_sql)
+		}
 	} else {
 	Retry:
-		_, _, err = db[master].Exec(query_sql)
+		_, _, err = db[master].Exec(query_sql, prepare_arg)
 		if err != nil {
 			if strings.Contains(err.Error(), "EOF") {
 				goto Retry
 			} else if strings.Contains(err.Error(), "broken pipe") { //unix断连
 				goto Retry
 			} else {
-				return false, err
+				return err
 			}
 		}
 
-	}
-	result = false
-	if err == nil {
-		result = true
 	}
 	return
 }
 
 //执行语句并取受影响行数
-func Query_getaffected(query_sql []byte, master int, t *Transaction) (rowsAffected int64, err error) {
+func Query_getaffected(query_sql []byte, master int, prepare_arg []interface{}, t *Transaction) (rowsAffected int64, err error) {
 	var ts *Mysql_Conn
 	if t != nil {
 		ts = t.GetTransaction()
 	}
 	if ts != nil {
-		ts.Lock.Lock()
-		defer ts.Lock.Unlock()
-		_, rowsAffected, err = ts.Exec(query_sql)
+		if prepare_arg != nil {
+			stmt, err := ts.Prepare(query_sql)
+			if err != nil {
+				return 0, err
+			}
+			err = stmt.Exec(prepare_arg)
+			return stmt.rowsAffected, err
+		} else {
+			_, rowsAffected, err = ts.Exec(query_sql)
 
+		}
 	} else {
 	Retry:
-		_, rowsAffected, err = db[master].Exec(query_sql)
+		_, rowsAffected, err = db[master].Exec(query_sql, prepare_arg)
 
 		if err != nil {
 			if strings.Contains(err.Error(), "EOF") {
@@ -514,6 +817,7 @@ func (this *Mysql) ShowColumns(table string, master string) map[string]Mysql_col
 	}
 	return re
 }*/
+var mysqlLoc = time.UTC
 
 func Mysql_init() {
 	db = make([]*MysqlDB, 2)
@@ -546,26 +850,22 @@ func Mysql_init() {
 	}
 	DEBUG(time.Now().Format("2006-01-02 15:04:05") + "连接主数据库" + config.Server.MasterDB)
 	var charset = "utf8"
-	_, offset := time.Now().Zone()
-	var time_zone string
-	if offset >= 0 {
-		time_zone = "+" + strconv.Itoa(offset/3600) + ":00"
-	} else {
-		time_zone = strconv.Itoa(offset/3600) + ":00"
-	}
+
 	if str[0][7] != "" {
 		for _, s := range strings.Split(str[0][7], "&") {
 			if value := strings.Split(url.PathEscape(s), "="); len(value) == 2 {
 				switch value[0] {
 				case "charset":
 					charset = value[1]
-				case "time_zone":
-					time_zone = value[2]
+				case "loc":
+					if newloc, err := time.LoadLocation(value[1]); err == nil {
+						mysqlLoc = newloc
+					}
 				}
 			}
 		}
 	}
-	db[0] = mysql_open(str[0][1], str[0][2], str[0][5], str[0][6], charset, time_zone, mysqlssl)
+	db[0] = mysql_open(str[0][1], str[0][2], str[0][5], str[0][6], charset, mysqlLoc, mysqlssl)
 	//从
 
 	if str1, _ = Preg_match_result(`([^:]+):([^@]*)@(tcp)?(unix)?\(([^)]*)\)\/([^?]+)\?charset=(\S+)`, config.Server.SlaveDB, 1); len(str) == 0 {
@@ -574,7 +874,7 @@ func Mysql_init() {
 	}
 
 	DEBUG(time.Now().Format("2006-01-02 15:04:05") + "连接从数据库" + config.Server.SlaveDB)
-	db[1] = mysql_open(str1[0][1], str1[0][2], str1[0][5], str1[0][6], charset, time_zone, mysqlssl)
+	db[1] = mysql_open(str1[0][1], str1[0][2], str1[0][5], str1[0][6], charset, mysqlLoc, mysqlssl)
 	var new_mysql *Mysql
 	for i, mysql := range db {
 		mysql.MaxOpenConns = config.Server.DBMaxConn
@@ -684,7 +984,7 @@ func (mysql *Mysql) Sync2(i ...interface{}) (errs []error) {
 			t := r.Type()
 			table_name := t.Name()
 
-			res, err := QueryString(`show tables like ?`, table_name)
+			res, err := QueryString(`show tables like '` + table_name + `'`)
 			if err != nil {
 				errs = append(errs, errors.New(table_name+":"+err.Error()))
 				return
@@ -947,7 +1247,7 @@ func (mysql *Mysql) Sync2(i ...interface{}) (errs []error) {
 						buf.WriteString(" TRANSACTIONAL = 0 PAGE_CHECKSUM = 0 TABLE_CHECKSUM = 0 ROW_FORMAT = DYNAMIC")
 					}
 				}
-				_, err := Exec(buf.Bytes(), 0, &Transaction{})
+				err := Exec(buf.Bytes(), 0, nil, &Transaction{})
 				if err != nil {
 					errs = append(errs, errors.New("执行新建数据库失败："+err.Error()+" 错误sql:"+buf.String()))
 					return
@@ -1483,7 +1783,7 @@ func (mysql *Mysql) Sync2(i ...interface{}) (errs []error) {
 				if len(sql) > 0 {
 					s := "ALTER TABLE " + table_name + " " + strings.Join(sql, ",")
 					DEBUG(s)
-					_, err := Exec(Str2bytes(s), 0, &Transaction{})
+					err := Exec(Str2bytes(s), 0, nil, &Transaction{})
 					if err != nil {
 						errs = append(errs, errors.New(table_name+":"+err.Error()))
 						return
@@ -1498,7 +1798,7 @@ func (mysql *Mysql) Sync2(i ...interface{}) (errs []error) {
 				if res[0]["ENGINE"] != mysql.storeEngine {
 
 					res[0]["CREATE_OPTIONS"] = ""
-					_, err = Exec([]byte("ALTER TABLE "+table_name+" ENGINE = "+mysql.storeEngine+" transactional=default,row_format=default,checksum=0"), 0, &Transaction{})
+					err = Exec([]byte("ALTER TABLE "+table_name+" ENGINE = "+mysql.storeEngine+" transactional=default,row_format=default,checksum=0"), 0, nil, &Transaction{})
 					if err != nil {
 						errs = append(errs, errors.New(table_name+":"+err.Error()))
 						return
@@ -1523,7 +1823,6 @@ func (mysql *Mysql) Sync2(i ...interface{}) (errs []error) {
 					} else if mysql.aria != nil && mysql.aria.TABLE_CHECKSUM {
 						sql = []string{"checksum=1"}
 					}
-
 					if strings.Contains(res[0]["CREATE_OPTIONS"], "transactional=1") {
 						if mysql.aria == nil || (mysql.aria != nil && !mysql.aria.TRANSACTIONAL) {
 							sql = append(sql, "transactional=0")
@@ -1535,7 +1834,7 @@ func (mysql *Mysql) Sync2(i ...interface{}) (errs []error) {
 				if sql != nil {
 					sql_str := "ALTER TABLE " + table_name + " " + strings.Join(sql, ",")
 					DEBUG(sql_str)
-					_, err := Exec([]byte(sql_str), 0, &Transaction{})
+					err := Exec([]byte(sql_str), 0, nil, &Transaction{})
 					if err != nil {
 						errs = append(errs, errors.New(table_name+":"+err.Error()))
 						return
@@ -1566,7 +1865,7 @@ func (mysql *Mysql) Sync2(i ...interface{}) (errs []error) {
 						buf.WriteString(" (`")
 						buf.WriteString(k)
 						buf.WriteString("`)")
-						_, err = Exec(buf.Bytes(), 0, &Transaction{})
+						err = Exec(buf.Bytes(), 0, nil, &Transaction{})
 						if err != nil {
 							errs = append(errs, errors.New(table_name+":"+err.Error()))
 							return
@@ -1601,43 +1900,46 @@ func Getkey(str_i interface{}) string {
 	return ""
 }
 func Getvalue(str_i interface{}) string {
-	switch str_i.(type) {
+	switch v := str_i.(type) {
 	case int8:
-		return strconv.Itoa(int(str_i.(int8)))
+
+		return strconv.Itoa(int(v))
 	case int:
-		return strconv.Itoa(str_i.(int))
+		return strconv.Itoa(v)
 	case int16:
-		return strconv.Itoa(int(str_i.(int16)))
+		return strconv.Itoa(int(v))
 	case int32:
-		return strconv.Itoa(int(str_i.(int32)))
+		return strconv.Itoa(int(v))
 	case int64:
-		return strconv.Itoa(int(str_i.(int64)))
+		return strconv.Itoa(int(v))
 	case uint:
-		return strconv.FormatUint(uint64(str_i.(uint)), 10)
+		return strconv.FormatUint(uint64(v), 10)
 	case uint8:
-		return strconv.FormatUint(uint64(str_i.(uint8)), 10)
+		return strconv.FormatUint(uint64(v), 10)
 	case uint16:
-		return strconv.FormatUint(uint64(str_i.(uint16)), 10)
+		return strconv.FormatUint(uint64(v), 10)
 	case uint32:
-		return strconv.FormatUint(uint64(str_i.(uint32)), 10)
+		return strconv.FormatUint(uint64(v), 10)
 	case uint64:
-		return strconv.FormatUint(str_i.(uint64), 10)
+		return strconv.FormatUint(v, 10)
 	case []byte:
-		return encodeHex(str_i.([]byte))
+		return encodeHex(v)
 
 	case float32, float64:
 		return fmt.Sprint(str_i)
 	case bool:
-		if str_i.(bool) {
+		if v {
 			return "1"
 		} else {
 			return "0"
 		}
+	case time.Time:
+		return v.In(mysqlLoc).Format("2006-01-02 15:04:05")
 	case string:
-		return "'" + value_srp.Replace(str_i.(string)) + "'"
+		return "'" + value_srp.Replace(v) + "'"
 	case []string: //判断是否exp表达式
-		if len(str_i.([]string)) == 2 && str_i.([]string)[0] == "exp" {
-			return str_i.([]string)[1]
+		if len(v) == 2 && v[0] == "exp" {
+			return v[1]
 		}
 		return marsha1Tostring(str_i)
 	default:
@@ -1704,7 +2006,8 @@ func GetvaluefromPtr(ptr uintptr, field reflect.StructField) string {
 		}
 	case reflect.Struct:
 		if field.Type.String() == "time.Time" {
-			return "'" + (*(*time.Time)(unsafe.Pointer(ptr + field.Offset))).Format("2006-01-02 15:04:05") + "'"
+
+			return "'" + (*(*time.Time)(unsafe.Pointer(ptr + field.Offset))).In(mysqlLoc).Format("2006-01-02 15:04:05") + "'"
 		}
 		fallthrough
 
@@ -1738,4 +2041,196 @@ func (mysql *Mysql) AriaSetting(TRANSACTIONAL, PAGE_CHECKSUM, TABLE_CHECKSUM boo
 		ROW_FORMAT:     ROW_FORMAT,
 	}
 	return mysql
+}
+func checkKind(k reflect.Kind) error {
+	switch k {
+	case reflect.Int:
+
+	case reflect.Int8:
+
+	case reflect.Int16:
+
+	case reflect.Int32:
+
+	case reflect.Int64:
+
+	case reflect.Uint:
+
+	case reflect.Uint8:
+
+	case reflect.Uint16:
+
+	case reflect.Uint32:
+
+	case reflect.Uint64:
+
+	case reflect.Float32:
+
+	case reflect.Float64:
+
+	case reflect.String:
+
+	case reflect.Bool:
+
+	case reflect.Struct:
+
+	case reflect.Slice, reflect.Map:
+
+	case reflect.Ptr:
+
+	default:
+		return errors.New("不支持的格式")
+	}
+	return nil
+}
+func binaryToStr(column MysqlColumn, data []byte, pos *int, row *MysqlRows) (str string, err error) {
+	// Convert to byte-coded string
+
+	switch column.fieldtype {
+	case fieldTypeNULL:
+		return "NULL", nil
+	// Numeric Types
+	case fieldTypeTiny:
+		if column.fleldflag&flagUnsigned != 0 {
+			str = strconv.Itoa(int(data[*pos]))
+		} else {
+			str = strconv.Itoa(int(int8(data[*pos])))
+		}
+		*pos++
+		return
+
+	case fieldTypeShort, fieldTypeYear:
+		if column.fleldflag&flagUnsigned != 0 {
+			str = strconv.Itoa(int(binary.LittleEndian.Uint16(data[*pos : *pos+2])))
+		} else {
+			str = strconv.Itoa(int(int16(binary.LittleEndian.Uint16(data[*pos : *pos+2]))))
+		}
+		*pos += 2
+		return
+
+	case fieldTypeInt24, fieldTypeLong:
+		if column.fleldflag&flagUnsigned != 0 {
+			str = strconv.Itoa(int(binary.LittleEndian.Uint32(data[*pos : *pos+4])))
+		} else {
+			str = strconv.Itoa(int(int32(binary.LittleEndian.Uint32(data[*pos : *pos+4]))))
+		}
+		*pos += 4
+		return
+
+	case fieldTypeLongLong:
+		if column.fleldflag&flagUnsigned != 0 {
+			val := binary.LittleEndian.Uint64(data[*pos : *pos+8])
+			if val > math.MaxInt64 {
+				str = string(uint64ToString(val))
+			} else {
+				str = strconv.Itoa(int(val))
+			}
+		} else {
+			str = strconv.Itoa(int(binary.LittleEndian.Uint64(data[*pos : *pos+8])))
+		}
+		*pos += 8
+		return
+
+	case fieldTypeFloat:
+		str = strconv.FormatFloat(float64(math.Float32frombits(binary.LittleEndian.Uint32(data[*pos:*pos+4]))), 'f', -1, 32)
+		*pos += 4
+		return
+
+	case fieldTypeDouble:
+		str = strconv.FormatFloat(math.Float64frombits(binary.LittleEndian.Uint64(data[*pos:*pos+8])), 'f', -1, 64)
+		*pos += 8
+		return
+
+	// Length coded Binary Strings
+	case fieldTypeDecimal, fieldTypeNewDecimal, fieldTypeVarChar,
+		fieldTypeBit, fieldTypeEnum, fieldTypeSet, fieldTypeTinyBLOB,
+		fieldTypeMediumBLOB, fieldTypeLongBLOB, fieldTypeBLOB,
+		fieldTypeVarString, fieldTypeString, fieldTypeGeometry, fieldTypeJSON:
+
+		msglen, err := ReadLength_Coded_Slice(data[*pos:], pos)
+		if err != nil {
+			return "", err
+		}
+
+		if msglen == 0 {
+			str = "NULL"
+		} else {
+			str = string(data[*pos : *pos+msglen])
+		}
+
+		*pos += msglen
+	case
+		fieldTypeDate, fieldTypeNewDate, // Date YYYY-MM-DD
+		fieldTypeTime,                         // Time [-][H]HH:MM:SS[.fractal]
+		fieldTypeTimestamp, fieldTypeDateTime: // Timestamp YYYY-MM-DD HH:MM:SS[.fractal]
+
+		n, err := ReadLength_Coded_Slice(data[*pos:], pos)
+		if err != nil {
+			return "", err
+		}
+
+		switch {
+		case n == 0:
+			str = "NULL"
+			return str, nil
+		case column.fieldtype == fieldTypeTime:
+			// database/sql does not support an equivalent to TIME, return a string
+			var dstlen uint8
+			switch decimals := column.decimals; decimals {
+			case 0x00, 0x1f:
+				dstlen = 8
+			case 1, 2, 3, 4, 5, 6:
+				dstlen = 8 + 1 + decimals
+			default:
+				return "", fmt.Errorf(
+					"protocol error, illegal decimals value %d",
+					column.decimals,
+				)
+			}
+			t, err := formatBinaryTime(data[*pos:*pos+int(n)], dstlen)
+			if err != nil {
+				return "", err
+			}
+			str = string(t)
+			//case columns.conn.parseTime:
+		default:
+			t, err := parseBinaryDateTime(uint64(n), data[*pos:], row.conn.loc)
+			if err != nil {
+				return "", err
+			}
+			str = t.Format("2006-01-02 15:04:05")
+			/*default:
+			var dstlen uint8
+			if column.fieldtype == fieldTypeDate {
+				dstlen = 10
+			} else {
+				switch decimals := column.decimals; decimals {
+				case 0x00, 0x1f:
+					dstlen = 19
+				case 1, 2, 3, 4, 5, 6:
+					dstlen = 19 + 1 + decimals
+				default:
+					return nil, fmt.Errorf(
+						"protocol error, illegal decimals value %d",
+						column.decimals,
+					)
+				}
+			}
+			t, err := formatBinaryDateTime(data[*pos:*pos+int(n)], dstlen)
+			if err != nil {
+				return nil, err
+			}
+			record[key] = string(t)*/
+		}
+
+		if err == nil {
+			*pos += int(n)
+		} else {
+			return str, err
+		}
+	// Please report if this happens!
+	default:
+		return "", fmt.Errorf("unknown field type %d", column.fieldtype)
+	}
+	return str, err
 }

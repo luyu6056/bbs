@@ -17,7 +17,7 @@ import (
 
 // The message types are defined in RFC 6455, section 11.8.
 const (
-	wsfpslimit = 200 //帧率限制
+	wsfpslimit = 999999999 //帧率限制
 	// TextMessage denotes a text data message. The text message payload is
 	// interpreted as UTF-8 encoded text data.
 	TextMessage = 1

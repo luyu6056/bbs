@@ -2078,6 +2078,7 @@ type MSG_admin_forum_edit_base struct {
 	Shownav int8
 	Description string
 	Rules string
+	Recommend int8
 }
 
 var Pool_MSG_admin_forum_edit_base = sync.Pool{New: func() interface{} { return &MSG_admin_forum_edit_base{} }}
@@ -2122,6 +2123,7 @@ func WRITE_MSG_admin_forum_edit_base(data *MSG_admin_forum_edit_base, buf *libra
 	WRITE_int8(data.Shownav, buf)
 	WRITE_string(data.Description, buf)
 	WRITE_string(data.Rules, buf)
+	WRITE_int8(data.Recommend, buf)
 }
 
 func READ_MSG_admin_forum_edit_base(buf *libraries.MsgBuffer) (data *MSG_admin_forum_edit_base) {
@@ -2150,6 +2152,7 @@ func READ_MSG_admin_forum_edit_base(buf *libraries.MsgBuffer) (data *MSG_admin_f
 	data.Shownav = READ_int8(buf)
 	data.Description = READ_string(buf)
 	data.Rules = READ_string(buf)
+	data.Recommend = READ_int8(buf)
 	return
 }
 

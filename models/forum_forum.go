@@ -56,7 +56,6 @@ func foruminit() {
 			if v.Fid == field.Fid {
 				v.Field = field
 				for _, threadtype := range threadtypes {
-
 					if threadtype.Fid == v.Fid {
 						v.Field.ThreadtypesMsg = append(v.Field.ThreadtypesMsg, threadtype)
 					}
@@ -132,7 +131,8 @@ func foruminit() {
 	forumdata = temp
 }
 
-func updatechacheByFid(fid int32) {
+func UpdatechacheByFid(fid int32) {
+
 	for k, v := range forumdata {
 		if v.Fid == fid {
 			model := new(Model)
@@ -150,7 +150,7 @@ func updatechacheByFid(fid int32) {
 					res.Field = new(db.Forum_forumfield)
 					res.Field.Fid = res.Fid
 				}
-				err = model.Table("Forum_threadtype").Where(map[string]interface{}{"Fid": fid}).Find(&res.Field.ThreadtypesMsg)
+				err = model.Table("Forum_threadtype").Where(map[string]interface{}{"Fid": fid}).Select(&res.Field.ThreadtypesMsg)
 				if err != nil {
 					libraries.DEBUG("刷新论坛threadtype失败", fid, err)
 				}
@@ -218,7 +218,7 @@ func (model *Model_Forum_forum) UpdateForums(forums []*db.Forum_forum) (res bool
 		return false
 	}
 	for _, v := range forums {
-		updatechacheByFid(v.Fid)
+		UpdatechacheByFid(v.Fid)
 	}
 	return true
 }
@@ -252,7 +252,7 @@ func (model *Model_Forum_forum) UpdateForum(forum *db.Forum_forum) (res bool) {
 		model.Ctx.Adderr(err, nil)
 		return false
 	}
-	updatechacheByFid(forum.Fid)
+	UpdatechacheByFid(forum.Fid)
 	return true
 }
 func (model *Model_Forum_forum) InsertForums(forums []*db.Forum_forum) bool {
@@ -432,7 +432,7 @@ func check_forum(mysql_timestamp int) {
 		}
 	}
 	for fid := range f_map {
-		updatechacheByFid(fid)
+		UpdatechacheByFid(fid)
 	}
 	var post []*db.Forum_post
 	err := m.Table("Forum_post").Where("Dateline >" + strconv.Itoa(int(time.Now().Unix()-120))).Group("Fid").Order("Dateline desc").Select(&post)

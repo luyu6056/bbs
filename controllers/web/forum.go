@@ -37,7 +37,7 @@ func forum_index(data *protocol.MSG_U2WS_forum_index, c *server.Context) {
 	//var threads, posts, todayposts, announcepm int32
 	catlist := map[int32]*protocol.MSG_forum_index_cart{}
 	forumlist := map[int32]*protocol.MSG_forum{}
-	var one_ids, two_ids []int32
+	var one_ids, two_ids, recommend_ids []int32
 	for _, forum := range models.GetForumindex() {
 		if data.Gid > 0 && (forum.Fid != data.Gid && forum.Fup != data.Gid) {
 			continue
@@ -57,8 +57,10 @@ func forum_index(data *protocol.MSG_U2WS_forum_index, c *server.Context) {
 				}
 				msg.Threads += int64(forum.Threads)
 				msg.Posts += int64(forum.Posts)
+				if forum.Recommend {
+					recommend_ids = append(recommend_ids, forum.Fid)
+				}
 				two_ids = append(two_ids, forum.Fid)
-
 				forumlist[forum.Fid] = &protocol.MSG_forum{
 					Fup:         forum.Fup,
 					Extra:       forum.Field.Extra,
@@ -134,9 +136,10 @@ func forum_index(data *protocol.MSG_U2WS_forum_index, c *server.Context) {
 	}
 	msg.Recommend = msg.Recommend[:0]
 	if data.Gid == 0 {
-		libraries.SortInt32(two_ids)
-		for i := len(two_ids) - 1; i > -1; i-- {
-			msg.Recommend = append(msg.Recommend, forumlist[two_ids[i]])
+		libraries.SortInt32(recommend_ids)
+		for i := len(recommend_ids) - 1; i > -1; i-- {
+
+			msg.Recommend = append(msg.Recommend, forumlist[recommend_ids[i]])
 			if len(msg.History) == 0 {
 				if len(msg.Recommend) >= recommendNumWithNoHistory {
 					break

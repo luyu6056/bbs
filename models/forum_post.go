@@ -24,6 +24,7 @@ func (model *Model_Forum_post) GetPostInfoByPosition(tid int32, Position int32) 
 	return
 }
 func (model *Model_Forum_post) GetPostListByTid(tid int32) (postlist []*db.Forum_post) {
+
 	err := model.Table("Forum_post").Where("Tid = " + strconv.Itoa(int(tid))).Select(&postlist)
 	if err != nil {
 		model.Ctx.Adderr(err, map[string]interface{}{"tid": tid})
@@ -31,7 +32,7 @@ func (model *Model_Forum_post) GetPostListByTid(tid int32) (postlist []*db.Forum
 	return
 }
 func (model *Model_Forum_post) GetPostList(field string, where map[string]interface{}, order string, limit []int, groupby string) (postlist []*db.Forum_post) {
-	err := model.Table("Forum_post").Field(field).Where(where).Order(order).Limit(limit...).Group(groupby).Select(&postlist)
+	err := model.Table("Forum_post").Prepare().Field(field).Where(where).Order(order).Limit(limit...).Group(groupby).Select(&postlist)
 	if err != nil {
 		model.Ctx.Adderr(err, map[string]interface{}{"field": field, "where": where, "order": order, "limit": limit, "groupby": groupby})
 	}

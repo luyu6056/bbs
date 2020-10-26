@@ -1,92 +1,124 @@
 package mysql
 
 import (
-	"bbs/libraries"
-	"errors"
+	"reflect"
 	"sync"
 )
 
 var rows_pool = sync.Pool{New: func() interface{} {
-	row := &MysqlRows{Buffer: new(libraries.MsgBuffer), Buffer2: new(libraries.MsgBuffer), field_m: make(map[string]map[string]*Field_struct)}
+	row := &MysqlRows{Buffer: new(MsgBuffer), Buffer2: new(MsgBuffer), field_m: make(map[string]map[string]*Field_struct)}
 
 	return row
 }}
 
+type Field_struct struct {
+	Offset  uintptr
+	Kind    reflect.Kind
+	Field_t reflect.Type
+}
 type MysqlRows struct {
-	Buffer    *libraries.MsgBuffer
-	Buffer2   *libraries.MsgBuffer
-	field_len int
-	msg_len   []int
-	buffer    []byte
+	Buffer, Buffer2 *MsgBuffer
+	field_len       int
+	msg_len         []int
+	buffer          []byte
 	//msg_buffer_no *int
 	field      []byte
 	field_m    map[string]map[string]*Field_struct
-	fields     [][]byte
+	fields     []MysqlColumn
 	result_len int
+	IsBinary   bool
+	conn       *Mysql_Conn
+}
+type MysqlColumn struct {
+	name      []byte
+	fieldtype fieldType
+	fleldflag fieldFlag
+	decimals  uint8
 }
 
-func (row *MysqlRows) Columns(mysql *Mysql_Conn) (columns [][]byte, err error) {
+func (row *MysqlRows) Columns(mysql *Mysql_Conn) (columns []MysqlColumn, err error) {
 	if cap(row.fields) < row.field_len {
-		row.fields = make([][]byte, 0, row.field_len)
+		row.fields = make([]MysqlColumn, 0, row.field_len)
 	}
 	row.result_len = 0
 	columns = row.fields[:row.field_len]
 	var index uint32
-	var def string
-	var msglen, field_index int
+	var msglen, pos, field_index int
 
 	for msglen, err = mysql.readOneMsg(); err == nil; msglen, err = mysql.readOneMsg() {
-		if msglen == 5 && mysql.buffer.PreBytes(1)[0] == 0xfe { //EOF
-			mysql.buffer.Shift(5)
+		data := mysql.readBuffer.Next(msglen)
+
+		if msglen == 5 && data[0] == 0xfe { //EOF
 			break
 		}
-		row.Buffer.Reset()
-		row.Buffer.Write(mysql.buffer.Next(msglen))
-
-		def, err = ReadLengthCodedStringFromBuffer(row.Buffer, true)
-		if err != nil || def != "def" {
-			return nil, errors.New("读取查询结果目录头错误")
+		pos = 0
+		msglen, err = ReadLength_Coded_Slice(data, &pos)
+		if err != nil {
+			return
 		}
+		pos += msglen
 
-		_, err = ReadLengthCodedStringFromBuffer(row.Buffer, false)
+		// Database [len coded string]
+		msglen, err = ReadLength_Coded_Slice(data[pos:], &pos)
 		if err != nil {
 			return
 		}
 
-		_, err = ReadLengthCodedStringFromBuffer(row.Buffer, false)
+		pos += msglen
+		// Table [len coded string]
+		msglen, err = ReadLength_Coded_Slice(data[pos:], &pos)
 		if err != nil {
 			return
 		}
-
-		_, err = ReadLengthCodedStringFromBuffer(row.Buffer, false)
+		pos += msglen
+		// Original table [len coded string]
+		msglen, err = ReadLength_Coded_Slice(data[pos:], &pos)
 		if err != nil {
 			return
 		}
-
-		msglen, err = ReadLength_Coded_Binary(row.Buffer)
+		pos += msglen
+		// Name [len coded string]
+		msglen, err = ReadLength_Coded_Slice(data[pos:], &pos)
 		if err != nil {
 			return
 		}
 		if field_index+msglen > len(row.field) {
-			row.field = append(row.field, make([]byte, msglen)...)
+			row.field = append(row.field, make([]byte, field_index+msglen-len(row.field))...)
 		}
-		columns[index] = row.field[field_index : field_index+msglen]
-		copy(columns[index], row.Buffer.Next(msglen))
+		columns[index].name = row.field[field_index : field_index+msglen]
+		copy(columns[index].name, data[pos:pos+msglen])
 		field_index += msglen
+		if row.IsBinary {
+			pos += msglen
+			msglen, err = ReadLength_Coded_Slice(data[pos:], &pos)
+			if err != nil {
+				return
+			}
+			pos += msglen
+			pos += 7
+			columns[index].fieldtype = fieldType(data[pos])
+			columns[index].fleldflag = fieldFlag(uint16(data[pos+1]) + uint16(data[pos+2])<<8)
+			columns[index].decimals = data[pos+3]
+		}
 		index++
+
 	}
 	//libraries.DEBUG(row.Buffer.Bytes())
+	if err != nil {
+		return
+	}
 	row.Buffer.Reset()
 	row.msg_len = row.msg_len[:0]
-	for msglen, err = mysql.readOneMsg(); err == nil; msglen, err = mysql.readOneMsg() {
-		if msglen == 5 && mysql.buffer.PreBytes(1)[0] == 0xfe { //EOF
-			mysql.buffer.Shift(5)
-			break
+	for msglen, err := mysql.readOneMsg(); err == nil; msglen, err = mysql.readOneMsg() {
+		data := mysql.readBuffer.Next(msglen)
+		if msglen == 5 && data[0] == 0xfe { //EOF
+			return columns, nil
 		}
-		row.Buffer.Write(mysql.buffer.Next(msglen))
+		row.Buffer.Write(data)
 		row.result_len++
 		row.msg_len = append(row.msg_len, msglen)
 	}
+
 	return columns, err
 }
 

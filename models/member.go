@@ -263,7 +263,7 @@ func memberinfo_init() {
 
 	}
 
-	res, _ := mysql.QueryMap([]byte("select AUTO_INCREMENT from INFORMATION_SCHEMA.TABLES where TABLE_NAME='"+config.Server.Tablepre+"Common_member'"), 0, nil)
+	res, _ := mysql.QueryMap([]byte("select AUTO_INCREMENT from INFORMATION_SCHEMA.TABLES where TABLE_NAME='"+config.Server.Tablepre+"Common_member'"), 0, nil, nil)
 	if res == nil {
 		panic("member初始化错误，无法获得自增Uid")
 	}

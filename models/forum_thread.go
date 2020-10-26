@@ -400,7 +400,7 @@ func (m *Model_Forum_thread) Newthread(forum *db.Forum_forum, params *Param_newt
 				Replies:    int32(count),
 				Timestamp:  time.Now(),
 			}
-			_, err = m.Table("Forum_thread_data").Insert(insert_thread_data)
+			err = m.Table("Forum_thread_data").Replace(insert_thread_data)
 			if err != nil {
 				m.Ctx.Adderr(err, params)
 				return protocol.Err_insert_thread_data
@@ -1068,7 +1068,7 @@ type Forum_threadView struct {
 }
 
 func (m *Model_Forum_thread) GetForumThreadViewByTid(tid int32, uid int32) (result *Forum_threadView) {
-	err := m.Table("Forum_thread").Field("Isadd,Sticks,Closed,Stamp").LeftJoin("Forum_memberRecommend").On("Forum_memberRecommend.Tid=Forum_thread.Tid and Forum_memberRecommend.Recommenduid = " + strconv.Itoa(int(uid))).Where("Forum_thread.Tid = " + strconv.Itoa(int(tid))).Find(&result)
+	err := m.Raw("select Isadd,Sticks,Closed,Stamp from "+config.Server.Tablepre+"Forum_thread left join "+config.Server.Tablepre+"Forum_memberRecommend on Forum_memberRecommend.Tid=Forum_thread.Tid and Forum_memberRecommend.Recommenduid = ? where Forum_thread.Tid = ?", uid, tid).Find(&result)
 	if err != nil {
 		m.Ctx.Adderr(err, map[string]interface{}{"tid": tid})
 	}

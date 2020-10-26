@@ -47,6 +47,7 @@ func (model *Model_Forum_thread) Build_thread_index(where map[string]interface{}
 
 	forum_thread_cache_lock.Lock()
 	defer forum_thread_cache_lock.Unlock()
+
 	count, _ := model.Table("Forum_thread").Master(master).Where(where).Count()
 	var (
 		i                   int
@@ -59,13 +60,18 @@ func (model *Model_Forum_thread) Build_thread_index(where map[string]interface{}
 		keyUid     = make(map[int32]bool)
 		keySpecial = make(map[int8]bool)
 	)
+
 	for true {
 		var (
 			threads      []*db.Forum_thread_cache
 			thread_datas []*db.Forum_thread_data
 		)
 		i++
-		model.Table("Forum_thread").Where(where).Master(master).Page([]int{i, 10000}).Select(&threads)
+		err := model.Table("Forum_thread").Prepare().Where(where).Master(master).Page([]int{i, 10000}).Select(&threads)
+		if err != nil {
+			libraries.DEBUG("建立缓存出错", err)
+			return
+		}
 		if len(threads) == 0 {
 			break
 		}
@@ -75,7 +81,11 @@ func (model *Model_Forum_thread) Build_thread_index(where map[string]interface{}
 			tids[k] = v.Tid
 		}
 		str_1 := map[string]bool{}
-		model.Table("Forum_thread_data").Where(map[string]interface{}{"Tid": tids}).Master(master).Limit(0).Select(&thread_datas)
+		err = model.Table("Forum_thread_data").Where(map[string]interface{}{"Tid": tids}).Master(master).Limit(0).Select(&thread_datas)
+		if err != nil {
+			libraries.DEBUG("建立缓存出错", err)
+			return
+		}
 		for _, thread := range threads {
 			thread.LowerSubject = strings.ToLower(thread.Subject)
 			tid := thread.Tid

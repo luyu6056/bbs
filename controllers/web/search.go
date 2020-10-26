@@ -75,7 +75,7 @@ func searchThread(data *protocol.MSG_U2WS_searchThread, c *server.Context) {
 	}
 	thread_index.Order_result()
 
-	if data.Page == 0 {
+	if data.Page < 1 {
 		data.Page = 1
 	}
 	if int(data.Page-1)*models.Setting.Topicperpage > len(thread_index.ResultList) {

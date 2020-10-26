@@ -909,7 +909,7 @@ type Forum_forum struct {
 	Level            int16                        `db:"not null;default(0)"`
 	Commoncredits    int32                        `db:"not null;default(0)"`
 	Archive          int32                        `db:"not null;default(0)"`
-	Recommend        int16                        `db:"not null;default(0)"`
+	Recommend        bool                         `db:"not null;default(0)"` //是否推荐
 	Favtimes         int32                        `db:"not null;default(0)"`
 	Sharetimes       int32                        `db:"not null;default(0)"`
 	Disablethumb     int32                        `db:"not null;default(0)"`

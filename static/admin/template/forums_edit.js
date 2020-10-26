@@ -94,11 +94,16 @@ $('#cpform').submit(function(event) {
         obj.Extranew={Namecolor:$('input[name="Extranew.Namecolor"]').val(),Iconwidth:80}
         obj.Fup= $('select[name="fupnew"]').val();
         obj.Forumcolumns= $('input[name="Forumcolumnsnew"]').val(); 
-        obj.Catforumcolumns = $('input[name="Catforumcolumnsnew"]').val();  
+        obj.Catforumcolumns = $('input[name="Catforumcolumnsnew"]').val();   
         obj.Icon = $('input[name="Forumcolumnsnew"]').val();
         $('input[name="Statusnew"]').each(function(index, el) {
             if($(this).parent().hasClass('checked')){
                 obj.Status = $(this).val(); 
+            }
+        });
+        $('input[name="Recommendnew"]').each(function(index, el) {
+            if($(this).parent().hasClass('checked')){
+                obj.Recommend = $(this).val(); 
             }
         });
         obj.Description = $('textarea[name="Descriptionnew"]').val(); 
@@ -141,6 +146,7 @@ $('#cpform').submit(function(event) {
             type.Icon=$('input[name="newicon[]"]').eq(i).val();
             type.Enable=$('input[name="newenable[]"]').eq(i).val();
             type.Moderators=$('input[name="newmoderators[]"]').eq(i).val();
+            console.log(type)
             obj.Add.push(type)
         }
         obj.Types=[];

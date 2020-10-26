@@ -5,6 +5,7 @@ import (
 	"bbs/db/mysql"
 	"bbs/libraries"
 	"reflect"
+	"strconv"
 	"sync"
 	"time"
 )
@@ -36,7 +37,7 @@ func Init_register_dblog(db *mysql.Mysql) {
 	}
 	var threadmods []*Log_forum_threadmod
 	libraries.GoRoutineExecFunction(func() {
-		err := mysql.Query([]byte("select * from "+config.Server.Tablepre+threadmod_tablename+" where Id in (select Id from (select max(Id) as Id from "+config.Server.Tablepre+threadmod_tablename+" where Position=0 GROUP BY Tid) as a)"), 1, nil, &threadmods)
+		err := mysql.Query([]byte("select * from "+config.Server.Tablepre+threadmod_tablename+" where Id in (select Id from (select max(Id) as Id from "+config.Server.Tablepre+threadmod_tablename+" where Position=0 and ActionId<"+strconv.Itoa(ThreadmodIdNew)+" GROUP BY Tid) as a)"), 1, nil, nil, &threadmods)
 		if err != nil {
 			libraries.Log("初始化帖子操作日志失败 %v", err)
 		}
@@ -44,6 +45,23 @@ func Init_register_dblog(db *mysql.Mysql) {
 			Lastthreadmod.Store(v.Tid, v)
 		}
 	})
+	go func() {
+		//定时检查是否有新的threadmod
+		t := time.NewTicker(time.Second)
+
+		for now := range t.C {
+
+			libraries.GoRoutineExecFunction(func() {
+				err := mysql.Query([]byte("select * from "+config.Server.Tablepre+threadmod_tablename+" where Id in (select Id from (select max(Id) as Id from "+config.Server.Tablepre+threadmod_tablename+" where Position=0 and ActionId<"+strconv.Itoa(ThreadmodIdNew)+" and unix_timestamp(Timestamp) > "+strconv.Itoa(int(now.Unix()-120))+" GROUP BY Tid) as a)"), 1, nil, nil, &threadmods)
+				if err != nil {
+					libraries.Log("初始化帖子操作日志失败 %v", err)
+				}
+				for _, v := range threadmods {
+					Lastthreadmod.Store(v.Tid, v)
+				}
+			})
+		}
+	}()
 }
 
 //登录日志
@@ -117,9 +135,10 @@ type Log_forum_threadmod struct {
 	Status     int8   `db:"not null;default(0);index"`
 	Reason     string `db:"not null;type:mediumtext"`
 	//以下是操作直接传递过来的
-	ActionId int8  `db:"not null;default(0);index"`
-	Param    int8  //额外的参数，
-	Param1   int32 //额外的参数，
+	ActionId  int8      `db:"not null;default(0);index"`
+	Param     int8      //额外的参数，
+	Param1    int32     //额外的参数，
+	Timestamp time.Time `db:"default(current_timestamp());extra('on update current_timestamp()')"`
 }
 
 const (
@@ -141,9 +160,9 @@ const (
 	ThreadmodId置顶回复 = 15
 	ThreadmodId删除回复 = 16
 	//以下用于发帖，修改，回帖日志
-	ThreadmodIdNew    = 17
-	ThreadmodIdEdit   = 18
-	ThreadmodIdReplay = 19
+	ThreadmodIdNew    = 100
+	ThreadmodIdEdit   = 101
+	ThreadmodIdReplay = 102
 )
 
 var log_Forum_threadmod_chan = make(chan *Log_forum_threadmod, log_chan_num)

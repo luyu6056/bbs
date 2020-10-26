@@ -96,3 +96,6 @@ func Log(format string, v ...interface{}) {
 	}
 	fmt.Printf("%s "+format+"\r\n", v...)
 }
+func Bytes2str(b []byte) string {
+	return *(*string)(unsafe.Pointer(&b))
+}

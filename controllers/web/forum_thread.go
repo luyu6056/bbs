@@ -97,6 +97,7 @@ func forum_newthread(data *protocol.MSG_U2WS_forum_newthread, c *server.Context)
 	}
 	//权限检查
 	if user.Adminid != 1 {
+
 		if !user.Group.Allowpost { /*|| ((len(f.Field.Postperm) > 0 && !libraries.In_slice(user.Groupid, f.Field.Postperm)) && (len(f.Field.Spviewperm) > 0 && !libraries.In_slice(user.Groupid, f.Field.Spviewperm))) {  简化权限*/
 			c.Out_common(protocol.Err_Groupperm, "")
 			return
@@ -1108,10 +1109,10 @@ func forum_viewthread(data *protocol.MSG_U2WS_forum_viewthread, c *server.Contex
 	postperpage := models.Setting.Postperpage
 	limit := []int{postperpage * (page - 1), postperpage}
 
-	if page == 1 && len(thread.Sticks) > 0 { //添加置顶帖
+	if len(thread.Sticks) > 0 { //添加置顶帖
 		where["Tid"] = []interface{}{"or", []interface{}{"in", thread.Sticks}}
 		order += ",Stick desc"
-		postperpage += len(thread.Sticks)
+
 	}
 	field := "First,Tags,Authorid,Status,Anonymous,Stick,Author,Invisible,Dateline,Message,Position,Replycredit,Usesig,Stand,Subject,Useip,Aids"
 	postlist := model_post.GetPostList(field, where, order, limit, "")

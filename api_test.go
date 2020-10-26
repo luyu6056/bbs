@@ -14,6 +14,7 @@ import (
 	"math/rand"
 	"reflect"
 	"strconv"
+	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -418,7 +419,7 @@ func Test_MSG_U2WS_forum(t *testing.T) {
 		{Fid: 11, Page: 2, result: 65, message: "测试Page"},
 		{Fid: 13, Page: -2, result: 46751, message: "测试无效Page，小于0强制为1"},
 		{Fid: 11, Page: 10000, result: 0, message: "测试无效Page，超大页数无结果"},
-		{Fid: 2, Specialtype: "poll", result: 168366, message: "测试特殊主题-投票"},
+		{Fid: 2, Specialtype: "poll", result: 168370, message: "测试特殊主题-投票"},
 		{Fid: 13, Specialtype: "common", result: 46751, message: "测试特殊主题-普通"},
 		{Fid: 2, Filter: "digest", result: 131, message: "测试精华"},
 		{Fid: 14, Filter: "heat", result: 79358, message: "测试热门"},
@@ -839,8 +840,8 @@ func Test_MSG_U2WS_nextset(t *testing.T) {
 	for _, u := range []msg{{Tid: -1, result: protocol.Err_NotFoundThread, message: "测试不存在的tid"},
 		{Tid: 45, Next: 1, result: 0, message: "没有更新的"},
 		{Tid: 61, Next: -1, result: 0, message: "没有更老的"},
-		{Tid: 60, Next: 1, result: 105, message: "测试下一贴"},
-		{Tid: 45, Next: -1, result: 62, message: "测试上一贴"},
+		{Tid: 57654, Next: 1, result: 57655, message: "测试下一贴"},
+		{Tid: 57654, Next: -1, result: 57653, message: "测试上一贴"},
 	} {
 		ctx := ctxpool.Get().(*server.Context)
 		ctx.Conn.Output_data = func(r *libraries.MsgBuffer) {
@@ -878,9 +879,21 @@ func Test_MSG_U2WS_upload_image(t *testing.T) {
 		t.Error("无法获取测试webp图片")
 	}
 	pngdata, err := ioutil.ReadFile("./static/logo.png")
+	if err != nil {
+		t.Error("无法获取测试png图片")
+	}
 	jpgdata, err := ioutil.ReadFile("./static/logo.jpeg")
+	if err != nil {
+		t.Error("无法获取测试jpg图片")
+	}
 	bmpdata, err := ioutil.ReadFile("./static/logo.bmp")
+	if err != nil {
+		t.Error("无法获取测试bmp图片")
+	}
 	gifdata, err := ioutil.ReadFile("./static/logo.gif")
+	if err != nil {
+		t.Error("无法获取测试git图片")
+	}
 	type msg struct {
 		uid             int32
 		Filename        string
@@ -897,12 +910,12 @@ func Test_MSG_U2WS_upload_image(t *testing.T) {
 	buf := libraries.NewBuffer(0)
 	token := make([]byte, 16)
 	for _, u := range []msg{{result: protocol.Err_Notlogin, message: "测试未登录"},
-		{uid: 5, result: protocol.Err_Groupperm, message: "测试无权限"},
-		{uid: 6, result: protocol.Err_NotEnoughAttachs, Todayattachs: 1, message: "测试上传文件限制"},
-		{uid: 6, result: protocol.Err_NotEnoughAttachsize, Todayattachsize: 1, message: "测试上传大小限制"},
+		{uid: 5, Filename: "testjpg", result: protocol.Err_Groupperm, message: "测试无权限"},
+		{uid: 6, Filename: "testjpg", result: protocol.Err_NotEnoughAttachs, Todayattachs: 1, message: "测试上传文件限制"},
+		{uid: 6, Filename: "testjpg", result: protocol.Err_NotEnoughAttachsize, Todayattachsize: 1, message: "测试上传大小限制"},
 		{uid: 1, result: protocol.Err_Imgtype, message: "测试无法识别类型"},
 		{uid: 1, Filename: "testwebp", Data: webpdata, result: protocol.Success, message: "测试webp图片"},
-		{uid: 1, Filename: "testjpg", Data: jpgdata, oss: true, result: protocol.Success, message: "测试jpg图片"},
+		{uid: 1, Filename: "testjpg", Data: jpgdata /*, oss: true*/, result: protocol.Success, message: "测试jpg图片"},
 		{uid: 1, Filename: "testpng", Data: pngdata, result: protocol.Success, message: "测试png图片"},
 		{uid: 1, Filename: "testbmp", Data: bmpdata, result: protocol.Success, message: "测试bmp图片"},
 		{uid: 1, Filename: "testgif", Data: gifdata, result: protocol.Success, message: "测试gif图片"},
@@ -1241,6 +1254,8 @@ func Test_MSG_U2WS_forum_refresh(t *testing.T) {
 				data := protocol.READ_MSG_WS2U_forum(r)
 				if data.Fid == u.result {
 					result <- protocol.Success
+				} else {
+					result <- protocol.Fail
 				}
 
 				data.Put()
@@ -1515,23 +1530,200 @@ func Test_MSG_U2WS_SpaceThread(t *testing.T) {
 }
 func Test_MSG_U2WS_searchThread(t *testing.T) {
 
-	testRun(t, []test_msg{})
+	result := make(chan int, 1)
+	type data struct {
+		Word    string
+		Page    int16
+		result  int //验证返回条数
+		message string
+	}
+
+	for _, u := range []data{
+		data{"", -123, 0, "参数错误"},
+		data{"奥术大师多", 1, 0, "没有结果"},
+		data{"local", 1, 1, "单页搜索"},
+		data{"ab", 34, 3, "多页搜索"},
+	} {
+		ctx := ctxpool.Get().(*server.Context)
+
+		ctx.Conn.Output_data = func(r *libraries.MsgBuffer) {
+			cmd := protocol.READ_int32(r)
+			switch cmd {
+
+			case protocol.CMD_MSG_WS2U_searchThread:
+				data := protocol.READ_MSG_WS2U_searchThread(r)
+				result <- len(data.Threadlist)
+				data.Put()
+
+			default:
+				result <- protocol.Err_msg
+			}
+		}
+		t.Run(fmt.Sprintf("%+v", u), func(t *testing.T) {
+			(&protocol.MSG_U2WS_searchThread{
+				Word: u.Word,
+				Page: u.Page,
+			}).WRITE(ctx.In)
+			server.WebHandle(ctx)
+			if r := <-result; r != u.result {
+				t.Errorf("测试%s,希望结果%d,实际结果%d", u.message, u.result, r)
+			}
+		})
+		ctxpool.Put(ctx)
+	}
 }
 func Test_MSG_U2WS_spacecp(t *testing.T) {
 
-	testRun(t, []test_msg{})
+	result := make(chan string, 1)
+	type data struct {
+		Uid     int32
+		result  string //验证名字或者错误码
+		message string
+	}
+
+	for _, u := range []data{data{0, "-7", "测试未登录"},
+		data{1, "admin", "测试admin"},
+		data{5, "紫冰丫", "测试普通用户"},
+	} {
+		ctx := ctxpool.Get().(*server.Context)
+		ctx.Conn.Session.Set("Uid", u.Uid)
+		ctx.Conn.Output_data = func(r *libraries.MsgBuffer) {
+
+			cmd := protocol.READ_int32(r)
+			switch cmd {
+
+			case protocol.CMD_MSG_WS2U_spacecp:
+				data := protocol.READ_MSG_WS2U_spacecp(r)
+				result <- data.Name
+				data.Put()
+			case protocol.CMD_MSG_WS2U_CommonResult:
+				data := protocol.READ_MSG_WS2U_CommonResult(r)
+				result <- strconv.Itoa(int(data.Result))
+			default:
+				result <- strconv.Itoa(protocol.Err_msg)
+			}
+		}
+		t.Run(fmt.Sprintf("%+v", u), func(t *testing.T) {
+			(&protocol.MSG_U2WS_spacecp{}).WRITE(ctx.In)
+			server.WebHandle(ctx)
+			if r := <-result; r != u.result {
+				t.Errorf("测试%s,希望结果%s,实际结果%s", u.message, u.result, r)
+			}
+		})
+		ctxpool.Put(ctx)
+	}
 }
 func Test_MSG_U2WS_tpl_success(t *testing.T) {
 
-	testRun(t, []test_msg{})
+	testRun(t, []test_msg{test_msg{1, &protocol.MSG_U2WS_tpl_success{}, &protocol.MSG_WS2U_tpl_success{}, protocol.READ_MSG_WS2U_tpl_success, "测试MSG_U2WS_tpl_success"}})
 }
 func Test_MSG_U2WS_upload_avatar(t *testing.T) {
 
-	testRun(t, []test_msg{})
+	jpgdata, err := ioutil.ReadFile("./static/logo.jpeg")
+	if err != nil {
+		t.Error("无法获取测试jpg图片")
+	}
+	type msg struct {
+		uid     int32
+		Data    []byte
+		result  int16
+		message string
+	}
+	result := make(chan int16, 1)
+
+	svr := &server.Httpserver{Out: libraries.NewBuffer(0)}
+	buf := libraries.NewBuffer(0)
+	token := make([]byte, 16)
+	for _, u := range []msg{{result: protocol.Err_Notlogin, message: "测试未登录"},
+		{uid: 1, result: protocol.Err_Imgtype, message: "测试无法识别类型"},
+		{uid: 1, Data: jpgdata, result: protocol.Success, message: "上传ok"},
+	} {
+		//不传oss避免影响头像
+		config.Server.OssEndpoint = ""
+		config.Server.OssBucketName = ""
+		config.Server.OssAccessKeyId = ""
+		config.Server.OssAccessKeySecret = ""
+
+		ctx := ctxpool.Get().(*server.Context)
+		ctx.Conn.Session.Set("Uid", u.uid)
+
+		ctx.Conn.Output_data = func(r *libraries.MsgBuffer) {
+			cmd := protocol.READ_int32(r)
+			switch cmd {
+			case protocol.CMD_MSG_WS2U_CommonResult:
+				data := protocol.READ_MSG_WS2U_CommonResult(r)
+				result <- data.Result
+				data.Put()
+			case protocol.CMD_MSG_WS2U_upload_avatar:
+				result <- protocol.Success
+			default:
+				result <- protocol.Err_msg
+			}
+		}
+		t.Run(fmt.Sprintf("%+v", u), func(t *testing.T) {
+			(&protocol.MSG_U2WS_upload_avatar{
+				Imgdata: u.Data,
+			}).WRITE(buf)
+			ctx.In.Reset()
+			ctx.In.Write(token)
+			ctx.In.Write(buf.Bytes())
+			svr.Conn = ctx.Conn
+			svr.BeginRequest("upload", ctx)
+			if r := <-result; r != u.result {
+				t.Errorf("upload_avatar结果%d,%s", r, protocol.ErrcodeMsg[int16(r)])
+			}
+		})
+		ctxpool.Put(ctx)
+	}
 }
 func Test_MSG_U2WS_Edit_Profile(t *testing.T) {
 
-	testRun(t, []test_msg{})
+	result := make(chan int16, 1)
+	type data struct {
+		Uid          int32
+		Qq           int64
+		Wx           string
+		Mobile       string
+		WebSite      string
+		Sightml      string
+		Customstatus string
+		result       int16 //验证名字或者错误码
+		message      string
+	}
+
+	for _, u := range []data{data{Uid: 0, result: protocol.Err_Notlogin, message: "测试未登录"},
+		data{Uid: 7, result: protocol.Err_Maxsigsize, Sightml: strings.Repeat("a", 201), message: "测试超长签名"},
+		data{Uid: 1, result: protocol.Success, message: "测试成功"},
+	} {
+		ctx := ctxpool.Get().(*server.Context)
+		ctx.Conn.Session.Set("Uid", u.Uid)
+		ctx.Conn.Output_data = func(r *libraries.MsgBuffer) {
+
+			cmd := protocol.READ_int32(r)
+			switch cmd {
+			case protocol.CMD_MSG_WS2U_CommonResult:
+				data := protocol.READ_MSG_WS2U_CommonResult(r)
+				result <- data.Result
+			default:
+				result <- protocol.Err_msg
+			}
+		}
+		t.Run(fmt.Sprintf("%+v", u), func(t *testing.T) {
+			(&protocol.MSG_U2WS_Edit_Profile{
+				Qq:           u.Qq,
+				Wx:           u.Wx,
+				Mobile:       u.Mobile,
+				WebSite:      u.WebSite,
+				Sightml:      u.Sightml,
+				Customstatus: u.Customstatus,
+			}).WRITE(ctx.In)
+			server.WebHandle(ctx)
+			if r := <-result; r != u.result {
+				t.Errorf("测试%s,希望结果%d,实际结果%d", u.message, u.result, r)
+			}
+		})
+		ctxpool.Put(ctx)
+	}
 }
 func Test_MSG_U2WS_RecommendThread(t *testing.T) {
 

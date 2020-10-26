@@ -128,7 +128,7 @@ func replace(i interface{}, db_index int) {
 
 	//sql := do + this.sql.attr + ` INTO` + this.sql.table + ` SET ` + this.extend_data(param)
 	//libraries.DEBUG(buf.String())
-	_, _, e := mysql.Insert(buf.Bytes(), db_index, nil)
+	_, _, e := mysql.Insert(buf.Bytes(), db_index, nil, nil)
 	if e != nil {
 		libraries.DEBUG(`执行Model.Insert出错,sql错误信息：` + e.Error() + `,错误sql：` + buf.String())
 	}
@@ -226,7 +226,7 @@ func insert(i interface{}, db_index int) {
 		libraries.DEBUG(`执行Insert出错，不支持的插入类型` + fmt.Sprint(r.Kind()))
 	}
 	//libraries.DEBUG(sql)
-	_, _, e := mysql.Insert(buf.Bytes(), db_index, nil)
+	_, _, e := mysql.Insert(buf.Bytes(), db_index, nil, nil)
 	if e != nil {
 		libraries.DEBUG(`执行Model.Insert出错,sql错误信息：` + e.Error() + `,错误sql：` + buf.String())
 	}
@@ -369,7 +369,7 @@ func DBTtimer() {
 						buf.WriteString(" and Tid = ")
 						buf.WriteString(strconv.Itoa(int(v.Tid)))
 						buf.WriteString(" order by Id desc limit 1,100) as a)")
-						_, e := mysql.Query_getaffected(buf.Bytes(), log_db, nil)
+						_, e := mysql.Query_getaffected(buf.Bytes(), log_db, nil, nil)
 						if e != nil {
 							libraries.DEBUG("Forum_threadmod修改状态失败", e)
 						}
@@ -415,7 +415,7 @@ func (count *Common_member_count) UpdateLastip(ip string) {
 	buf.WriteString(ip)
 	buf.WriteString("' where Uid=")
 	buf.WriteString(strconv.Itoa(int(count.Uid)))
-	_, _, e := mysql.Insert(buf.Bytes(), master_db, nil)
+	_, _, e := mysql.Insert(buf.Bytes(), master_db, nil, nil)
 	if e != nil {
 		libraries.DEBUG(`执行Model.update出错,sql错误信息：` + e.Error() + `,错误sql：` + buf.String())
 	}
@@ -434,7 +434,7 @@ func (count *Common_member_count) UpdateLastvisit(onlineTime, lastvisit int32) {
 	buf.WriteString(strconv.Itoa(int(lastvisit)))
 	buf.WriteString(" where Uid=")
 	buf.WriteString(strconv.Itoa(int(count.Uid)))
-	_, _, e := mysql.Insert(buf.Bytes(), master_db, nil)
+	_, _, e := mysql.Insert(buf.Bytes(), master_db, nil, nil)
 	if e != nil {
 		libraries.DEBUG(`执行Model.update出错,sql错误信息：` + e.Error() + `,错误sql：` + buf.String())
 	}
@@ -448,7 +448,7 @@ func (count *Common_member_count) AddViews() {
 	buf.Reset()
 	buf.WriteString("update Common_member_count set Views = Views+1 where Uid=")
 	buf.WriteString(strconv.Itoa(int(count.Uid)))
-	_, _, e := mysql.Insert(buf.Bytes(), master_db, nil)
+	_, _, e := mysql.Insert(buf.Bytes(), master_db, nil, nil)
 	if e != nil {
 		libraries.DEBUG(`执行Model.update出错,sql错误信息：` + e.Error() + `,错误sql：` + buf.String())
 	}
@@ -465,7 +465,7 @@ func (count *Common_member_count) Addattachsize(size int32) {
 	buf.WriteString(strconv.Itoa(int(size)))
 	buf.WriteString(" where Uid=")
 	buf.WriteString(strconv.Itoa(int(count.Uid)))
-	_, _, e := mysql.Insert(buf.Bytes(), master_db, nil)
+	_, _, e := mysql.Insert(buf.Bytes(), master_db, nil, nil)
 	if e != nil {
 		libraries.DEBUG(`执行Model.update出错,sql错误信息：` + e.Error() + `,错误sql：` + buf.String())
 	}
@@ -480,7 +480,7 @@ func (view *Forum_thread_data) AddViews() {
 	buf.Reset()
 	buf.WriteString("update Forum_thread_data set Views = Views+1 where Tid=")
 	buf.WriteString(strconv.Itoa(int(view.Tid)))
-	_, _, e := mysql.Insert(buf.Bytes(), master_db, nil)
+	_, _, e := mysql.Insert(buf.Bytes(), master_db, nil, nil)
 	if e != nil {
 		libraries.DEBUG(`执行Model.update出错,sql错误信息：` + e.Error() + `,错误sql：` + buf.String())
 	}

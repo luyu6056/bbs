@@ -1,10 +1,13 @@
 package server
 
 import (
+	"bbs/config"
 	"bbs/libraries"
+	"bbs/protocol"
 	"bytes"
 
 	"github.com/klauspost/compress/gzip"
+	"github.com/luyu6056/cache"
 
 	"fmt"
 	"hash/crc32"
@@ -41,6 +44,7 @@ type Http2server struct {
 	//IN_WINDOW_SIZE  int32 //接受到的窗口允许大小
 	//OUT_WINDOW_SIZE int32 //发送出去的窗口允许大小
 	//lock            sync.Mutex
+	Conn *ClientConn
 }
 type Http2stream struct {
 	Out                             *libraries.MsgBuffer
@@ -338,6 +342,7 @@ var (
 	headerField_content_type_css     = hpack.HeaderField{Name: "content-type", Value: "text/css"}
 	headerField_content_type_default = hpack.HeaderField{Name: "content-type", Value: "application/octet-stream"}
 	headerField_Accept_Ranges        = hpack.HeaderField{Name: "accept-ranges", Value: "bytes"}
+	headerField_allow_origin         = hpack.HeaderField{Name: "access-control-allow-origin", Value: config.Server.Origin}
 )
 var static_cache sync.Map
 
@@ -351,6 +356,9 @@ type file_cache struct {
 	check           uint32 //1秒钟检查1次
 }
 
+var h2_context_pool = sync.Pool{New: func() interface{} {
+	return &Context{Buf: new(libraries.MsgBuffer), In: new(libraries.MsgBuffer), In2: new(libraries.MsgBuffer)}
+}}
 var sendpool_static = func(i interface{}) {
 	stream, ok := i.(*Http2stream)
 	if !ok || stream.Id == 0 { //主steam不允许处理data
@@ -383,12 +391,21 @@ var sendpool_static = func(i interface{}) {
 				}
 
 			}
+		case ":method":
+			switch head.Value {
+			case "OPTIONS":
+				stream.henc.WriteField(headerField_status200)
+				stream.henc.WriteField(headerField_allow_origin)
+				stream.WriteData(nil, 0)
+				return
+			}
 		}
 	}
 
 	if index := strings.IndexByte(filename, '?'); index > 0 {
 		filename = filename[:index]
 	}
+	libraries.DEBUG(filename)
 	switch filename {
 	case "/":
 		filename = "/index.html"
@@ -397,6 +414,12 @@ var sendpool_static = func(i interface{}) {
 		stream.henc.WriteField(headerField_nocache)
 		stream.data.Reset([]byte("hello word!"))
 		stream.WriteData(stream.data, stream.data.Len())
+		return
+	case "/upload":
+		ctx := h2_context_pool.Get().(*Context)
+		ctx.In.ResetBuf(stream.In.Bytes())
+		libraries.DEBUG(stream.In.Len())
+		stream.BeginRequest("upload", ctx)
 		return
 	}
 	filename = static_patch + filename
@@ -749,4 +772,53 @@ func (errcode http2writeRST_STREAM) writeFrame(stream *Http2stream) (err error) 
 	outbuf[12] = byte(errcode)
 	stream.svr.c.AsyncWrite(outbuf)
 	return nil
+}
+
+//从http1移过来的预处理
+func (stream *Http2stream) BeginRequest(route string, c *Context) {
+
+	//maxFormSize := int64(10 << 20) // 10 MB is a lot of text.
+	//reader := io.LimitReader(c.In, maxFormSize+1)
+	//b, err := ioutil.ReadAll(reader)
+	//if err != nil || len(b) < 20 {
+
+	if c.In.Len() < 20 {
+		stream.Out404Frame(nil)
+		return
+	}
+	token := c.In.Next(16)
+	if stream.svr.Conn == nil {
+		stream.svr.Conn = &ClientConn{Output_data: stream.Output_data}
+		b := c.In.PreBytes(4)
+		cmd := int32(b[0]) | int32(b[0])<<8 | int32(b[0])<<16 | int32(b[0])<<24
+		var ok bool
+		stream.svr.Conn.Session, ok = cache.Has(libraries.Bytes2str(token), "session")
+
+		//设置Session指针
+		if !ok {
+			libraries.DEBUG("不ok")
+			c.Conn = stream.svr.Conn
+			//libraries.DEBUG("token不存在", []byte(token))
+			if !libraries.In_slice(cmd, []int32{protocol.CMD_MSG_U2WS_Gettoken, protocol.CMD_MSG_U2WS_Ping}) {
+				msg := protocol.Pool_MSG_WS2U_Ping.Get().(*protocol.MSG_WS2U_Ping)
+				msg.Result = protocol.Err_token
+				c.Output_data(msg)
+				protocol.Pool_MSG_WS2U_Ping.Put(msg)
+				return
+			}
+		}
+	}
+	c.Conn = stream.svr.Conn
+	if control, ok := Control_func[route]; ok {
+		control(c)
+	} else {
+		libraries.DEBUG(fmt.Sprintf("未定义路由%s", route))
+	}
+}
+func (stream *Http2stream) Output_data(b *libraries.MsgBuffer) {
+	stream.henc.WriteField(headerField_status200)
+	stream.henc.WriteField(headerField_nocache)
+	stream.henc.WriteField(headerField_allow_origin)
+	stream.data.Reset(b.Bytes())
+	stream.WriteData(stream.data, stream.data.Len())
 }

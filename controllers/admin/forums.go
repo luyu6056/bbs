@@ -9,6 +9,7 @@ import (
 	"bbs/server"
 	"html"
 	"strconv"
+	"time"
 )
 
 func forums_index(c *server.Context) {
@@ -116,6 +117,10 @@ func edit_forum_menu(data *protocol.MSG_U2WS_Admin_menu_forums_edit, c *server.C
 		msg.Base.Extranew.Namecolor = ""
 		msg.Base.Icon = forum.Field.Icon
 		msg.Base.Status = forum.Status
+		msg.Base.Recommend = 0
+		if forum.Recommend {
+			msg.Base.Recommend = 1
+		}
 		msg.Base.Description = forum.Field.Description
 		msg.Base.Rules = forum.Field.Rules
 		if forum.Field.Extra != nil {
@@ -268,6 +273,10 @@ func edit_forum_base(data *protocol.MSG_admin_forum_edit_base, c *server.Context
 			forum.Field.Icon = filename + "?t=" + libraries.Timestamp()
 		}
 		forum.Status = data.Status
+		forum.Recommend = false
+		if data.Recommend == 1 {
+			forum.Recommend = true
+		}
 		forum.Field.Description = data.Description
 		forum.Field.Rules = data.Rules
 		res := model_forum.UpdateForums([]*db.Forum_forum{forum})
@@ -469,7 +478,9 @@ func edit_forums_threadtypes(data *protocol.MSG_admin_forum_threadtypes, c *serv
 		}
 		id := model_forum_threadtype.Add(insert)
 		insert.Typeid = id
-		inserts = append(inserts, insert)
+		if id > 0 {
+			inserts = append(inserts, insert)
+		}
 	}
 	for _, t1 := range data.Types {
 		for _, t2 := range forum.Field.ThreadtypesMsg {
@@ -479,6 +490,7 @@ func edit_forums_threadtypes(data *protocol.MSG_admin_forum_threadtypes, c *serv
 				t2.Enable = t1.Enable == 1
 				t2.Ismoderator = t1.Moderators == 1
 				t2.Displayorder = t1.Displayorder
+				t2.Timestamp = time.Now()
 				break
 			}
 		}
@@ -489,10 +501,11 @@ func edit_forums_threadtypes(data *protocol.MSG_admin_forum_threadtypes, c *serv
 		for i := len(forum.Field.ThreadtypesMsg); i > 0; i-- {
 			if forum.Field.ThreadtypesMsg[i-1].Typeid == id {
 				forum.Field.ThreadtypesMsg = append(forum.Field.ThreadtypesMsg[:i-1], forum.Field.ThreadtypesMsg[i:]...)
-				model_forum.Table("Forum_threadtype").Where("Typeid=" + strconv.Itoa(int(id))).Delete()
+				model_forum.Table("Forum_threadtype").Prepare().Where("Typeid=?", id).Delete()
 
 			}
 		}
 	}
+	models.UpdatechacheByFid(data.Fid)
 	return protocol.Success
 }

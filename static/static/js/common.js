@@ -5,7 +5,7 @@
 	$Id: common.js 36359 2017-01-20 05:06:45Z nemohou $
 */
 
-var token=[],uploadurl="https://api.jachun.com/upload",check_token=getcookie('check_token'),apilist=["http://192.168.1.136:80"],getapi=false,h5state={},tpl=false,js=false,td=false,qqredirect_uri='https://api.jachun.com/qq';
+var token=[],uploadurl="https://ftp.jachun.com:440/upload",check_token=getcookie('check_token'),apilist=["http://192.168.1.136:80"],getapi=false,h5state={},tpl=false,js=false,td=false;
 var err={
 	"0":"操作失败",
 	"-1":"数据库操作失败",

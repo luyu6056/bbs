@@ -4830,275 +4830,164 @@ function read_byte(b) {
 function read_msg(b){
 	var cmd = read_int32(b),r={};
 	switch(cmd.o){
-	case -1073456288:
-		r=read_MSG_WS2U_QQLogin(cmd.b)
+	case 142633269:
+		r=read_MSG_admin_forum_three(cmd.b)
 		break
-	case -1328936102:
-		r=read_MSG_U2WS_PollThread(cmd.b)
-		break
-	case -60812530:
-		r=read_MSG_WS2U_Getlogin(cmd.b)
-		break
-	case 693391684:
-		r=read_MSG_Admin_setting_functions_activity(cmd.b)
-		break
-	case 1534176368:
-		r=read_MSG_WS2U_Admin_menu_forums_index(cmd.b)
-		break
-	case 1935059451:
-		r=read_MSG_WSU2_Register(cmd.b)
-		break
-	case 256949028:
-		r=read_MSG_block_template_s(cmd.b)
-		break
-	case 1303724428:
-		r=read_MSG_forum_thread_forum(cmd.b)
-		break
-	case -576901504:
-		r=read_MSG_WS2U_threadfastpost(cmd.b)
-		break
-	case 691372614:
-		r=read_MSG_Conn_Down(cmd.b)
-		break
-	case 919505458:
-		r=read_MSG_U2WS_Admin_AddCustommenu(cmd.b)
-		break
-	case -814838689:
-		r=read_MSG_U2WS_Login_Gethash(cmd.b)
-		break
-	case -380025767:
-		r=read_MSG_poll_option(cmd.b)
-		break
-	case -866489977:
-		r=read_MSG_U2WS_forum_recyclebin(cmd.b)
-		break
-	case 340003950:
-		r=read_MSG_C2S_Conn_Client(cmd.b)
-		break
-	case -368188665:
-		r=read_MSG_U2WS_Admin_menu_setting_basic(cmd.b)
-		break
-	case -1249765676:
-		r=read_MSG_forum_cart_child(cmd.b)
-		break
-	case -840121397:
-		r=read_MSG_admin_forum_type(cmd.b)
-		break
-	case 1506905850:
-		r=read_MSG_WS2U_UserLogin(cmd.b)
-		break
-	case 405274830:
-		r=read_MSG_block_item_showstyle(cmd.b)
-		break
-	case 831351040:
-		r=read_MSG_SpacecpGroupPermission(cmd.b)
-		break
-	case 1149592144:
-		r=read_MSG_U2WS_Forum_newthread_submit(cmd.b)
-		break
-	case 1061377392:
-		r=read_MSG_WS2U_upload_tmp_image(cmd.b)
-		break
-	case -2002834216:
-		r=read_MSG_WS2U_space(cmd.b)
-		break
-	case -1667725759:
-		r=read_MSG_Admin_setting_functions_mod(cmd.b)
-		break
-	case -47517347:
-		r=read_MSG_admin_forum_threadsorts(cmd.b)
-		break
-	case 117099868:
-		r=read_MSG_block_item(cmd.b)
-		break
-	case 711910816:
-		r=read_MSG_forum_group(cmd.b)
-		break
-	case -1575018876:
-		r=read_MSG_admin_forum_modrecommen(cmd.b)
-		break
-	case 1006442797:
-		r=read_MSG_U2WS_Admin_menu_forums_moderators(cmd.b)
-		break
-	case -1380880793:
-		r=read_MSG_searchThread(cmd.b)
-		break
-	case -276913250:
-		r=read_MSG_U2WS_SpacecpForum(cmd.b)
-		break
-	case 1127661264:
-		r=read_MSG_post_relateitem(cmd.b)
-		break
-	case 1160234390:
-		r=read_MSG_U2WS_forum_refresh(cmd.b)
-		break
-	case 2028325385:
-		r=read_MSG_Admin_setting_functions_threadexp(cmd.b)
-		break
-	case 35425425:
-		r=read_MSG_U2WS_Admin_edit_setting_access(cmd.b)
-		break
-	case 1848054995:
-		r=read_MSG_U2WS_threadmod(cmd.b)
-		break
-	case 73925374:
-		r=read_MSG_WS2U_threadmod(cmd.b)
-		break
-	case 1184955545:
-		r=read_MSG_WS2U_PollThread_sucess(cmd.b)
-		break
-	case -843349899:
-		r=read_MSG_U2WS_logout(cmd.b)
-		break
-	case 943159600:
-		r=read_MSG_WS2U_Admin_menu_forums_edit(cmd.b)
-		break
-	case -2088438621:
-		r=read_MSG_forum_post_medal(cmd.b)
-		break
-	case -1141941364:
-		r=read_MSG_postreview(cmd.b)
-		break
-	case 127228310:
-		r=read_MSG_U2WS_SpacecpGroup(cmd.b)
-		break
-	case -135332941:
-		r=read_MSG_U2WS_settoken(cmd.b)
-		break
-	case -665524975:
-		r=read_MSG_WS2U_Email_Verify(cmd.b)
-		break
-	case -105825607:
-		r=read_MSG_U2WS_QQLogin(cmd.b)
-		break
-	case 1595670514:
-		r=read_MSG_WS2U_Login_Gethash(cmd.b)
-		break
-	case 1329334923:
-		r=read_MSG_U2WS_upload_avatar(cmd.b)
-		break
-	case -1946743894:
-		r=read_MSG_U2WS_Admin_edit_forums_index(cmd.b)
-		break
-	case -1981134582:
-		r=read_MSG_U2WS_Getseccode(cmd.b)
-		break
-	case 1017770727:
-		r=read_MSG_U2WS_space(cmd.b)
-		break
-	case -713593028:
-		r=read_MSG_U2WS_GetChangeBindUrl(cmd.b)
-		break
-	case -1477628465:
-		r=read_MSG_U2WS_Admin_delete_forum(cmd.b)
-		break
-	case 399348313:
-		r=read_MSG_forum_cart(cmd.b)
-		break
-	case 1348090898:
-		r=read_MSG_WS2U_Admin_menu_misc_custommenu(cmd.b)
-		break
-	case 699095719:
-		r=read_MSG_U2WS_Admin_Edit_custommenu(cmd.b)
-		break
-	case 1849790434:
-		r=read_MSG_U2WS_GetRegister(cmd.b)
-		break
-	case -2064054626:
-		r=read_MSG_U2WS_Ping(cmd.b)
-		break
-	case -35410442:
-		r=read_MSG_forum_lastpost(cmd.b)
-		break
-	case 2087726285:
-		r=read_MSG_threadmod(cmd.b)
-		break
-	case -2109377824:
-		r=read_MSG_userprofiles(cmd.b)
-		break
-	case 621846417:
-		r=read_MSG_WS2U_SpacecpForum(cmd.b)
-		break
-	case 304149348:
-		r=read_MSG_WS2U_ChangePasswd_Gethash(cmd.b)
+	case 1555791377:
+		r=read_MSG_WS2U_Admin_menu_forums_moderators(cmd.b)
 		break
 	case -149517524:
 		r=read_MSG_WS2U_upload_image(cmd.b)
 		break
-	case -1077254663:
-		r=read_MSG_U2WS_GetPostWarnList(cmd.b)
+	case -1619289269:
+		r=read_MSG_U2WS_QQLoginUrl(cmd.b)
 		break
-	case -1799904226:
-		r=read_MSG_U2WS_SpaceThread(cmd.b)
+	case 276821048:
+		r=read_MSG_U2WS_ChangeBind(cmd.b)
 		break
-	case 607514828:
-		r=read_MSG_WS2U_spacecp(cmd.b)
+	case -1249765676:
+		r=read_MSG_forum_cart_child(cmd.b)
 		break
-	case 1334552719:
-		r=read_MSG_U2WS_LostPW(cmd.b)
+	case 831351040:
+		r=read_MSG_SpacecpGroupPermission(cmd.b)
 		break
-	case 830031817:
-		r=read_MSG_WS2U_Admin_menu_setting_access(cmd.b)
+	case 1831523310:
+		r=read_MSG_WS2U_ResetPW(cmd.b)
 		break
-	case -1538758015:
-		r=read_MSG_U2WS_Admin_edit_setting_functions_threadexp(cmd.b)
+	case 1355902236:
+		r=read_MSG_WS2U_BindAccount(cmd.b)
 		break
-	case 1315240586:
-		r=read_MSG_forum_savethread(cmd.b)
+	case 1078534639:
+		r=read_MSG_WS2U_SpaceThread(cmd.b)
 		break
-	case -1523481925:
-		r=read_MSG_usergroup(cmd.b)
+	case -1378201131:
+		r=read_MSG_U2WS_diy_save(cmd.b)
+		break
+	case 1673174523:
+		r=read_MSG_WS2U_CheckRegister(cmd.b)
+		break
+	case 405274830:
+		r=read_MSG_block_item_showstyle(cmd.b)
+		break
+	case 814047536:
+		r=read_MSG_diy_frame(cmd.b)
+		break
+	case 98456939:
+		r=read_MSG_U2WS_Admin_menu_setting_functions(cmd.b)
+		break
+	case 529232478:
+		r=read_MSG_U2WS_Admin_edit_setting_functions_other(cmd.b)
+		break
+	case 548015641:
+		r=read_MSG_WS2U_GetChangeBindUrl(cmd.b)
+		break
+	case -1590634053:
+		r=read_MSG_U2WS_nextset(cmd.b)
+		break
+	case 2117521190:
+		r=read_MSG_forum_album(cmd.b)
+		break
+	case 1160234390:
+		r=read_MSG_U2WS_forum_refresh(cmd.b)
 		break
 	case 874163309:
 		r=read_MSG_ThreadBind(cmd.b)
 		break
-	case -1418299074:
-		r=read_MSG_block_style(cmd.b)
-		break
-	case 1959565559:
-		r=read_MSG_block_item_showstyle_info(cmd.b)
-		break
-	case 1475637593:
-		r=read_MSG_U2WS_RecommendThread(cmd.b)
-		break
-	case -839162471:
-		r=read_MSG_WS2U_SpacecpGroup(cmd.b)
-		break
-	case 1710690038:
-		r=read_MSG_WS2U_Server_OK(cmd.b)
+	case -848292620:
+		r=read_MSG_U2WS_Admin_edit_setting_functions_comment(cmd.b)
 		break
 	case 1078788684:
 		r=read_MSG_setting_activityfield(cmd.b)
 		break
-	case -295518409:
-		r=read_MSG_U2WS_Admin_Edit_forums_moderator(cmd.b)
-		break
-	case -1619289269:
-		r=read_MSG_U2WS_QQLoginUrl(cmd.b)
-		break
-	case -623998936:
-		r=read_MSG_WS2U_QQLoginUrl(cmd.b)
-		break
-	case -1451728518:
-		r=read_MSG_add_extcredits(cmd.b)
+	case 107399903:
+		r=read_MSG_diy_block(cmd.b)
 		break
 	case 1199011583:
 		r=read_MSG_U2WS_delete_attach(cmd.b)
 		break
-	case -1405787337:
-		r=read_MSG_U2WS_Admin_menu_forums_edit(cmd.b)
+	case -34596055:
+		r=read_MSG_WS2U_custommenu(cmd.b)
 		break
-	case 1617053915:
-		r=read_MSG_block_template_order(cmd.b)
+	case 256949028:
+		r=read_MSG_block_template_s(cmd.b)
 		break
-	case 54726888:
-		r=read_MSG_U2WS_ChangePasswd(cmd.b)
+	case -1370806890:
+		r=read_MSG_diy_title(cmd.b)
+		break
+	case -814838689:
+		r=read_MSG_U2WS_Login_Gethash(cmd.b)
+		break
+	case -843349899:
+		r=read_MSG_U2WS_logout(cmd.b)
+		break
+	case -1538758015:
+		r=read_MSG_U2WS_Admin_edit_setting_functions_threadexp(cmd.b)
+		break
+	case 37433885:
+		r=read_MSG_Admin_setting_functions_heatthread(cmd.b)
+		break
+	case 1392055914:
+		r=read_MSG_U2WS_Admin_edit_setting_functions_activity(cmd.b)
+		break
+	case 711910816:
+		r=read_MSG_forum_group(cmd.b)
+		break
+	case -371741980:
+		r=read_MSG_U2WS_Admin_edit_setting_functions_mod(cmd.b)
+		break
+	case 1334552719:
+		r=read_MSG_U2WS_LostPW(cmd.b)
+		break
+	case 340003950:
+		r=read_MSG_C2S_Conn_Client(cmd.b)
+		break
+	case -480884745:
+		r=read_MSG_forum_attach(cmd.b)
+		break
+	case -2109377824:
+		r=read_MSG_userprofiles(cmd.b)
+		break
+	case 616977199:
+		r=read_MSG_WS2U_forum(cmd.b)
+		break
+	case 1184955545:
+		r=read_MSG_WS2U_PollThread_sucess(cmd.b)
+		break
+	case 1296010750:
+		r=read_MSG_post_ratelog(cmd.b)
+		break
+	case -60812530:
+		r=read_MSG_WS2U_Getlogin(cmd.b)
 		break
 	case -1451137317:
 		r=read_MSG_diy_tab(cmd.b)
 		break
-	case 814047536:
-		r=read_MSG_diy_frame(cmd.b)
+	case 578970688:
+		r=read_MSG_block_template(cmd.b)
+		break
+	case 664970303:
+		r=read_MSG_U2WS_forum_carlist(cmd.b)
+		break
+	case -623998936:
+		r=read_MSG_WS2U_QQLoginUrl(cmd.b)
+		break
+	case 1710690038:
+		r=read_MSG_WS2U_Server_OK(cmd.b)
+		break
+	case -1667725759:
+		r=read_MSG_Admin_setting_functions_mod(cmd.b)
+		break
+	case 1127661264:
+		r=read_MSG_post_relateitem(cmd.b)
+		break
+	case 1503238307:
+		r=read_MSG_U2WS_searchThread(cmd.b)
+		break
+	case 1027411378:
+		r=read_MSG_U2WS_Edit_Profile(cmd.b)
+		break
+	case -2088438621:
+		r=read_MSG_forum_post_medal(cmd.b)
 		break
 	case -1092979582:
 		r=read_MSG_diy_column(cmd.b)
@@ -5106,71 +4995,56 @@ function read_msg(b){
 	case -1867493945:
 		r=read_MSG_forum_type(cmd.b)
 		break
-	case 1031321379:
-		r=read_MSG_U2WS_upload_image(cmd.b)
+	case 885980426:
+		r=read_MSG_U2WS_viewthreadmod(cmd.b)
 		break
-	case 98456939:
-		r=read_MSG_U2WS_Admin_menu_setting_functions(cmd.b)
+	case 689990192:
+		r=read_MSG_GroupIdName(cmd.b)
 		break
-	case 177318912:
-		r=read_MSG_forum_extra(cmd.b)
+	case 157251877:
+		r=read_MSG_WS2U_Gettoken(cmd.b)
 		break
-	case 899199166:
-		r=read_MSG_U2WS_ChangePasswd_Gethash(cmd.b)
+	case 1801302893:
+		r=read_MSG_Admin_setting_access(cmd.b)
 		break
-	case -303705781:
-		r=read_MSG_Admin_setting_functions_guide(cmd.b)
+	case -160848332:
+		r=read_MSG_U2WS_Gettoken(cmd.b)
 		break
-	case 56019999:
-		r=read_MSG_U2WS_Getlogin(cmd.b)
+	case -840121397:
+		r=read_MSG_admin_forum_type(cmd.b)
 		break
-	case 106954267:
-		r=read_MSG_WS2U_tpl_load_js(cmd.b)
+	case 1595670514:
+		r=read_MSG_WS2U_Login_Gethash(cmd.b)
+		break
+	case -1627801678:
+		r=read_MSG_diy_block_info(cmd.b)
+		break
+	case 1189303805:
+		r=read_MSG_forum_modrecommend(cmd.b)
+		break
+	case 1149592144:
+		r=read_MSG_U2WS_Forum_newthread_submit(cmd.b)
 		break
 	case -1106524571:
 		r=read_MSG_U2WS_forum_viewthread(cmd.b)
 		break
-	case 1969915046:
-		r=read_MSG_U2WS_threadfastpost(cmd.b)
+	case -1265560393:
+		r=read_MSG_U2WS_tpl_success(cmd.b)
 		break
-	case -1370806890:
-		r=read_MSG_diy_title(cmd.b)
+	case 1959754928:
+		r=read_MSG_admin_forums_group(cmd.b)
 		break
-	case 292242050:
-		r=read_MSG_Poll_info(cmd.b)
+	case -105825607:
+		r=read_MSG_U2WS_QQLogin(cmd.b)
 		break
-	case -866166167:
-		r=read_MSG_WS2U_Getseccode(cmd.b)
+	case -1405787337:
+		r=read_MSG_U2WS_Admin_menu_forums_edit(cmd.b)
 		break
-	case -467585541:
-		r=read_MSG_S2C_Conn_Client(cmd.b)
-		break
-	case 902427406:
-		r=read_MSG_U2WS_Admin_rebuild_leftmenu(cmd.b)
-		break
-	case -1580472055:
-		r=read_MSG_WS2U_Admin_rebuild_leftmenu(cmd.b)
-		break
-	case 1654141527:
-		r=read_MSG_WS2U_Admin_menu_setting_functions(cmd.b)
-		break
-	case -1811127086:
-		r=read_MSG_forum_replycredit(cmd.b)
-		break
-	case 1392055914:
-		r=read_MSG_U2WS_Admin_edit_setting_functions_activity(cmd.b)
+	case 1031321379:
+		r=read_MSG_U2WS_upload_image(cmd.b)
 		break
 	case 58375333:
 		r=read_MSG_admin_forum_extra(cmd.b)
-		break
-	case -740027387:
-		r=read_MSG_diy_info(cmd.b)
-		break
-	case 1448265555:
-		r=read_MSG_block_item_field(cmd.b)
-		break
-	case 1760833800:
-		r=read_MSG_SpaceThread(cmd.b)
 		break
 	case 774094179:
 		r=read_MSG_U2WS_forum_modcp(cmd.b)
@@ -5178,311 +5052,437 @@ function read_msg(b){
 	case -1531212121:
 		r=read_MSG_WS2U_viewthreadmod(cmd.b)
 		break
+	case -1380880793:
+		r=read_MSG_searchThread(cmd.b)
+		break
 	case 1316147567:
 		r=read_MSG_Admin_setting_functions_recommend(cmd.b)
 		break
-	case 1761115921:
-		r=read_MSG_forum_index_cart(cmd.b)
+	case -1451728518:
+		r=read_MSG_add_extcredits(cmd.b)
 		break
-	case -480884745:
-		r=read_MSG_forum_attach(cmd.b)
+	case -576901504:
+		r=read_MSG_WS2U_threadfastpost(cmd.b)
 		break
-	case 494965013:
-		r=read_MSG_U2WS_spacecp(cmd.b)
+	case -47517347:
+		r=read_MSG_admin_forum_threadsorts(cmd.b)
 		break
-	case -446167730:
-		r=read_MSG_U2WS_GetHead(cmd.b)
+	case 2087726285:
+		r=read_MSG_threadmod(cmd.b)
 		break
-	case -1378201131:
-		r=read_MSG_U2WS_diy_save(cmd.b)
+	case 73925374:
+		r=read_MSG_WS2U_threadmod(cmd.b)
 		break
-	case 2117521190:
-		r=read_MSG_forum_album(cmd.b)
-		break
-	case 1185077681:
-		r=read_MSG_WS2U_Common_Head(cmd.b)
-		break
-	case 213874677:
-		r=read_MSG_forum_thread(cmd.b)
-		break
-	case 2145302771:
-		r=read_MSG_forum_threadrush(cmd.b)
-		break
-	case -371741980:
-		r=read_MSG_U2WS_Admin_edit_setting_functions_mod(cmd.b)
-		break
-	case -540414860:
-		r=read_MSG_admin_forum_edit_base(cmd.b)
-		break
-	case 1189303805:
-		r=read_MSG_forum_modrecommend(cmd.b)
-		break
-	case 1617924422:
-		r=read_MSG_WS2U_tpl_success(cmd.b)
-		break
-	case -34596055:
-		r=read_MSG_WS2U_custommenu(cmd.b)
-		break
-	case 1056482773:
-		r=read_MSG_U2WS_Admin_edit_setting_basic(cmd.b)
-		break
-	case -548832986:
-		r=read_MSG_WS2U_upload_avatar(cmd.b)
-		break
-	case 1355902236:
-		r=read_MSG_WS2U_BindAccount(cmd.b)
-		break
-	case -31251618:
-		r=read_MSG_Admin_setting_functions_other(cmd.b)
+	case 899199166:
+		r=read_MSG_U2WS_ChangePasswd_Gethash(cmd.b)
 		break
 	case -1334594352:
 		r=read_MSG_forum_idname(cmd.b)
 		break
-	case -2058288370:
-		r=read_MSG_WS2U_RecommendThread(cmd.b)
+	case 1534176368:
+		r=read_MSG_WS2U_Admin_menu_forums_index(cmd.b)
 		break
-	case 1439360859:
-		r=read_MSG_WS2U_ChangeBind(cmd.b)
+	case 1506905850:
+		r=read_MSG_WS2U_UserLogin(cmd.b)
 		break
-	case -761168918:
-		r=read_MSG_U2WS_tpl_load_js(cmd.b)
+	case 1849790434:
+		r=read_MSG_U2WS_GetRegister(cmd.b)
 		break
-	case 1883458624:
-		r=read_MSG_forum_imgattach(cmd.b)
-		break
-	case -1221014720:
-		r=read_MSG_C2S_Regedit(cmd.b)
-		break
-	case 37433885:
-		r=read_MSG_Admin_setting_functions_heatthread(cmd.b)
-		break
-	case -786656194:
-		r=read_MSG_Admin_setting_functions_comment(cmd.b)
-		break
-	case -704884081:
-		r=read_MSG_U2WS_Checkseccode(cmd.b)
-		break
-	case 1296010750:
-		r=read_MSG_post_ratelog(cmd.b)
-		break
-	case -1934823944:
-		r=read_MSG_post_comment(cmd.b)
-		break
-	case 1027411378:
-		r=read_MSG_U2WS_Edit_Profile(cmd.b)
-		break
-	case 1419751991:
-		r=read_MSG_U2WS_ResetPW(cmd.b)
-		break
-	case -160848332:
-		r=read_MSG_U2WS_Gettoken(cmd.b)
-		break
-	case 735634866:
-		r=read_MSG_U2WS_Admin_menu_index(cmd.b)
-		break
-	case 1780863600:
-		r=read_MSG_admin_forum_threadtypes(cmd.b)
-		break
-	case 1555791377:
-		r=read_MSG_WS2U_Admin_menu_forums_moderators(cmd.b)
-		break
-	case 1265224859:
-		r=read_MSG_Admin_setting_functions_curscript(cmd.b)
-		break
-	case -961222056:
-		r=read_MSG_U2WS_Register(cmd.b)
-		break
-	case 689990192:
-		r=read_MSG_GroupIdName(cmd.b)
-		break
-	case 548015641:
-		r=read_MSG_WS2U_GetChangeBindUrl(cmd.b)
-		break
-	case 426252242:
-		r=read_MSG_U2WS_Admin_menu_misc_custommenu(cmd.b)
-		break
-	case -204476842:
-		r=read_MSG_U2WS_CheckRegister(cmd.b)
-		break
-	case 104018229:
-		r=read_MSG_forum_threadtype(cmd.b)
-		break
-	case 2090873870:
-		r=read_MSG_WS2U_forum_newthread(cmd.b)
-		break
-	case -1161885165:
-		r=read_MSG_WS2U_GetRegister(cmd.b)
-		break
-	case 664970303:
-		r=read_MSG_U2WS_forum_carlist(cmd.b)
-		break
-	case 1779812911:
-		r=read_MSG_U2WS_Admin_menu_setting_access(cmd.b)
-		break
-	case 471008838:
-		r=read_MSG_diy_attr(cmd.b)
-		break
-	case -111561876:
-		r=read_MSG_WS2U_LostPW(cmd.b)
-		break
-	case 2061189765:
-		r=read_MSG_admin_forum(cmd.b)
-		break
-	case -10820895:
-		r=read_MSG_admin_forums_moderator(cmd.b)
-		break
-	case 885980426:
-		r=read_MSG_U2WS_viewthreadmod(cmd.b)
-		break
-	case -1181151646:
-		r=read_MSG_WS2U_Ping(cmd.b)
-		break
-	case -871377362:
-		r=read_MSG_U2WS_Admin_setting_setnav(cmd.b)
-		break
-	case 386708394:
-		r=read_MSG_diy_first(cmd.b)
-		break
-	case 1673174523:
-		r=read_MSG_WS2U_CheckRegister(cmd.b)
-		break
-	case 157251877:
-		r=read_MSG_WS2U_Gettoken(cmd.b)
-		break
-	case 578970688:
-		r=read_MSG_block_template(cmd.b)
-		break
-	case 806931670:
-		r=read_MSG_forum_post_rush(cmd.b)
-		break
-	case 1272358720:
-		r=read_MSG_WS2U_forum_viewthread(cmd.b)
-		break
-	case -1812486996:
-		r=read_MSG_WS2U_searchThread(cmd.b)
-		break
-	case 2105593483:
-		r=read_MSG_WS2U_GetThreadBind(cmd.b)
-		break
-	case 866031831:
-		r=read_MSG_U2WS_UserLogin(cmd.b)
-		break
-	case 1000231794:
-		r=read_MSG_U2WS_forum_index(cmd.b)
-		break
-	case -950215658:
-		r=read_MSG_SpacePost(cmd.b)
-		break
-	case 1503238307:
-		r=read_MSG_U2WS_searchThread(cmd.b)
-		break
-	case 276821048:
-		r=read_MSG_U2WS_ChangeBind(cmd.b)
-		break
-	case -511404881:
-		r=read_MSG_U2WS_Admin_edit_setting_functions_heatthread(cmd.b)
-		break
-	case 1479415992:
-		r=read_MSG_WS2U_Admin_menu_setting_basic(cmd.b)
-		break
-	case 1801302893:
-		r=read_MSG_Admin_setting_access(cmd.b)
-		break
-	case -848292620:
-		r=read_MSG_U2WS_Admin_edit_setting_functions_comment(cmd.b)
-		break
-	case -1590634053:
-		r=read_MSG_U2WS_nextset(cmd.b)
-		break
-	case -1627801678:
-		r=read_MSG_diy_block_info(cmd.b)
-		break
-	case -895601579:
-		r=read_MSG_U2WS_upload_tmp_image(cmd.b)
-		break
-	case 436275943:
-		r=read_MSG_WS2U_CommonResult(cmd.b)
-		break
-	case -796428201:
-		r=read_MSG_WS2U_Forum_newthread_submit(cmd.b)
+	case -35410442:
+		r=read_MSG_forum_lastpost(cmd.b)
 		break
 	case -1210591342:
 		r=read_MSG_WS2U_forum_carlist(cmd.b)
 		break
-	case -1265560393:
-		r=read_MSG_U2WS_tpl_success(cmd.b)
-		break
-	case -1505563183:
-		r=read_MSG_admin_forum_edit_ext(cmd.b)
-		break
-	case 755023070:
-		r=read_MSG_forum(cmd.b)
-		break
-	case 1078534639:
-		r=read_MSG_WS2U_SpaceThread(cmd.b)
-		break
-	case 107399903:
-		r=read_MSG_diy_block(cmd.b)
-		break
-	case -493836804:
-		r=read_MSG_post_member_profile(cmd.b)
-		break
-	case 305846558:
-		r=read_MSG_U2WS_Email_Verify(cmd.b)
-		break
-	case 1831523310:
-		r=read_MSG_WS2U_ResetPW(cmd.b)
-		break
-	case -2077234963:
-		r=read_MSG_U2WS_BindAccount(cmd.b)
-		break
-	case 142633269:
-		r=read_MSG_admin_forum_three(cmd.b)
+	case 2028325385:
+		r=read_MSG_Admin_setting_functions_threadexp(cmd.b)
 		break
 	case -302662362:
 		r=read_MSG_U2WS_GetThreadBind(cmd.b)
 		break
-	case -981386295:
-		r=read_MSG_U2WS_Admin_menu_forums_index(cmd.b)
+	case 1448265555:
+		r=read_MSG_block_item_field(cmd.b)
 		break
-	case 1189377635:
-		r=read_MSG_forum_post(cmd.b)
-		break
-	case -1736066974:
-		r=read_MSG_WS2U_nextset(cmd.b)
-		break
-	case -687733422:
-		r=read_MSG_WS2U_delete_attach(cmd.b)
-		break
-	case 529232478:
-		r=read_MSG_U2WS_Admin_edit_setting_functions_other(cmd.b)
-		break
-	case -278866301:
-		r=read_MSG_WS2U_forum_index(cmd.b)
-		break
-	case 616977199:
-		r=read_MSG_WS2U_forum(cmd.b)
-		break
-	case -1375386023:
-		r=read_MSG_U2WS_forum_newthread(cmd.b)
-		break
-	case -1830850073:
-		r=read_MSG_U2WS_Admin_edit_setting_functions_recommend(cmd.b)
-		break
-	case 206405707:
-		r=read_MSG_U2WS_Admin_edit_setting_functions_guide(cmd.b)
-		break
-	case 1251023957:
-		r=read_MSG_admin_forum_cart(cmd.b)
-		break
-	case 1959754928:
-		r=read_MSG_admin_forums_group(cmd.b)
+	case 177318912:
+		r=read_MSG_forum_extra(cmd.b)
 		break
 	case -1863283440:
 		r=read_MSG_U2WS_forum(cmd.b)
 		break
+	case 693391684:
+		r=read_MSG_Admin_setting_functions_activity(cmd.b)
+		break
+	case 2061189765:
+		r=read_MSG_admin_forum(cmd.b)
+		break
+	case 56019999:
+		r=read_MSG_U2WS_Getlogin(cmd.b)
+		break
+	case -467585541:
+		r=read_MSG_S2C_Conn_Client(cmd.b)
+		break
+	case -1946743894:
+		r=read_MSG_U2WS_Admin_edit_forums_index(cmd.b)
+		break
+	case -295518409:
+		r=read_MSG_U2WS_Admin_Edit_forums_moderator(cmd.b)
+		break
+	case 1303724428:
+		r=read_MSG_forum_thread_forum(cmd.b)
+		break
+	case 1061377392:
+		r=read_MSG_WS2U_upload_tmp_image(cmd.b)
+		break
+	case 1779812911:
+		r=read_MSG_U2WS_Admin_menu_setting_access(cmd.b)
+		break
+	case -981386295:
+		r=read_MSG_U2WS_Admin_menu_forums_index(cmd.b)
+		break
+	case -540414860:
+		r=read_MSG_admin_forum_edit_base(cmd.b)
+		break
+	case 1761115921:
+		r=read_MSG_forum_index_cart(cmd.b)
+		break
+	case -368188665:
+		r=read_MSG_U2WS_Admin_menu_setting_basic(cmd.b)
+		break
+	case -1418299074:
+		r=read_MSG_block_style(cmd.b)
+		break
+	case 117099868:
+		r=read_MSG_block_item(cmd.b)
+		break
+	case -2002834216:
+		r=read_MSG_WS2U_space(cmd.b)
+		break
+	case -135332941:
+		r=read_MSG_U2WS_settoken(cmd.b)
+		break
+	case 1265224859:
+		r=read_MSG_Admin_setting_functions_curscript(cmd.b)
+		break
+	case 1959565559:
+		r=read_MSG_block_item_showstyle_info(cmd.b)
+		break
+	case -2077234963:
+		r=read_MSG_U2WS_BindAccount(cmd.b)
+		break
+	case 1185077681:
+		r=read_MSG_WS2U_Common_Head(cmd.b)
+		break
+	case -446167730:
+		r=read_MSG_U2WS_GetHead(cmd.b)
+		break
+	case 1189377635:
+		r=read_MSG_forum_post(cmd.b)
+		break
+	case -839162471:
+		r=read_MSG_WS2U_SpacecpGroup(cmd.b)
+		break
+	case -665524975:
+		r=read_MSG_WS2U_Email_Verify(cmd.b)
+		break
+	case 830031817:
+		r=read_MSG_WS2U_Admin_menu_setting_access(cmd.b)
+		break
+	case 621846417:
+		r=read_MSG_WS2U_SpacecpForum(cmd.b)
+		break
+	case -866166167:
+		r=read_MSG_WS2U_Getseccode(cmd.b)
+		break
+	case 106954267:
+		r=read_MSG_WS2U_tpl_load_js(cmd.b)
+		break
+	case 699095719:
+		r=read_MSG_U2WS_Admin_Edit_custommenu(cmd.b)
+		break
+	case -1580472055:
+		r=read_MSG_WS2U_Admin_rebuild_leftmenu(cmd.b)
+		break
+	case -786656194:
+		r=read_MSG_Admin_setting_functions_comment(cmd.b)
+		break
+	case -10820895:
+		r=read_MSG_admin_forums_moderator(cmd.b)
+		break
+	case -1812486996:
+		r=read_MSG_WS2U_searchThread(cmd.b)
+		break
+	case 691372614:
+		r=read_MSG_Conn_Down(cmd.b)
+		break
+	case 1251023957:
+		r=read_MSG_admin_forum_cart(cmd.b)
+		break
+	case -687733422:
+		r=read_MSG_WS2U_delete_attach(cmd.b)
+		break
+	case 1475637593:
+		r=read_MSG_U2WS_RecommendThread(cmd.b)
+		break
+	case 1617053915:
+		r=read_MSG_block_template_order(cmd.b)
+		break
+	case 1017770727:
+		r=read_MSG_U2WS_space(cmd.b)
+		break
+	case -111561876:
+		r=read_MSG_WS2U_LostPW(cmd.b)
+		break
+	case -1141941364:
+		r=read_MSG_postreview(cmd.b)
+		break
+	case 2105593483:
+		r=read_MSG_WS2U_GetThreadBind(cmd.b)
+		break
+	case -380025767:
+		r=read_MSG_poll_option(cmd.b)
+		break
+	case 386708394:
+		r=read_MSG_diy_first(cmd.b)
+		break
+	case 1883458624:
+		r=read_MSG_forum_imgattach(cmd.b)
+		break
+	case -1934823944:
+		r=read_MSG_post_comment(cmd.b)
+		break
+	case -950215658:
+		r=read_MSG_SpacePost(cmd.b)
+		break
+	case 35425425:
+		r=read_MSG_U2WS_Admin_edit_setting_access(cmd.b)
+		break
+	case -1799904226:
+		r=read_MSG_U2WS_SpaceThread(cmd.b)
+		break
+	case 607514828:
+		r=read_MSG_WS2U_spacecp(cmd.b)
+		break
+	case 1479415992:
+		r=read_MSG_WS2U_Admin_menu_setting_basic(cmd.b)
+		break
+	case 1760833800:
+		r=read_MSG_SpaceThread(cmd.b)
+		break
+	case 755023070:
+		r=read_MSG_forum(cmd.b)
+		break
+	case -866489977:
+		r=read_MSG_U2WS_forum_recyclebin(cmd.b)
+		break
+	case 2090873870:
+		r=read_MSG_WS2U_forum_newthread(cmd.b)
+		break
+	case -1073456288:
+		r=read_MSG_WS2U_QQLogin(cmd.b)
+		break
+	case -713593028:
+		r=read_MSG_U2WS_GetChangeBindUrl(cmd.b)
+		break
+	case 436275943:
+		r=read_MSG_WS2U_CommonResult(cmd.b)
+		break
+	case -1161885165:
+		r=read_MSG_WS2U_GetRegister(cmd.b)
+		break
+	case -796428201:
+		r=read_MSG_WS2U_Forum_newthread_submit(cmd.b)
+		break
+	case 399348313:
+		r=read_MSG_forum_cart(cmd.b)
+		break
+	case 305846558:
+		r=read_MSG_U2WS_Email_Verify(cmd.b)
+		break
+	case -1181151646:
+		r=read_MSG_WS2U_Ping(cmd.b)
+		break
+	case 1848054995:
+		r=read_MSG_U2WS_threadmod(cmd.b)
+		break
+	case -548832986:
+		r=read_MSG_WS2U_upload_avatar(cmd.b)
+		break
+	case 919505458:
+		r=read_MSG_U2WS_Admin_AddCustommenu(cmd.b)
+		break
+	case -1523481925:
+		r=read_MSG_usergroup(cmd.b)
+		break
+	case -1477628465:
+		r=read_MSG_U2WS_Admin_delete_forum(cmd.b)
+		break
+	case 1006442797:
+		r=read_MSG_U2WS_Admin_menu_forums_moderators(cmd.b)
+		break
+	case 866031831:
+		r=read_MSG_U2WS_UserLogin(cmd.b)
+		break
+	case 1969915046:
+		r=read_MSG_U2WS_threadfastpost(cmd.b)
+		break
+	case 1617924422:
+		r=read_MSG_WS2U_tpl_success(cmd.b)
+		break
+	case -1981134582:
+		r=read_MSG_U2WS_Getseccode(cmd.b)
+		break
+	case 735634866:
+		r=read_MSG_U2WS_Admin_menu_index(cmd.b)
+		break
+	case -511404881:
+		r=read_MSG_U2WS_Admin_edit_setting_functions_heatthread(cmd.b)
+		break
+	case 213874677:
+		r=read_MSG_forum_thread(cmd.b)
+		break
+	case 1315240586:
+		r=read_MSG_forum_savethread(cmd.b)
+		break
+	case -1221014720:
+		r=read_MSG_C2S_Regedit(cmd.b)
+		break
+	case 1056482773:
+		r=read_MSG_U2WS_Admin_edit_setting_basic(cmd.b)
+		break
+	case 104018229:
+		r=read_MSG_forum_threadtype(cmd.b)
+		break
+	case -493836804:
+		r=read_MSG_post_member_profile(cmd.b)
+		break
+	case 1348090898:
+		r=read_MSG_WS2U_Admin_menu_misc_custommenu(cmd.b)
+		break
+	case -1575018876:
+		r=read_MSG_admin_forum_modrecommen(cmd.b)
+		break
+	case -31251618:
+		r=read_MSG_Admin_setting_functions_other(cmd.b)
+		break
+	case 1272358720:
+		r=read_MSG_WS2U_forum_viewthread(cmd.b)
+		break
+	case 304149348:
+		r=read_MSG_WS2U_ChangePasswd_Gethash(cmd.b)
+		break
+	case -1375386023:
+		r=read_MSG_U2WS_forum_newthread(cmd.b)
+		break
+	case -895601579:
+		r=read_MSG_U2WS_upload_tmp_image(cmd.b)
+		break
+	case 54726888:
+		r=read_MSG_U2WS_ChangePasswd(cmd.b)
+		break
+	case -761168918:
+		r=read_MSG_U2WS_tpl_load_js(cmd.b)
+		break
+	case -204476842:
+		r=read_MSG_U2WS_CheckRegister(cmd.b)
+		break
+	case 2145302771:
+		r=read_MSG_forum_threadrush(cmd.b)
+		break
+	case -303705781:
+		r=read_MSG_Admin_setting_functions_guide(cmd.b)
+		break
+	case 1000231794:
+		r=read_MSG_U2WS_forum_index(cmd.b)
+		break
+	case 1329334923:
+		r=read_MSG_U2WS_upload_avatar(cmd.b)
+		break
+	case 292242050:
+		r=read_MSG_Poll_info(cmd.b)
+		break
+	case -1505563183:
+		r=read_MSG_admin_forum_edit_ext(cmd.b)
+		break
+	case -278866301:
+		r=read_MSG_WS2U_forum_index(cmd.b)
+		break
 	case 239411683:
 		r=read_MSG_post_ratelog_score(cmd.b)
+		break
+	case 426252242:
+		r=read_MSG_U2WS_Admin_menu_misc_custommenu(cmd.b)
+		break
+	case 471008838:
+		r=read_MSG_diy_attr(cmd.b)
+		break
+	case -1811127086:
+		r=read_MSG_forum_replycredit(cmd.b)
+		break
+	case -1328936102:
+		r=read_MSG_U2WS_PollThread(cmd.b)
+		break
+	case 206405707:
+		r=read_MSG_U2WS_Admin_edit_setting_functions_guide(cmd.b)
+		break
+	case 494965013:
+		r=read_MSG_U2WS_spacecp(cmd.b)
+		break
+	case 1419751991:
+		r=read_MSG_U2WS_ResetPW(cmd.b)
+		break
+	case -1830850073:
+		r=read_MSG_U2WS_Admin_edit_setting_functions_recommend(cmd.b)
+		break
+	case -871377362:
+		r=read_MSG_U2WS_Admin_setting_setnav(cmd.b)
+		break
+	case 943159600:
+		r=read_MSG_WS2U_Admin_menu_forums_edit(cmd.b)
+		break
+	case -704884081:
+		r=read_MSG_U2WS_Checkseccode(cmd.b)
+		break
+	case 806931670:
+		r=read_MSG_forum_post_rush(cmd.b)
+		break
+	case -1736066974:
+		r=read_MSG_WS2U_nextset(cmd.b)
+		break
+	case 1439360859:
+		r=read_MSG_WS2U_ChangeBind(cmd.b)
+		break
+	case 902427406:
+		r=read_MSG_U2WS_Admin_rebuild_leftmenu(cmd.b)
+		break
+	case -1077254663:
+		r=read_MSG_U2WS_GetPostWarnList(cmd.b)
+		break
+	case -2058288370:
+		r=read_MSG_WS2U_RecommendThread(cmd.b)
+		break
+	case -276913250:
+		r=read_MSG_U2WS_SpacecpForum(cmd.b)
+		break
+	case 1780863600:
+		r=read_MSG_admin_forum_threadtypes(cmd.b)
+		break
+	case -961222056:
+		r=read_MSG_U2WS_Register(cmd.b)
+		break
+	case 1935059451:
+		r=read_MSG_WSU2_Register(cmd.b)
+		break
+	case -740027387:
+		r=read_MSG_diy_info(cmd.b)
+		break
+	case 127228310:
+		r=read_MSG_U2WS_SpacecpGroup(cmd.b)
+		break
+	case -2064054626:
+		r=read_MSG_U2WS_Ping(cmd.b)
+		break
+	case 1654141527:
+		r=read_MSG_WS2U_Admin_menu_setting_functions(cmd.b)
 		break
 	}
 	return {cmd:cmd.o,msg:r.o}
@@ -12284,6 +12284,7 @@ function write_MSG_admin_forum_edit_base(o){
 	b=b.concat(write_int8(o.Shownav));
 	b=b.concat(write_string(o.Description));
 	b=b.concat(write_string(o.Rules));
+	b=b.concat(write_int8(o.Recommend));
 	return b
 }
 function read_MSG_admin_forum_edit_base(b){
@@ -12319,6 +12320,8 @@ function read_MSG_admin_forum_edit_base(b){
 	o.Description=r.o
 	r=read_string(r.b);
 	o.Rules=r.o
+	r=read_int8(r.b);
+	o.Recommend=r.o
 	return {o:o,b:r.b}
 }
 function WRITE_MSG_admin_forum_extra(o){
@@ -12700,7 +12703,7 @@ function read_MSG_U2WS_Admin_Edit_forums_moderator(b){
 	$Id: common.js 36359 2017-01-20 05:06:45Z nemohou $
 */
 
-var token=[],uploadurl="https://api.jachun.com/upload",check_token=getcookie('check_token'),apilist=["http://192.168.1.136:80"],getapi=false,h5state={},tpl=false,js=false,td=false,qqredirect_uri='https://api.jachun.com/qq';
+var token=[],uploadurl="https://ftp.jachun.com:440/upload",check_token=getcookie('check_token'),apilist=["http://192.168.1.136:80"],getapi=false,h5state={},tpl=false,js=false,td=false;
 var err={
 	"0":"操作失败",
 	"-1":"数据库操作失败",
@@ -19755,4 +19758,4 @@ function _setShortcut() {
 	this.autozoomin();
 };
 ///<jscompress sourcefile="v3.js" />
-!function(){"use strict";function e(e){return e===undefined||null===e}function t(e){return e!==undefined&&null!==e}function n(e){return null!==e&&"object"===(void 0===e?"undefined":l(e))}function r(e){return"object"===(void 0===e?"undefined":l(e))&&e instanceof HTMLElement}function o(e){var t=e&&e.toString().match(/^\s*function (\w+)/);return t?t[1]:""}function i(){return new RegExp("MSIE (\\d+\\.\\d+);").test(navigator.userAgent),parseFloat(RegExp.$1)||Infinity}function c(e,t){for(var n in t)e[n]=t[n];return e}function a(e){var t=Object.create(null);return function(n){return t[n]||(t[n]=e(n))}}function u(e){return d.call(e).slice(8,-1)}function s(e){throw new Error("Vaptcha error: "+e)}function Promise(e){var t=this;this.state="pending",this.value=undefined,this.reason=undefined,this.onResolveAsyncCallbacks=[],this.onRejectAsyncCallbacks=[];var n=function(e){"pending"===t.state&&(t.state="fulfilled",t.value=e,t.onResolveAsyncCallbacks.map(function(e){return e()}))},r=function(e){"pending"===t.state&&(t.state="rejected",t.reason=e,t.onRejectAsyncCallbacks.map(function(t){return t(e)}))};try{e(n,r)}catch(o){r(o)}}window.HTMLElement=window.HTMLElement||Element,Array.prototype.map||(Array.prototype.map=function(e,t){var n,r,o;if(null==this)throw new TypeError(" this is null or not defined");var i=Object(this),c=i.length>>>0;if("[object Function]"!=Object.prototype.toString.call(e))throw new TypeError(e+" is not a function");for(t&&(n=t),r=new Array(c),o=0;o<c;){var a,u;o in i&&(a=i[o],u=e.call(n,a,o,i),r[o]=u),o++}return r}),Array.prototype.includes||(Array.prototype.includes=function(e,t){if(null==this)throw new TypeError('"this" is null or not defined');var n=Object(this),r=n.length>>>0;if(0===r)return!1;for(var o=0|t,i=Math.max(o>=0?o:r-Math.abs(o),0);i<r;){if(n[i]===e)return!0;i++}return!1}),Array.prototype.findIndex||(Array.prototype.findIndex=function(e){if(null==this)throw new TypeError('"this" is null or not defined');var t=Object(this),n=t.length>>>0;if("function"!=typeof e)throw new TypeError("predicate must be a function");for(var r=arguments[1],o=0;o<n;){if(e.call(r,t[o],o,t))return o;o++}return-1}),Object.create||(Object.create=function(e){var t=function(){};return t.prototype=e,new t});var f={vid:null,scene:0,container:null,type:"float",style:"dark",lang:"zh-CN",ai:!0,https:!0,guide:!0,aiAnimation:!1,protocol:"https://",css_version:"2.2.5",cdn_servers:["statics.vaptcha.net"],api_server:"api.vaptcha.com/v3",canvas_path:"/canvas.min.js",offline_server:""},l="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},d=Object.prototype.toString,p=(a(function(e){for(var t={},n=e&&-1!==e.indexOf("?")&&e.split("?")[1]||window.location.search.substring(1),r=n.split("&"),o=0;o<r.length;o++){var i=r[o].split("=");t[decodeURIComponent(i[0])]=decodeURIComponent(i[1])}return t}),a(function(e){return e.charAt(0).toUpperCase()+e.slice(1)})),h=function(t){this.data=t,this.valiudateFuns=[],this.ruleFuns={required:function(t,n){return e(t)||0===t.length?n:null}}};h.prototype={constructor:h,addValidateRules:function(e){c(this.ruleFuns,e)},add:function(e,t,n){var r=this,o=t.split(":"),i=o.shift(),c=this.ruleFuns[i];o.unshift(this.data[e]),o.push(n),c&&this.valiudateFuns.push(function(){return c.apply(r,o)})},validate:function(){for(var e,t=0;e=this.valiudateFuns[t++];){var n=e();if(n)return s(n),!1}return!0}};var v={AccessDenied:"0101",RefreshAgain:"0102",Success:"0103",Fail:"0104",RefreshTooFast:"0105",RefreshTanto:"0106",DrawTanto:"0107",Attack:"0108",jsonpTimeOut:"0703",challengeExpire:"1002"};Promise.prototype.then=function(e){var t=this;if("fulfilled"===this.state){var r=e(this.value);if(n(r)&&"Promise"===o(r.constructor))return r}return"pending"===this.state?new Promise(function(r){t.onResolveAsyncCallbacks.push(function(){var i=e(t.value);if(n(i)&&"Promise"===o(i.constructor))return i.then(r);r(i)})}):this},Promise.prototype["catch"]=function(e){return"rejected"===this.state&&e(this.reason),"pending"===this.state&&this.onRejectAsyncCallbacks.push(e),this},Promise.resolve=function(e){return new Promise(function(t){t(e)})},Promise.reject=function(e){return new Promise(function(t,n){n(e)})};var m=function(){var e=f.protocol,t=f.api_server,n=function(e){var t="";for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&(t+="&"+n+"="+encodeURIComponent(e[n]));return t},r=function(r,o){var i=n(o),c=r.indexOf("http://")>-1||r.indexOf("https://")>-1;return r.indexOf("?")<0&&(i="?"+i.slice(1)),c?""+r+i:""+e+t+r+i},o=function(e){var t=document.getElementsByTagName("head")[0],n=document.createElement("script");return n.charset="UTF-8",n.src=e,t.appendChild(n),{remove:function(){t.removeChild(n)}}},i=function(e,t,n){return t=t||{},n=n||!1,new Promise(function(i){if(n){c(t,{vp:"static",t:(new Date).valueOf()}),e=r(e,t);var a=o(e),u=setTimeout(function(){clearTimeout(u),window["static"]=null,i()},5e3);window["static"]=function(){i.apply(this,arguments),a.remove(),window["static"]=null}}else{var s="VaptchaJsonp"+(new Date).valueOf();window[s]&&(s+="1"),c(t,{callback:s}),e=r(e,t);var f=o(e),l=setTimeout(function(){clearTimeout(l),window[s]=null,f.remove(),i({code:"0703",msg:"Time out,Refresh Again!"})},1e4);window[s]=function(){clearTimeout(l),i.apply(this,arguments),f.remove(),window[s]=null}}})};return i.setConfig=function(n){e=n.protocol||e,t=n.api_server||t},i}(),y={getConfig:function(e){return m("/config",{id:e.vid,type:e.type,scene:e.scene||0})},refresh:function(e){return m("/refresh",e)},click:function(e){return m("/click",e)},get:function(e){return m("/get",e)},verify:function(e){return m("/verify",e)},userbehavior:function(e){return m("/userbehavior",e)},staticConfig:function(e){return m(e.protocol+"channel.vaptcha.net/config/"+e.id,{},!0)}},g={en:{"0201":"id empty","0202":"id error","0208":"scene error","0209":"request used up","0906":"params error","0702":"domain does not match"},"zh-CN":{"0702":"验证单元与域名不匹配"}},w=function(){var o=!1,a=function(e){var t=new h(e);return t.add("offline_server","required","please configure offline_server"),t.validate(),c(e,{js_path:"vaptcha-sdk-downtime.2.0.3.js",api_server:window.location.host,protocol:window.location.protocol+"//",mode:"offline"}),m.setConfig(e),m(e.offline_server,{offline_action:"get",vid:e.vid}).then(function(t){return t.code!==v.Success?(s(g[t.msg]||t.msg),Promise.reject(t.code)):(c(e,t),Promise.resolve())})},f=function(e){return y.staticConfig({protocol:e.protocol,id:"offline"==e.mode?"offline":e.vid}).then(function(e){return Promise.resolve(e)})},l=function(e){return e.offline_server&&""!=e.offline_server?f(e).then(function(t){return t.state?Promise.reject("5001: VAPTCHA cell error"):t.offline_state?""==e.offline_server?Promise.reject("5002: offline_server not configured"):(c(e,{mode:"offline",offline_key:t.offline_key}),a(e)):""==t.api?Promise.reject("5003: error about channel"):(c(e,{api_server:t.api,offline_key:t.offline_key}),m.setConfig(e),y.getConfig(e))}).then(function(t){if(!t)return Promise.resolve();if(t.code!==v.Success){var n=g[e.lang]||g["zh-CN"];return"0702"===t.msg&&alert("Vaptcha error: "+n[t.msg]),s(n[t.msg]||t.msg),Promise.reject(t.code)}return c(e,t.data),Promise.resolve()}):Promise.reject("5002: offline_server not configured")},d=function(e,t){return""+e.protocol+e.cdn_servers[0]+"/"+t},w=function(t){var n=document.getElementsByTagName("head")[0],r=document.getElementById("vaptcha_style");return new Promise(function(o){e(r)?(r=document.createElement("link"),c(r,{rel:"stylesheet",type:"text/css",href:t,id:"vaptcha_style",onload:o}),n&&n.appendChild(r)):o()})},b=function C(e){var n=document.getElementsByTagName("head")[0],r=document.querySelector("script[src='"+e+"']");return new Promise(function(o){if(t(r))return void(r.loaded?o():setTimeout(function(){return C(e).then(o)}));r=document.createElement("script");var i=function(){r.readyState&&"loaded"!==r.readyState&&"complete"!==r.readyState||(o(),r.loaded=!0,r.onload=null,r.onreadystatechange=null)};c(r,{async:!0,charset:"utf-8",src:e,onerror:function(){return s("load sdk timeout")},onload:i,onreadystatechange:i}),n.appendChild(r)})},_=function T(e){var t=e.sdkName,n=e.config,r=d(n,"js/"+n.js_path);return b(r).then(function(){var e="downtime"==t?"DownTime":p(t),r=window["_"+e+"Vaptcha"],o=new r(n);return o.vaptcha.resetCaptcha=function(e,t){c(n,t),T({sdkName:e,config:n}).then(function(e){o.destroy(),o.options=e.options,o.vaptcha=e.vaptcha,e.render(),"character"===n.mode&&["click","float","popup"].includes(n.type)&&e.vaptcha.dtClickCb({target:e.vaptcha.btnDiv})})},Promise.resolve(o)})},j=function(e){o=!0,e.https=!0,e.protocol="https://",m.setConfig(e),!["embed","popup","invisible"].includes(e.type)&&(e.type="popup"),i()<9&&b(d(e,e.canvas_path));var t=new h(e);if(t.addValidateRules({elementOrSelector:function(t,o){if("String"===u(e.container)&&(e.container=document.querySelector(e.container)),n(e.container)&&r(e.container[0])&&(e.container=e.container[0]),!r(e.container))return o}}),t.add("vid","required","please configure vid"),t.add("offline_server","required","5002: offline_server not configured"),"invisible"!==e.type&&t.add("container","elementOrSelector","5004: please configure container with element or selector"),t.validate())return l(e).then(function(){var t=e.https?"css/theme_https."+e.css_version+".css":"css/theme."+e.css_version+".css",n=d(e,t);return w(n)}).then(function(){var t="offline"==e.mode?"downTime":e.mode,n=t||e.type;return o=!1,_({sdkName:n,config:e})})};return function A(e){return new Promise(function(t){o?setTimeout(function(){A(e).then(t)},1e3):j(e).then(t)})["catch"](function(e){return o=!1,s(e),Promise.reject(e)})}}(),b=function(){var e=function(e){var n=e.getAttribute("data-config"),r={};if(t(n))try{r=JSON.parse(n)}catch(o){s("dom config format error")}return r},n=function(e){var n=e.getAttribute("data-vid");return t(n)?{vid:n}:{}},r=function(e,n){var r=Object.create(f);r.container=e,c(r,n),t(r.vid)&&w(r).then(function(e){e.renderTokenInput(),e.render()})};return function(){for(var t=document.querySelectorAll("[data-vid]"),o=document.querySelectorAll("[data-config]"),i=0;i<o.length;i++){var c=e(o[i]);r(o[i],c)}for(var a=0;a<t.length;a++)if(!Array.prototype.includes.call(o,t[a])){var u=n(t[a]);r(t[a],u)}}}();window.onload=b,window.vaptcha=function(e){var t=Object.create(f);return c(t,e),w(t)}}();;
+!function(){"use strict";function e(e){return e===undefined||null===e}function t(e){return e!==undefined&&null!==e}function n(e){return null!==e&&"object"===(void 0===e?"undefined":p(e))}function r(e){return"object"===(void 0===e?"undefined":p(e))&&e instanceof HTMLElement}function o(e){var t=e&&e.toString().match(/^\s*function (\w+)/);return t?t[1]:""}function i(){return new RegExp("MSIE (\\d+\\.\\d+);").test(navigator.userAgent),parseFloat(RegExp.$1)||Infinity}function a(e,t){for(var n in t)e[n]=t[n];return e}function c(e){var t=Object.create(null);return function(n){return t[n]||(t[n]=e(n))}}function u(e){return h.call(e).slice(8,-1)}function s(e){var t="";throw t=-1===e.toString().indexOf("VAPTCHA error")?"VAPTCHA error:"+e:e,new Error(t)}function Promise(e){var t=this;this.state="pending",this.value=undefined,this.reason=undefined,this.onResolveAsyncCallbacks=[],this.onRejectAsyncCallbacks=[];var n=function(e){"pending"===t.state&&(t.state="fulfilled",t.value=e,t.onResolveAsyncCallbacks.map(function(e){return e()}))},r=function(e){"pending"===t.state&&(t.state="rejected",t.reason=e,t.onRejectAsyncCallbacks.map(function(t){return t(e)}))};try{e(n,r)}catch(o){r(o)}}function l(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function f(){var e=navigator.language||navigator.userLanguage;return"zh-CN"===e?"zh-CN":"zh-TW"===e?"zh-TW":e.includes("en",-1)?"en":e.includes("ja",-1)?"jp":"zh-CN"}window.HTMLElement=window.HTMLElement||Element,Array.prototype.map||(Array.prototype.map=function(e,t){var n,r,o;if(null==this)throw new TypeError(" this is null or not defined");var i=Object(this),a=i.length>>>0;if("[object Function]"!=Object.prototype.toString.call(e))throw new TypeError(e+" is not a function");for(t&&(n=t),r=new Array(a),o=0;o<a;){var c,u;o in i&&(c=i[o],u=e.call(n,c,o,i),r[o]=u),o++}return r}),Array.prototype.includes||(Array.prototype.includes=function(e,t){if(null==this)throw new TypeError('"this" is null or not defined');var n=Object(this),r=n.length>>>0;if(0===r)return!1;for(var o=0|t,i=Math.max(o>=0?o:r-Math.abs(o),0);i<r;){if(n[i]===e)return!0;i++}return!1}),Array.prototype.findIndex||(Array.prototype.findIndex=function(e){if(null==this)throw new TypeError('"this" is null or not defined');var t=Object(this),n=t.length>>>0;if("function"!=typeof e)throw new TypeError("predicate must be a function");for(var r=arguments[1],o=0;o<n;){if(e.call(r,t[o],o,t))return o;o++}return-1}),Object.create||(Object.create=function(e){var t=function(){};return t.prototype=e,new t});var d={vid:null,scene:0,container:null,type:"float",style:"dark",lang:"auto",ai:!0,https:!0,guide:!0,aiAnimation:!1,protocol:"https://",css_version:"2.2.5",cdn_servers:["statics.vaptcha.com"],api_server:"api.vaptcha.com/v3",canvas_path:"/canvas.min.js",offline_server:""},p="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},h=Object.prototype.toString,v=(c(function(e){for(var t={},n=e&&-1!==e.indexOf("?")&&e.split("?")[1]||window.location.search.substring(1),r=n.split("&"),o=0;o<r.length;o++){var i=r[o].split("=");t[decodeURIComponent(i[0])]=decodeURIComponent(i[1])}return t}),c(function(e){return e.charAt(0).toUpperCase()+e.slice(1)})),m=function(t){this.data=t,this.valiudateFuns=[],this.ruleFuns={required:function(t,n){return e(t)||0===t.length?n:null}}};m.prototype={constructor:m,addValidateRules:function(e){a(this.ruleFuns,e)},add:function(e,t,n){var r=this,o=t.split(":"),i=o.shift(),a=this.ruleFuns[i];o.unshift(this.data[e]),o.push(n),a&&this.valiudateFuns.push(function(){return a.apply(r,o)})},validate:function(){for(var e,t=0;e=this.valiudateFuns[t++];){var n=e();if(n)return s(n),!1}return!0}};var y={AccessDenied:"0101",RefreshAgain:"0102",Success:"0103",Fail:"0104",RefreshTooFast:"0105",RefreshTanto:"0106",DrawTanto:"0107",Attack:"0108",jsonpTimeOut:"0703",challengeExpire:"1002"};Promise.prototype.then=function(e){var t=this;if("fulfilled"===this.state){var r=e(this.value);if(n(r)&&"Promise"===o(r.constructor))return r}return"pending"===this.state?new Promise(function(r){t.onResolveAsyncCallbacks.push(function(){var i=e(t.value);if(n(i)&&"Promise"===o(i.constructor))return i.then(r);r(i)})}):this},Promise.prototype["catch"]=function(e){return"rejected"===this.state&&e(this.reason),"pending"===this.state&&this.onRejectAsyncCallbacks.push(e),this},Promise.resolve=function(e){return new Promise(function(t){t(e)})},Promise.reject=function(e){return new Promise(function(t,n){n(e)})};var g=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(t,n,r){return n&&e(t.prototype,n),r&&e(t,r),t}}(),w=function(){function e(){l(this,e)}return g(e,[{key:"GenerateFP",value:function(){var e=document.createElement("canvas"),t=e.getContext("2d"),n="http://www.vaptcha.com/";t.textBaseline="top",t.font="14px 'Arial'",t.textBaseline="tencent",t.fillStyle="#f60",t.fillRect(125,1,62,20),t.fillStyle="#069",t.fillText(n,2,15),t.fillStyle="rgba(102, 204, 0, 0.7)",t.fillText(n,4,17);var r=e.toDataURL(),o=r.replace("data:image/png;base64,","");return this.bin2hex(atob(o).slice(-16,-12))}},{key:"bin2hex",value:function(e){for(var t="",n=0;n<e.length;n++){var r=e.charCodeAt(n);t+=this.byte2Hex(r>>8&255),t+=this.byte2Hex(255&r)}return t}},{key:"byte2Hex",value:function(e){return e<16?"0"+e.toString():e.toString()}}]),e}(),b=new w,C=function(){var e=d.protocol,t=d.api_server,n=function(e){var t="";for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&(t+="&"+n+"="+encodeURIComponent(e[n]));return t},r=function(r,o){var i=n(o),a=r.indexOf("http://")>-1||r.indexOf("https://")>-1;return r.indexOf("?")<0&&(i="?"+i.slice(1)),a?""+r+i:""+e+t+r+i},o=function(e){var t=document.getElementsByTagName("head")[0],n=document.createElement("script");return n.charset="UTF-8",n.src=e,t.appendChild(n),{remove:function(){t.removeChild(n)}}},i=function(e,t,n){return t=t||{},n=n||!1,new Promise(function(i){if(n){var c=setTimeout(function(){clearTimeout(c),u.remove(),i()},5e3);window["static"]=function(){clearTimeout(c),i.apply(this,arguments),u.remove()};var u=o(e)}else{var s="VaptchaJsonp"+(new Date).valueOf();window[s]&&(s+="1"),a(t,{callback:s,device:b.GenerateFP()}),e=r(e,t);var l=o(e),f=setTimeout(function(){clearTimeout(f),window[s]=null,l.remove(),i({code:"0703",msg:"Time out,Refresh Again!"})},1e4);window[s]=function(){clearTimeout(f),i.apply(this,arguments),l.remove(),window[s]=null}}})};return i.setConfig=function(n){e=n.protocol||e,t=n.api_server||t},i}(),T={getConfig:function(e){return C("/config",{id:e.vid,type:e.type,scene:e.scene||0})},refresh:function(e){return C("/refresh",e)},click:function(e){return C("/click",e)},get:function(e){return C("/get",e)},verify:function(e){return C("/verify",e)},userbehavior:function(e){return C("/userbehavior",e)},staticConfig:function(e){return C(e.protocol+"channel.vaptcha.net/config/"+e.id,{},!0)},lang:function(e){return C("http://localhost:8080/api/v1/lang",{},!1)}},j={en:{"0201":"id empty","0202":"id error","0208":"scene error","0209":"request used up","0906":"params error","0702":"domain does not match","0105":"refresh too fast,please wait"},"zh-CN":{"0702":"验证单元与域名不匹配","0105":"刷新过快,请稍后再试。"}},A=function(){function o(){var e=navigator.language||navigator.userLanguage;return"zh-CN"===e?"zh-CN":"zh-TW"===e?"zh-TW":e.includes("en",-1)?"en":e.includes("ja",-1)?"jp":"zh-CN"}var c=!1,l=function(e){var t=new m(e);return t.add("offline_server","required","please configure offline_server"),t.validate(),a(e,{js_path:"vaptcha-sdk-downtime.2.0.3.js",api_server:window.location.host,protocol:window.location.protocol+"//",mode:"offline"}),C.setConfig(e),C(e.offline_server,{offline_action:"get",vid:e.vid}).then(function(t){return t.code!==y.Success?(s(j[t.msg]||t.msg),Promise.reject(t.code)):(a(e,t),Promise.resolve())})},f=function(e){return T.staticConfig({protocol:e.protocol,id:"offline"==e.mode?"offline":e.vid}).then(function(e){return Promise.resolve(e)})},d=function(e){return f(e).then(function(t){return t.state?Promise.reject("5001: VAPTCHA cell error"):t.offline_state?""==e.offline_server?Promise.reject("5002: offline_server not configured"):(a(e,{mode:"offline",offline_key:t.offline_key}),l(e)):""==t.api?Promise.reject("5003: error about channel"):(a(e,{api_server:t.api,offline_key:t.offline_key}),C.setConfig(e),T.getConfig(e))}).then(function(t){if(!t)return Promise.resolve();if(t.code!==y.Success){var n=j[e.lang]||j["zh-CN"];return"0702"===t.msg?alert("VAPTCHA error: "+n[t.msg]):"0105"===t.code&&alert("VAPTCHA error: "+n[t.code]),s(n[t.msg]||t.msg),Promise.reject(t.code)}return a(e,t.data),Promise.resolve()})},p=function(e,t){return""+e.protocol+e.cdn_servers[0]+"/"+t},h=function(t){var n=document.getElementsByTagName("head")[0],r=document.getElementById("vaptcha_style");return new Promise(function(o){e(r)?(r=document.createElement("link"),a(r,{rel:"stylesheet",type:"text/css",href:t,id:"vaptcha_style",onload:o}),n&&n.appendChild(r)):o()})},g=function A(e){var n=document.getElementsByTagName("head")[0],r=document.querySelector("script[src='"+e+"']");return new Promise(function(o){if(t(r))return void(r.loaded?o():setTimeout(function(){return A(e).then(o)}));r=document.createElement("script");var i=function(){r.readyState&&"loaded"!==r.readyState&&"complete"!==r.readyState||(o(),r.loaded=!0,r.onload=null,r.onreadystatechange=null)};a(r,{async:!0,charset:"utf-8",src:e,onerror:function(){return s("load sdk timeout")},onload:i,onreadystatechange:i}),n.appendChild(r)})},w=function _(e){var t=e.sdkName,n=e.config,r=p(n,"js/"+n.js_path);return g(r).then(function(){var e="downtime"==t?"DownTime":v(t),r=window["_"+e+"Vaptcha"],o=new r(n);return o.vaptcha.resetCaptcha=function(e,t){a(n,t),_({sdkName:e,config:n}).then(function(e){o.destroy(),o.options=e.options,o.vaptcha=e.vaptcha,e.render(),"character"===n.mode&&["click","float","popup"].includes(n.type)&&e.vaptcha.dtClickCb({target:e.vaptcha.btnDiv})})},Promise.resolve(o)})},b=function(e){if("auto"===e.lang||""===e.lang){var t=o();e.lang=t||"zh-CN"}c=!0,e.https=!0,e.protocol="https://",C.setConfig(e),!["embed","popup","invisible"].includes(e.type)&&(e.type="popup"),i()<9&&g(p(e,e.canvas_path));var a=new m(e);if(a.addValidateRules({elementOrSelector:function(t,o){if("String"===u(e.container)&&(e.container=document.querySelector(e.container)),n(e.container)&&r(e.container[0])&&(e.container=e.container[0]),!r(e.container))return o}}),a.add("vid","required","please configure vid"),"invisible"!==e.type&&a.add("container","elementOrSelector","5004: please configure container with element or selector"),a.validate())return d(e).then(function(){var t=e.https?"css/theme_https."+e.css_version+".css":"css/theme."+e.css_version+".css",n=p(e,t);return h(n)}).then(function(){var t="offline"==e.mode?"downTime":e.mode,n=t||e.type;return c=!1,w({sdkName:n,config:e})})};return function S(e){return new Promise(function(t){c?setTimeout(function(){S(e).then(t)},1e3):b(e).then(t)})["catch"](function(e){return c=!1,s(e),Promise.reject(e)})}}(),_=function(){var e=function(e){var n=e.getAttribute("data-config"),r={};if(t(n))try{r=JSON.parse(n)}catch(o){s("dom config format error")}return r},n=function(e){var n=e.getAttribute("data-vid");return t(n)?{vid:n}:{}},r=function(e,n){var r=Object.create(d);r.container=e,a(r,n),t(r.vid)&&A(r).then(function(e){e.renderTokenInput(),e.render()})};return function(){for(var t=document.querySelectorAll("[data-vid]"),o=document.querySelectorAll("[data-config]"),i=0;i<o.length;i++){var a=e(o[i]);r(o[i],a)}for(var c=0;c<t.length;c++)if(!Array.prototype.includes.call(o,t[c])){var u=n(t[c]);r(t[c],u)}}}();window.onload=_,window.vaptcha=function(e){var t=Object.create(d);return a(t,e),("auto"===t.lang||""===t.lang)&&(t.lang=f()||"zh-CN"),A(t)}}();;
