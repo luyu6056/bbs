@@ -4,6 +4,7 @@ go 1.15
 
 require (
 	github.com/aliyun/aliyun-oss-go-sdk v2.1.4+incompatible
+	github.com/baiyubin/aliyun-sts-go-sdk v0.0.0-20180326062324-cfa1a18b161f // indirect
 	github.com/disintegration/imaging v1.6.2
 	github.com/dlclark/regexp2 v1.2.0
 	github.com/json-iterator/go v1.1.10
@@ -14,8 +15,9 @@ require (
 	github.com/modern-go/reflect2 v1.0.1
 	github.com/panjf2000/ants/v2 v2.4.3
 	github.com/rubenfonseca/fastimage v0.0.0-20170112075114-7e006a27a95b
-	golang.org/x/image v0.0.0-20200801110659-972c09e46d76
-	golang.org/x/net v0.0.0-20201022231255-08b38378de70
+	github.com/satori/go.uuid v1.2.0 // indirect
+	golang.org/x/image v0.5.0
+	golang.org/x/net v0.0.0-20220722155237-a158d28d115b
 	golang.org/x/time v0.0.0-20200630173020-3af7569d3a1e // indirect
 
 )
